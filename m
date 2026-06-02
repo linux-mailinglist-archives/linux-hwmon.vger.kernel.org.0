@@ -1,278 +1,167 @@
-Return-Path: <linux-hwmon+bounces-14671-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14672-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6WQPFKskH2pKiAAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14671-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 02 Jun 2026 20:44:59 +0200
+	id C8u3AiNDH2pcjQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14672-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 02 Jun 2026 22:54:59 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681A16312F1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 02 Jun 2026 20:44:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC82E631EC4
+	for <lists+linux-hwmon@lfdr.de>; Tue, 02 Jun 2026 22:54:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none ("invalid DKIM record") header.d=amperemail.onmicrosoft.com header.s=selector1-amperemail-onmicrosoft-com header.b=AAXmWjQa;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14671-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14671-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WsQo944G;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14672-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14672-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C18B730093BA
-	for <lists+linux-hwmon@lfdr.de>; Tue,  2 Jun 2026 18:44:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D9FD30632D8
+	for <lists+linux-hwmon@lfdr.de>; Tue,  2 Jun 2026 20:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EC9397E8D;
-	Tue,  2 Jun 2026 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0663B3955F7;
+	Tue,  2 Jun 2026 20:51:36 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020101.outbound.protection.outlook.com [52.101.201.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7C23909A4;
-	Tue,  2 Jun 2026 18:44:46 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780425888; cv=fail; b=MVmJD79HS+V70eZCJXnLvc/rgbCBk7YPN6vswS+kzTxhmUcIQoXxLjPwPzZR7N4SpAB+SbzKz27qmUAHzLwSZ2r5IvqtFl0IMnv4QV91UKo8UOAXKSh/LFW++q9UXaYafHOxI2b5dGMVWAt8FtSdeFJOkSKx85aS66d2S8Mm04E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780425888; c=relaxed/simple;
-	bh=1g00aXqrpJ3zK6F06b5Y8f0U/AwrjQsssNWOnIoU4OU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CAJQ1rS8T4sMRqHnCJ8L8HTFt9drB38/wi/G4Ih32Iz4vo9FkkNW7aKhdpkjqZH4bgj3CA16zDaSIjTaPR1V5HotQs4MqJQuATUabQwguRl5CJjJvT7fZSlSSggZdy6xOAg1jokIG6r1KFGBH0DiWDs72W3BK5rnJfoVIHnLrP0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=AAXmWjQa reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.201.101
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VzC/kpq20wNbDqiVx1frzBP2PQtBuprjqB40/9yc2EnJQtqSvtfBye+T9v+teeFyqhKhWeCJGvzId2w8m/wvc6BjT50zuJLWohAEX4Qb+NnaG37TZpyZN5GGH0b846t4MJyOLmIwvYoFAX2fQe5BvvVgnwUmDve+Hwv3tjyDq4bMNDUEBwGwRBnmDE7tNmQhl2pRPC35Rq9LiUh+GDXndRv5GrDUP55WISq6G0Nm/3QESbx7AHIoquq7TmpVlJCFD4TWzcBb+MVK4KczPt+HYhrwdN/mOAH+ok07gmIEUkiuwB3HhnozZPkxYbvag7XTGWHJ0PKRAjbeIdwDR6XaJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NfVMaxWhzAfXEBlq2sUdrZMFVA1/k7cw4GZZBgxfaRA=;
- b=rg/NPKu8x6ziPvusX5sjcA7/m92yR5HYHdrZrtcjaOBh3Q7uuloIzRUCimnwT1gxoymwDwuI9fjUZ4ETjHlyTbnFBebEWb20a+QRedp090VQtwO8QB6Sdr0AtBeRhwqAjWqt9M31QEW8kTN3BqVOP9xmgKxEXxgphMGARerV9D0KCSnO3XIAyb6NtehqtLQUd5Mp5qQZgygayRWOXyvNOZnV4qYg+FeykIRex+qEq/nh8tHQSujtyzA90P6qrmnN32t3RCZqYNU7K1uEJUoKhmBOBH8BvLrawf9c9YUAnh+EHtgTQ6zlash0sJiWHLVy/MYlUx/vF+INSgAkdkXWRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=amperemail.onmicrosoft.com; dkim=pass
- header.d=amperemail.onmicrosoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NfVMaxWhzAfXEBlq2sUdrZMFVA1/k7cw4GZZBgxfaRA=;
- b=AAXmWjQaxguWilL/NfLNZdpz66bD5fcqunlDJWwXg6gNQNcMFuSDZuvToZOVCxZSM29uMBa0G0NoQlv0X9Q6N9LQcchLUykenOisabIr02IcxFS6h5oVqyfU3x7Loalzhqvm/xHNxvbCRa5Ed/hq0eyTH7IC39orZrIhbUchfWg=
-Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
- BY1PR01MB8683.prod.exchangelabs.com (2603:10b6:a03:5a9::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.15; Tue, 2 Jun 2026 18:44:42 +0000
-Received: from BN3PR01MB9212.prod.exchangelabs.com
- ([fe80::44f3:1050:dce8:1ea9]) by BN3PR01MB9212.prod.exchangelabs.com
- ([fe80::44f3:1050:dce8:1ea9%5]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
- 18:44:42 +0000
-Message-ID: <fdbc6d16-88af-4c6b-9e21-e01294c270b3@amperemail.onmicrosoft.com>
-Date: Tue, 2 Jun 2026 14:44:35 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v02] mailbox: pcc: report errors for PCC clients
-To: Sudeep Holla <sudeep.holla@kernel.org>,
- Adam Young <admiyo@os.amperecomputing.com>
-Cc: Jassi Brar <jassisinghbrar@gmail.com>, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- Andi Shyti <andi.shyti@kernel.org>, Guenter Roeck <linux@roeck-us.net>,
- Huisong Li <lihuisong@huawei.com>, MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, linux-arm-kernel@lists.infradead.org
-References: <20260518193006.27425-1-admiyo@os.amperecomputing.com>
- <20260519-inquisitive-teal-yak-56abd1@sudeepholla>
-Content-Language: en-US
-From: Adam Young <admiyo@amperemail.onmicrosoft.com>
-In-Reply-To: <20260519-inquisitive-teal-yak-56abd1@sudeepholla>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0079.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::24) To BN3PR01MB9212.prod.exchangelabs.com
- (2603:10b6:408:2cb::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F200C388E43
+	for <linux-hwmon@vger.kernel.org>; Tue,  2 Jun 2026 20:51:34 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780433495; cv=none; b=q1uSvUMDbCck8g691fHmdA9D8nBB/gaC+zobO+khHrPuU6KdDMt0NquN5gxRhMSgKyT4luG+C0qfNYtl3rTc8wDw5nZ0cup32Zfcml/gXVDOANqVb4WPfTGyZDHwlYWtBfmd5c5QN5z+5HJad3eE6whWN1K/gd0F9+cSTTvIsaE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780433495; c=relaxed/simple;
+	bh=KRGTT4AQ+Oey7inw8PS07TanUxbhPBY4tf+cjHXWYBI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GtysF4BKAuLuvdt4yk1cL5i0ScEd7ZhqyuQL7L81Fkko78pnaGdvPWt7li2PMu5VpJ3BTAlGuxFixWRC/YXUyxzf3Ty2j5ps5dhWv8oFA0UBLUexBuqVuOdlOUzDHEkAmglEXBqfeuobfX4brkkYz3CHwYiEue2dpKoo/dJM5PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsQo944G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B880A1F00899
+	for <linux-hwmon@vger.kernel.org>; Tue,  2 Jun 2026 20:51:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780433494;
+	bh=G6rZ7t6/DhXfpQVj0UlyYqS4gIMH66eg2Oc1gFXbhJ0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WsQo944GDchg/wLfBxF995MDsIQlWR94qpNUGNWfmtj0cc9Cm6IAvLYK49Jz+sub+
+	 cCz9hX3qvk2i7XzqttjMLfpB2FTj81X0WI8T9GOEFst61x7uetTvHoQlZHBhkw3wj+
+	 pWEXAl35dtpSL5N9q+XzcWkaBdzolGpamWnG3Ut+8eiWiblT+djxuby3gRu3VBbNTW
+	 b5gX5xDdjGnEk3Uf3Rhjs7eEYv4grJDMr3ZOHMMp2kabifDBAot1ZDAITd3RH9n/oV
+	 ENGlOonCAxXOF1Zy8Nr8B/0OQsXqHHxsvHFgQOc4sUtBFr0j9jX5I0vS+C7g/hnM3X
+	 sTT2vS+XYtAaA==
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7e2cb01a974so38861517b3.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 02 Jun 2026 13:51:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Wpk5sgv9nQg9SBis+LUIZUpR7oRjkj/MFbJgWBlADitHzWxf79yAiom6aYtPTz6io0B+2diEKYAaI6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ7zoGiv+jivcTUDCzYTRrJ87INcNWfKI+5nhqVcwIpdHrFEe3
+	c2IHw3O8hlpbNd0AYOPRirYvU+fdKdb23Ocl/CCnu16GAf4yJM3+rExVTsla8r+BYzp31SMsyp0
+	NKr8TEsSfiOwSSL2pBnBT/7kWLa9qebI=
+X-Received: by 2002:a05:690c:620f:b0:7b3:edc7:9b97 with SMTP id
+ 00721157ae682-7ea4400dc8fmr7795367b3.0.1780433493990; Tue, 02 Jun 2026
+ 13:51:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|BY1PR01MB8683:EE_
-X-MS-Office365-Filtering-Correlation-Id: 217b8982-d36f-4f42-3217-08dec0d70224
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|10070799003|1800799024|376014|55112099003|22082099003|6133799003|11063799006|56012099006|4143699003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	25vC8gSZeus0bDPHMAXnuiWBZYSs5O9tTyIRTs0zqIgOi7fLzg5eb8zt+ZqCa+k1RId2irBaZ1AbtKl8cDx/5h2iTWJPkrrr4bFpdEaSw7O8oVYw21OCjTfFKzVX7Q8eOVBys8c1Pk00v0mmKFFTaFXAbJuv+zhJn/Rkg9Rx2LwGxVY649OES8Oui3wb1PGAL1+yKzGyYbB1FmJLd4Fa7kj8YiuOnLRRRUF2p73LJ1nOTX9wRbhI4AqjZ/I8lR5U6C/giqxylnHep1ss0WNyYKpj6C2g8UX/vYvQ72MyKZnKLUDXwE8pLAKHO/ZULE1WpoN8g4Cm5JQv5hHAzQ0Z8aFBoZyv7ss0FSi0M3c6hxXvCKvlS1O9qxpFnT1f7sH6IcX1RcP27OVv3JqwmdkkHmIGptQVvWLN2a1BWINt6j7siwY5Oe6tGR6XOWD8uscOW/OhleJr3Oihc9unr/jHG6wO0pPgypKBOV53/VZSb3qMrADCXqbrUhGrUiii6axnREens/jRx5QC6G7l4O04CrdALXSrbBF3DG/Lx9OhnkDQ3LgZpV0rvaN2aSSLMUGz9nwzQ+cU4QH0yf9q0mld57nTNbHW93iJnonpoa0i/d4bQmakXVPDX/cJZ8ArET1JUQ4mQvYKHmpbjZAmikM1X8OLgZbzYgeasoHTeP6aUmLf/j9viEe6OCDW6CH0b5hO
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(10070799003)(1800799024)(376014)(55112099003)(22082099003)(6133799003)(11063799006)(56012099006)(4143699003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHdVMHZTNUJMTmFucVRPRWJQanhJTDdUaGsrZktVazNlN2VSbkxVUVNQMnhV?=
- =?utf-8?B?TkhKZkpONHhQM1V4US9YTERzOVd5UllHTFN0UmR3cXJNODN3bjVmcU9wNVM3?=
- =?utf-8?B?VkpJdjRKcEdLSm81TWxnTjZTRG1TdWNUKytzQkczcXBJWjI5eUlPR0JEdVFR?=
- =?utf-8?B?bm5GdjhmR0lhblhJcHdtNktmN3JENWFTWEt0WjN0Y21GelYvK2ZpTitjUmRM?=
- =?utf-8?B?OTAyUGRBNnEwWUVYVlhoZ1lYbGNrVUd5OTJjZXd5VEdBVVNtcnh4Y0p6ZnMv?=
- =?utf-8?B?SGM4VGwzRXZSaHlDYmZUMVc0OERYTlpRNjNNd3I1a2RtbUo4ZWNYSlVtWEpy?=
- =?utf-8?B?RmthUWRtMHl1NE9TQkk4OG5CMXNsTzVqV1JBNFJwWFRveHRqWDhzY0JFVERC?=
- =?utf-8?B?ZFBKNDVOeDE1Z1Z6QUxxREcwTVZGbWpHakFBK3d1eld3S1BYRzY0ZEhuZ0sv?=
- =?utf-8?B?Tnl6VWwrS0Z4TVA4S0haN1FYUFlJTEZ4blZCSDltdWJoNUw0SHd5ZVpjN2s4?=
- =?utf-8?B?Skhrd1MwdjIxaDlJTlY3Rjd1bzNUNHI3VGxVSkp3Q1RoZ0xXa0lBbE01QnJ0?=
- =?utf-8?B?VHhNck51bm9uazBmNjVWNWQweUR5a0w5R05CMVQxNHV1RHQrZkFOam9POTJR?=
- =?utf-8?B?Tmw1aUl4TmwwSjBJT3FoTUhuWnFnVEU0Tk5kQ2NJdDR6ZGRsVkIrU1YwbmlP?=
- =?utf-8?B?REQycjhDcTJWMWdpeTRjWFNEMVE0ZE5CekJVUmJBQWJTSGRnVjJVd1ZqeTFC?=
- =?utf-8?B?RTIyak4yVU9VUWRTT1VVVTVUeC9aR2dCYVkyM0poalk2RjRaZzFBSURYRVFl?=
- =?utf-8?B?ejRUR1VJTkYyNUxkeEdvYVlieU45c2xwN0hucjlGMU9tNGZQWlcxNmo2ZG9T?=
- =?utf-8?B?blI4eW5QOFVvRTVmZkVjcUFzd3NRVWZoNU5zV2ZXU2krNXdzWlEvZ1lFUjNX?=
- =?utf-8?B?VE5DRlFJcVFmUU0wQU9wYlhwR05YcFdYb0c5OWVxamg4YUVDcWZrSHp3a2M0?=
- =?utf-8?B?L0pWdzllM0FKUXI3djcwRmJCT3dwVWZTdlUrbmZUWERDeEk3Yzg2R1NyYTln?=
- =?utf-8?B?b25ucDNZWS96eFhEWVhpK3VjUzJBbXdTcWxIOTV5azZrOTl6SlFGSjd3am80?=
- =?utf-8?B?ZDRlSTNqYzMyeXVlTnowWWJZRk5tdnpLRE1IWGJUbUFxRDFNUGpQUmFpMEtW?=
- =?utf-8?B?SnVPQTZCOVIxci9WWm5jczNxNlBhNjhPaVgvenU1dGErUnUxZTRHellhK2pY?=
- =?utf-8?B?bFpWS1VSU1h1VFhySitLQStmNmNtQXZhVzBqM3dGZkJNZC9OMjk1QzlEN2Z1?=
- =?utf-8?B?eG1ETlMwVS9oUVNHQkJJRkFrczlMZ0llV0lFQzZRQXBwajZDaEZ2enBydytq?=
- =?utf-8?B?dDI4MVJrKy9sYlR5a1dkaGwyQldiVzVLTHMwcVM2MkJUQVBWVFBsSy9lU0R4?=
- =?utf-8?B?djQ0QWxEMWZDRGpkSkpSYndhSTZBTFZNb1Faa0twTTIzMjZTcnFvSERkNkNq?=
- =?utf-8?B?VlhHbE9HdGtVWGladVR1aGQyWVNLRHdyZG5QcGR5enRjQW8yMzVQWDRTNFI2?=
- =?utf-8?B?YVdxMFhUQUZCMVFNcjRhS0EyY0d3TG5UZFhKbmdKQVJyckI1R096RUdxUlRX?=
- =?utf-8?B?czZPbk1iTm13YzAwcklreTJuc2F6RFpDTFgvdjFkVGttTk1kNy9lN1ZqZTYy?=
- =?utf-8?B?N1pFM1ZvQzA0bTBMMjljalNqWFZpdFlsc3drOUpoNVRaRnpZSWs2SjM3a0R4?=
- =?utf-8?B?eG1sNFU2bkZtTzg3M2xzdk9rTjNaQXN4bmpTWTN5Q2pSQVg1eitqVXhtaEx6?=
- =?utf-8?B?NWxYdTRvY01QanIvNWh6dWdEeDZZNFY2OENqMzNyZzlHL0hRbjk4Yk1ENlE2?=
- =?utf-8?B?TE5oWHdmZ0lzOFBqR2FzVUlDd1g1NzNpcy8xUE1XaFpsMzBJWGVEUEFiTmMw?=
- =?utf-8?B?R1dRc21EZk1NQXV2NGxvTXB1Zktrak9qelRUSXBGUGRmd3YwZHdPNEdpWHZE?=
- =?utf-8?B?WlFRdlB1UVYvbVBhM0lUYVFZUi9Ma3lXQmlCcFB4azI1SnAvMFBPbkJ1Yy81?=
- =?utf-8?B?SG55Y0JvYXpXNkVUdGN0OUlGd01CZW9DOEtlSkZjL2daMUtrbEh0WEt0aEFD?=
- =?utf-8?B?OVd2ZkYyTEFuVTMvUlprRnhJdGl5eWxiQ3FjVTNpK21VNzhMOEJPMUwvQWhQ?=
- =?utf-8?B?VlhVa0hZT1R4WUNkdHJRZFdIY25ENXlXWmdMYTZUeGM0dHhBRDB4R3VUQmND?=
- =?utf-8?B?M0FlVVdpZXdsL0FrZXNxT1JVT0hBcE9rbktlKzBWUDJlSnh3Q2lFL2IyS01V?=
- =?utf-8?B?WlNxV0xuRnpPMVY0N1BKU3pVUlQ4TE92ZmM3dGJtVmowNDE2ME82Mjh5aUZ3?=
- =?utf-8?Q?b1du+SblF+UXD8sHWW/xRDcsVCAB+FCclc9VYD4POtac6?=
-X-MS-Exchange-AntiSpam-MessageData-1:
-	RovAOotpXvLNk0+RSc2DxvooH6xg/RUeJJTvirZyaTQxH/pGd6xVXgHR
-X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 217b8982-d36f-4f42-3217-08dec0d70224
-X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 18:44:42.1603
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tgEwOdv8kboJnuZ0xJfM0mEa1TmY222sy+g1WYVRaXr6K9VZKoCHyP7v5O6LAl8hWoNeQkxXm6YVwbFNU+PGNpDdQJ2GR/kloaXGTOAXZy+ylf6I8RO2sG8c2LeSuS1A
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR01MB8683
+References: <20260304-gpio-of-kconfig-v1-0-d597916e79e7@oss.qualcomm.com> <20260304-gpio-of-kconfig-v1-7-d597916e79e7@oss.qualcomm.com>
+In-Reply-To: <20260304-gpio-of-kconfig-v1-7-d597916e79e7@oss.qualcomm.com>
+From: Timur Tabi <timur@kernel.org>
+Date: Tue, 2 Jun 2026 15:50:57 -0500
+X-Gmail-Original-Message-ID: <CAOZdJXXetr-FPZUSX_nzS5nZc+bbv5b1m78sCcZzrDJi7C05vw@mail.gmail.com>
+X-Gm-Features: AVHnY4IltjGxIj5Fh6-JK6uSKIHTP0yZBU085pIyp8WmlCvLfmlYl2sow6Y3Jn0
+Message-ID: <CAOZdJXXetr-FPZUSX_nzS5nZc+bbv5b1m78sCcZzrDJi7C05vw@mail.gmail.com>
+Subject: Re: [PATCH 07/14] pinctrl: Kconfig: drop unneeded dependencies on OF_GPIO
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Alexey Brodkin <abrodkin@synopsys.com>, Vineet Gupta <vgupta@kernel.org>, Scott Wood <oss@buserror.net>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Dvorkin Dmitry <dvorkin@tibbo.com>, 
+	Wells Lu <wellslutw@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sebastian Reichel <sre@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-leds@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.54 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[onmicrosoft.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14671-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sudeep.holla@kernel.org,m:admiyo@os.amperecomputing.com,m:jassisinghbrar@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:rafael@kernel.org,m:lenb@kernel.org,m:linux-acpi@vger.kernel.org,m:andi.shyti@kernel.org,m:linux@roeck-us.net,m:lihuisong@huawei.com,m:myungjoo.ham@samsung.com,m:kyungmin.park@samsung.com,m:cw00.choi@samsung.com,m:linux-arm-kernel@lists.infradead.org,s:lists@lfdr.de];
-	R_DKIM_PERMFAIL(0.00)[amperemail.onmicrosoft.com:s=selector1-amperemail-onmicrosoft-com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org,roeck-us.net,huawei.com,samsung.com,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[47];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[admiyo@amperemail.onmicrosoft.com,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14672-lists,linux-hwmon=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[amperemail.onmicrosoft.com:~];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[admiyo@amperemail.onmicrosoft.com,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:abrodkin@synopsys.com,m:vgupta@kernel.org,m:oss@buserror.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:linusw@kernel.org,m:brgl@kernel.org,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:dvorkin@tibbo.com,m:wellslutw@gmail.com,m:lee@kernel.org,m:pavel@kernel.org,m:linux@roeck-us.net,m:wim@linux-watchdog.org,m:mchehab@kernel.org,m:gregkh@linuxfoundation.org,m:sre@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-amlogic@lists
+ .infradead.org,m:linux-leds@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-watchdog@vger.kernel.org,m:linux-media@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-pm@vger.kernel.org,m:martinblumenstingl@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[timur@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_CC(0.00)[arm.com,kernel.org,synopsys.com,buserror.net,linux.ibm.com,ellerman.id.au,gmail.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,baylibre.com,googlemail.com,tibbo.com,roeck-us.net,linux-watchdog.org,linuxfoundation.org,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[timur@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,amperecomputing.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 681A16312F1
+X-Rspamd-Queue-Id: AC82E631EC4
 
-I am geting ready to resubmit this patch along with a series of other 
-PCC based changes that show how it is necessary
-
-for MCTP-PCC.
-
-On 5/19/26 09:23, Sudeep Holla wrote:
-> On Mon, May 18, 2026 at 03:30:06PM -0400, Adam Young wrote:
->> The tx_done callback function has a return code (rc) parameter
->> that the tx_done callback can use to determine how to handle an error.
->> However the IRQ handler was not setting that value if there is an error.
->>
->> The following clients are affected:
->>
->> drivers/acpi/cppc_acpi.c
->> drivers/i2c/busses/i2c-xgene-slimpro.c
->> drivers/hwmon/xgene-hwmon.c
->> drivers/soc/hisilicon/kunpeng_hccs.c
->> drivers/devfreq/hisi_uncore_freq.c
->>
->> All of these only use the error code to report, so they
->> are expecting an error code to come thorugh, but they
->> do not modify behavior based on this code.
->>
->> In the case of an error code in the IRQ, the handler was returning
->> IRQ_NONE which is not correct:  the IRQ handler was matched
->> to the IRQ.  This mean that multiple error codes returned from
->> a PCC triggered interrupt would end up disabling the device.
->>
->> In addition, if the error code IRQ was coming from a Type4 Device that was
->> expecting an IRQ response, that device would then be hung.
->>
->> Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
->> Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
->>
->> ---
->> ---
->>   drivers/mailbox/pcc.c | 9 +++++----
->>   1 file changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
->> index 636879ae1db7..16b9ce087b9e 100644
->> --- a/drivers/mailbox/pcc.c
->> +++ b/drivers/mailbox/pcc.c
->> @@ -314,6 +314,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>   {
->>   	struct pcc_chan_info *pchan;
->>   	struct mbox_chan *chan = p;
->> +	int rc;
->>   
->>   	pchan = chan->con_priv;
->>   
->> @@ -327,8 +328,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>   	if (!pcc_mbox_cmd_complete_check(pchan))
->>   		return IRQ_NONE;
->>   
->> -	if (pcc_mbox_error_check_and_clear(pchan))
->> -		return IRQ_NONE;
->> +	rc = pcc_mbox_error_check_and_clear(pchan);
-> I think we may have to skip the check inside pcc_mbox_error_check_and_clear()
-> for Type 4 channel as the spec expects OSPM to ignore it. It is a separate
-> fix, just noting that here.
-
-I will submit this as a pre-req patch.
-
-
+On Wed, Mar 4, 2026 at 3:07=E2=80=AFAM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
 >
->>   
->>   	/*
->>   	 * Clear this flag after updating interrupt ack register and just
->> @@ -337,8 +337,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
->>   	 * required to avoid any possible race in updatation of this flag.
->>   	 */
->>   	pchan->chan_in_use = false;
->> -	mbox_chan_received_data(chan, NULL);
->> -	mbox_chan_txdone(chan, 0);
->> +	if (!rc)
->> +		mbox_chan_received_data(chan, NULL);
-> Not sure if making this conditional is good as some platforms may expect
-> it to move the state machine, I am not sure 100% just thinking aloud here.
+> @@ -557,7 +549,6 @@ config PINCTRL_ST
+>  config PINCTRL_STMFX
+>         tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
+>         depends on I2C
+> -       depends on OF_GPIO
+>         depends on HAS_IOMEM
+>         select GENERIC_PINCONF
+>         select GPIOLIB_IRQCHIP
 
-That is currently not the case.  Right now, and error code 
-short-circuits and further execution of the IRC handler.  I think that 
-those drivers would need to be changes to have a tx_done callback instead.
+This change causes the following warning on builds:
 
+WARNING: unmet direct dependencies detected for MFD_STMFX
+Depends on [n]: HAS_IOMEM [=3Dy] && I2C [=3Dy] && OF [=3Dn]
+Selected by [m]:
+- PINCTRL_STMFX [=3Dm] && PINCTRL [=3Dy] && I2C [=3Dy] && HAS_IOMEM [=3Dy]
 
->
+WARNING: unmet direct dependencies detected for MFD_STMFX
+Depends on [n]: HAS_IOMEM [=3Dy] && I2C [=3Dy] && OF [=3Dn]
+Selected by [m]:
+- PINCTRL_STMFX [=3Dm] && PINCTRL [=3Dy] && I2C [=3Dy] && HAS_IOMEM [=3Dy]
+
+I believe the proper fix is to have PINCTRL_STMFX depend on CONFIG_OF,
+since this driver actually does depend on CONFIG_OF.  The warning
+comes because if CONFIG_OF is disabled, PINCTRL_STMFX can still be
+enabled, but in doing so it selects MFD_STMFX which does depend on
+CONFIG_OF.
+
+Adding "depends on OF" to "config PINCTRL_STMFX" seems to fix the
+problem, but I'm not familiar with this driver so I'm not sure this is
+the right fix.  I'll post a patch.
 
