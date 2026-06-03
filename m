@@ -1,272 +1,153 @@
-Return-Path: <linux-hwmon+bounces-14688-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14690-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jlwMFUUwIGpsyQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14688-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 15:46:45 +0200
+	id AbKKEIs3IGrPygAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14690-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:17:47 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9127638388
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 15:46:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110FD638798
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:17:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lk+bA1wR;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14688-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14688-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cCzGHXlt;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14690-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14690-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D6373107805
-	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 13:33:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DF3B30588BC
+	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 14:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E8130B51A;
-	Wed,  3 Jun 2026 13:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2B143DA53;
+	Wed,  3 Jun 2026 14:10:58 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC32FDC20
-	for <linux-hwmon@vger.kernel.org>; Wed,  3 Jun 2026 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E8B34D92C
+	for <linux-hwmon@vger.kernel.org>; Wed,  3 Jun 2026 14:10:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780493560; cv=none; b=OP93nSfYSXIwR6NjMH/hyrfViE+li9HUNWJlxX1/KITvumwJqSpGx5Q2n3vQuCmU2gAKypGN+GclhcedRbAerushCO+wrOYnCs5nrfOG9S815iBq/L18dFJg4ThvG/RLT5y4RAOcv0z1Ew4ltmeSejRog7LGUxzBPDM6FbqaGvk=
+	t=1780495858; cv=none; b=C85uRa15uWbTaXcwp8PiELw/j/gfmt5pzbwJ/rkyWkLQGX4kFXWlUNeOqj3akWZqNg08An5SULgkFj5vL7zDSkssrMqUGpphFnsAZWFWkzZYl4drQmadOttFEG+0t/L9X5qaKHW62hCYl9uNgS6CMu01+8L88/e3IohH8b3zs7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780493560; c=relaxed/simple;
-	bh=fK22uHVuameMGkFepUVhAIXHg/sYgqdSYfM8bGvZwzY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=olgX41y1mdzSqFIskxNsKfYMfBn16l7tZ8CLLgYzvf69gSiTLk9s3TyYU94niN9uzfmTH2yb0z/L5ndEQ8/+dcLTG0P+0QloFHdNRFGxIz92NlnwStNJrS/H+Xk968L3fvj0PVM2MZsCNU6oVp3TNj9WA705AN2kXT8N1HuwP5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lk+bA1wR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B261F00898;
-	Wed,  3 Jun 2026 13:32:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780493559;
-	bh=M7/MGQURRgtlQN5Kftp3DEq60UW0ogtWL2OsR3l3r+g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lk+bA1wRztc61pnmOm2tj5ip4uLcgouxBdZ83w3Wsfzx8QWpJc/p1NhuvTd8S7Bxh
-	 z/7HwppIkVc1uKs19CWUaw0GzlkgqmtpzREup/RgMhFuH5B2Z7dZdxrwf53Nx0RV+l
-	 i8m1uj3T5NqLaaRvzzd79iuWF/XP6IQ5PNpWvQhRtv6VHbbBs6mPKNwtgSHzWU3ooZ
-	 Y4I/CVBgXeLVB6OJeush3hqsiXhEd8t2R5XkgPwkrWGUKXEx/YHs2dJJ5WFIz/cvUC
-	 Bw8ciz2gUXoG0IGIeua5sEojjYaDzngapQ7KDMkU+oqVhcl+RaQj9ky2zHfACJVcGu
-	 eHsek33xggg+g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] hwmon: add a driver for the temp/voltage sensor on
- PolarFire SoC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Conor Dooley" <conor@kernel.org>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260603-ongoing-brunette-51e35be6d93e@spud>
-References: <20260603-ongoing-brunette-51e35be6d93e@spud>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 13:32:38 +0000
-Message-Id: <20260603133238.E6B261F00898@smtp.kernel.org>
+	s=arc-20240116; t=1780495858; c=relaxed/simple;
+	bh=X/4LDAMoKZkMh4PAm7f3Ytwubin99iyLxf77BzywFhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aSquEQyeoGErPb/8EXqfUGhAnBiQm88kl2iN0ggtFdkPSqECSPcrETq4V0Ovk/DI2UojmbnPu1T2R3uF+CSS6wM/c0I3bZdlH20aDjz0027KFDN0IruLIahxKhNEh/W5Fqge/DwfpbzuO+LFaFy8nZXeQAOZXkkjZtm/ye+xKOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cCzGHXlt; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45ef616daf6so5318645f8f.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 03 Jun 2026 07:10:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780495853; x=1781100653; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I6uE/yj6yBBMDcnhynVadW7yV5ZE49OrcbTpAkFxMBQ=;
+        b=cCzGHXltWJofqlJrjzS4dqMoUCcdbCXPab9M4G+KJSnnLBQ0gahNaBps4Pz1zNFNCC
+         a+u9B5gvLb6wzBQ8puonc8dTF8R19PPeoRLKL+U+gHldpN8XoZexH46AR1qtA8+6mU4j
+         5A9pSFmekpc2xAZ+gpU/hM19ocMA8yPH9q/t1taIUJ0PuyJ6x8aj2twhTSofnhkDCWeK
+         85WsA/WNfOHNhXIVggjAvzXcWigj6wwha43HQdOMpLLHN/3lVndm4snAb9KCApCGg9Y+
+         letw/z0dVgOdIX8oCdcWfRz9ZVT4mOeJ+h2t5l7JjHFQlFXxAODTxbUSMtcFfGv52Azi
+         HshQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780495853; x=1781100653;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I6uE/yj6yBBMDcnhynVadW7yV5ZE49OrcbTpAkFxMBQ=;
+        b=plwdcodtpSoCVIitWv0erQq4jMEItHMiP+l/My2FYheZifySeZZ6BcsIuitqXSDXvy
+         YYZgVwvk4rDey3RhCz7aX1Oa4iZ4mPye7LHXDryw31t7j/HeiK13gJ2XKuKoTBaJ0AR4
+         gkEGww156/BWDnYj+Leg+m3gZ5IaZ8YPNWzAvXZFLy3nPFP8/jrsS/OdD78uBygPiw9r
+         YyblJBUtUoz3x2AG+IB9eZFHn0mVPk6hB62qQ7prrwIA0Ll/GEf50fVk7C/LnREL05ga
+         j5TdgkzFma0ZlIE6K9nItfP8BJ7Is0uCLAmg/kAi5uRiAyW1VbOwl3aNHKPO1aVJKXuM
+         VklQ==
+X-Gm-Message-State: AOJu0YzNifnWmSFd9LIyomBvHM8IYSSR7FchM0dMqSpBDSafg3a2+ufL
+	0rAmF51iwPlIlcUTCLnHnzWu7LOYxJbhlTdnDbemZbG4gQSsKKXjnw6iAYjUlg==
+X-Gm-Gg: Acq92OGcTrGi7Kzv4LzwZ5oAp2+kUhvsK506MT8ALC41FUEobmZqaPgrqn9La+BgA52
+	rS7PcuSdJ2gEe+MUpDvqtkI1aj8F/7ZRil2xjmI+oD56qsQo3ZiA1z7H/AJ4zyaLnTdgnlFmcXi
+	HN6gRewjQQRtcm5qRuSRCJNZcLBDupuTMCd5mqn7PdJdWAK4xoz/bUPCeZQOq5ao0AOiDUYnNhZ
+	rTcXGqP3BgbyqAd2YrxdJ+QXbiqh5KA4YLkiGxeJJGqwxsBSs5AEBwnA0s7+lZSSmk9VuHoLeHG
+	F+22haacTmPUuNmZ6gLM4RxDqM7q9Hb0SYGlM+Hf8Peu3bINeCNohCZs8VWzkaQ9fuT68MORttw
+	DgVdtoLaXXiIfTGqEQmAG8tmtBnKuzl2MsJ4mzqbE9+VmrFi2YYkjEU0AHWsSBwy3vzlPSE0bCj
+	eAqO1WqnauXNL/NcZ/BlTu7XJhkU4UaCftsg==
+X-Received: by 2002:adf:f403:0:b0:460:2477:2284 with SMTP id ffacd0b85a97d-460247723f2mr2137513f8f.39.1780495852755;
+        Wed, 03 Jun 2026 07:10:52 -0700 (PDT)
+Received: from xeon ([188.163.112.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcb13sm7217131f8f.2.2026.06.03.07.10.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 07:10:52 -0700 (PDT)
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+To: Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/3] hwmon: emc1403: Convert to use OF bindings
+Date: Wed,  3 Jun 2026 17:10:30 +0300
+Message-ID: <20260603141033.111300-1-clamor95@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14688-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:conor@kernel.org,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14690-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_TO(0.00)[suse.com,roeck-us.net,kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[clamor95@gmail.com,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_RECIPIENTS(0.00)[m:jdelvare@suse.com,m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:clamor95@gmail.com,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[clamor95@gmail.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,smtp.kernel.org:mid,mail.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,lists.linux.dev:replyto]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9127638388
+X-Rspamd-Queue-Id: 110FD638798
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] Ignored `regmap_read()` return values lead to the use of uninitial=
-ized stack variables, potentially leaking kernel memory.
-- [Medium] Arithmetic overflow in `mpfs_tvs_interval_write` bypasses interv=
-al bounds checking.
-- [Medium] The driver ignores the return values of hardware write operation=
-s, masking errors from the hwmon core and userspace.
-- [Medium] Destructive `regmap_write()` to the control register overwrites =
-existing configuration, such as the update interval.
---
+Document and add OF support to this LM90 compatible thermal sensor
+family.
 
-commit 3e2d5f8cc5d07efdc63c9af851354b4ce076c3a4
-Author: Lars Randers <lranders@mail.dk>
-Subject: hwmon: add a driver for the temp/voltage sensor on PolarFire SoC
+Jonas Schwöbel (1):
+  hwmon: (emc1403) Convert to use OF bindings
 
-Add a driver for the temperature and voltage sensors on PolarFire SoC.
-The temperature reports how hot the die is, and the voltages are the
-SoC's 1.05, 1.8 and 2.5 volt rails respectively.
+Svyatoslav Ryhel (2):
+  dt-bindings: hwmon: lm90: Document SMSC EMC1402/1403/1404/1428
+  hwmon: (emc1403) Add regulator support
 
-> diff --git a/drivers/hwmon/tvs-mpfs.c b/drivers/hwmon/tvs-mpfs.c
-> new file mode 100644
-> index 0000000000000..f086f178b4bab
-> --- /dev/null
-> +++ b/drivers/hwmon/tvs-mpfs.c
+ .../bindings/hwmon/national,lm90.yaml         | 109 +++++++++++++-----
+ drivers/hwmon/emc1403.c                       |  25 +++-
+ 2 files changed, 100 insertions(+), 34 deletions(-)
 
-[ ... ]
+-- 
+2.53.0
 
-> +static int mpfs_tvs_voltage_read(struct mpfs_tvs *data, u32 attr,
-> +				 int channel, long *val)
-> +{
-> +	u32 tmp, control;
-> +
-> +	if (attr !=3D hwmon_in_input && attr !=3D hwmon_in_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	regmap_read(data->regmap, MPFS_TVS_CTRL, &control);
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: High]
-Does this code leak uninitialized stack memory if the hardware read fails?
-
-Because the return value of regmap_read() is ignored, control (and tmp
-below) could remain uninitialized on a read failure. This uninitialized
-data is then used in bitwise operations and potentially returned to
-userspace via *val.
-
-The same pattern appears in mpfs_tvs_temp_read() and mpfs_tvs_interval_read=
-().
-
-> +
-> +	switch (channel) {
-> +	case SENSOR_V2P5:
-
-[ ... ]
-
-> +static int mpfs_tvs_voltage_write(struct mpfs_tvs *data, u32 attr,
-> +				  int channel, long val)
-> +{
-> +	u32 tmp;
-> +
-> +	if (attr !=3D hwmon_in_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	switch (channel) {
-> +	case SENSOR_V2P5:
-> +		if (val > 1 || val < 0)
-> +			return -EINVAL;
-> +
-> +		tmp =3D FIELD_PREP(MPFS_TVS_CTRL_V2P5_ENABLE, val);
-> +		regmap_update_bits(data->regmap, MPFS_TVS_CTRL,
-> +				   MPFS_TVS_CTRL_V2P5_ENABLE, tmp);
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Medium]
-Should this check the return value of regmap_update_bits()?
-
-By unconditionally returning 0 at the end of the function, hardware write=20
-failures are masked from the hwmon core and userspace.
-
-The same pattern appears in mpfs_tvs_temp_write() and=20
-mpfs_tvs_interval_write().
-
-> +		break;
-
-[ ... ]
-
-> +static int mpfs_tvs_interval_write(struct mpfs_tvs *data, u32 attr, long=
- val)
-> +{
-> +	unsigned long temp =3D val;
-> +
-> +	if (attr !=3D hwmon_chip_update_interval)
-> +		return -EOPNOTSUPP;
-> +
-> +	temp *=3D 1000;
-        ^^^^^^^^^^^^^
-
-[Severity: Medium]
-Could this multiplication overflow before bounds validation occurs?
-
-If a large value is passed (e.g., val =3D 4294968 on a 32-bit architecture),
-temp * 1000 could wrap around to a small value like 480. Divided by=20
-MPFS_TVS_INTERVAL_SCALE (32), this gives 15, which would successfully pass=
-=20
-the temp > 254 upper-bound check below and silently write an invalid=20
-interval to the hardware.
-
-> +	temp /=3D MPFS_TVS_INTERVAL_SCALE;
-> +
-> +	/*
-> +	 * The value is 8 bits wide, but 255 is described as
-> +	 * "255=3D Do single set of transfers when scoverride set"
-> +	 * but there's no scoverride bit in the tvs register region.
-> +	 * Ban using 255 since its behaviour is suspect.
-> +	 */
-> +	if (temp > 254)
-> +		return -EINVAL;
-> +
-> +	temp <<=3D MPFS_TVS_INTERVAL_OFFSET;
-> +	regmap_update_bits(data->regmap, MPFS_TVS_CTRL,
-> +			   MPFS_TVS_INTERVAL_MASK, temp);
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +static int mpfs_tvs_probe(struct platform_device *pdev)
-> +{
-> +	struct device *hwmon_dev;
-> +	struct mpfs_tvs *data;
-> +
-> +	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->regmap =3D device_node_to_regmap(pdev->dev.parent->of_node);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(data->regmap),
-> +				     "Failed to find syscon regmap\n");
-> +
-> +	regmap_write(data->regmap, MPFS_TVS_CTRL, MPFS_TVS_CTRL_ENABLE_ALL);
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Medium]
-Does this destructively overwrite existing configuration in the control reg=
-ister?
-
-Because this uses regmap_write() rather than a read-modify-write operation
-like regmap_update_bits(), it replaces the entire register contents. This=20
-clears the INTERVAL bits (15:8) to 0 and zeroes out other status bits, whic=
-h=20
-might erase configuration previously set by the bootloader.
-
-> +
-> +	hwmon_dev =3D devm_hwmon_device_register_with_info(&pdev->dev, "mpfs_tv=
-s",
-> +							 data,
-> +							 &mpfs_tvs_chip_info,
-> +							 NULL);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-ongoing-br=
-unette-51e35be6d93e@spud?part=3D1
 
