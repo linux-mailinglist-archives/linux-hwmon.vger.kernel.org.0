@@ -1,80 +1,80 @@
-Return-Path: <linux-hwmon+bounces-14689-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14691-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QFftOXw3IGrMygAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14689-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:17:32 +0200
+	id F5R/A1Q5IGpBywAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14691-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:25:24 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F16A63878A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:17:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC0638897
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 16:25:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j+hDu9ja;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14689-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14689-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="NyYk/DRD";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14691-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14691-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63133301F5DC
-	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 14:11:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 283C430604DA
+	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 14:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F8D43D508;
-	Wed,  3 Jun 2026 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AE346AF11;
+	Wed,  3 Jun 2026 14:10:59 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A737F3AA4EB
-	for <linux-hwmon@vger.kernel.org>; Wed,  3 Jun 2026 14:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC5E313273
+	for <linux-hwmon@vger.kernel.org>; Wed,  3 Jun 2026 14:10:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780495858; cv=none; b=C+e0IARnBIJfNjhC4W2+NBHdYidoTsaanu+hHC/RouU3EGcNNzzsIXE8fKo6jJJybfQ4Q1U93tmQzCxKxSZ9Fzn8pRVa8c9ul+JwMXiaB+st4LLmjwTQCvNXwRtJiZNfHeCcp6XwyhI+BVD4m20gFyca2ByLmezTTmK071azy30=
+	t=1780495859; cv=none; b=jyXAbd6iCG/s1FvhSk28a2miRme5hAeu+RjJjYkiRa4WhfgHRGxaO5AF2tKPvZgAXuasNkFOnwGB3zHhTnjB305ZWDHF2h+Ibg9nV+atPHVQS3OMwGaavFI7llCuHDi8alxkOj2aw2J8/z2J62NP+DySONBRVZm8DHgOY5QVmf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780495858; c=relaxed/simple;
-	bh=CGFF+18t2BhBOdyiWzPFWns80o+l2buwNiedN7HApsQ=;
+	s=arc-20240116; t=1780495859; c=relaxed/simple;
+	bh=hMYVuRl+jG8ob7vB2VBY2LvNiUw2g2lKzo3MZCubhBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FevJhkT7VpbO+gwOYrRoCW+2ox6rBtMiMNDJ6hMYKazkcPMZPT53MoIIxx5/WS8E0YZ21EImdWEeo5mBpHoQqdOKMsG5PZQN6NIggY/OIBTcBDyw6bXN6HhB+GsCGo1DcQN7HSaHgm83ohBWRjlk6Ip67Hc78qMu4DeEZPHDWIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+hDu9ja; arc=none smtp.client-ip=209.85.221.44
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45ef1629ff4so4244169f8f.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 03 Jun 2026 07:10:55 -0700 (PDT)
+	 MIME-Version:Content-Type; b=mlp4yrAyXWmWU4WF4mRoyyySAKe6O2LI8fGD55wYmkqc/qDgKiFmo/8IMSLTXtNGoswSje08CpmvaUTMBsSKCvE9GmPNVTwx6VrNk/IpHAMz6rdsv5SWU8NMSs7+uadbUqpJSQjaEDvFLngVqVvukXJRXaIjiAymGNIM1A4wzAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NyYk/DRD; arc=none smtp.client-ip=209.85.128.53
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490acbb0f89so18063215e9.0
+        for <linux-hwmon@vger.kernel.org>; Wed, 03 Jun 2026 07:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780495854; x=1781100654; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780495855; x=1781100655; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FmuRKl9fxrcF6ArlWkpcPVYc+ox+WNl3WD2EPf+Twng=;
-        b=j+hDu9jawN7jluH59UMi2n8JXBCcETONR/kwacZo1q+01NNxjxbjQGB7JZebzkuIBN
-         wCYX2eX6QfUrl0evIHyNEsbHMMbTgRTGbQu3eEprLNkOyGVlQwv7t3z43I+z5qfo+2W5
-         Aaw6RJsv5nAfgo+72Iu8mIFHWrvdQbGrzYvclnfWjvtBNRziIehybTs3B8Kbs+KlM5np
-         hgFBs71JQcik6Lu9vlK5+Dzp2xiXC6ud4fwmc4+nTkrq0vW2oMGsidiI8LZ8yrk0X4Bz
-         y+B5MOxQIR/WDxuhvW/wAY3ZOxydpZnb7W3hp0bdzh8YHjJs7E6VlGYYM9c7h1IeptTa
-         dacQ==
+        bh=pxN5ZUEEgebfYMNnIrmq2wOyA0Ft5IwUa9ix8QldOKw=;
+        b=NyYk/DRDXD0gmB1JSp8G7Kd8kk1vX9/Vlj5e0OaCzbxFTQSGA6FQEMH8HUFujyMhuO
+         aFq9N61PgG0d/LBaIb5LOSDJ1wI9RvES44E80qUZ8L3Z97F4/xzDDX33tnUzG5YABBX+
+         UVClu7tSYTdBd4DWcxDLH5IYB3IEuHN/wkxW6LxSzPKHvmuRisjQYIr1w7SUYtrax458
+         xz4AETCsA+vYuu+ijQCPtxECpY3j5lacFZGJPBEYhlf9KHkg8zUgpA3wQdN17UPfQQSP
+         p6i/aJ5OhH63iMS2hZAKKY95z3+WB4la8wNsl7jG4JNhwlHo42q4StmkdhdUIXJNz4TD
+         GYLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780495854; x=1781100654;
+        d=1e100.net; s=20251104; t=1780495855; x=1781100655;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FmuRKl9fxrcF6ArlWkpcPVYc+ox+WNl3WD2EPf+Twng=;
-        b=S9fWN9Wty91/8vr+5YFCMNUWh43TJiC4qM6zXo3cEZs3BUQAl7rmXcJlt53TIlOuhd
-         a1qNbSlrHCByyXlGi6Rkkk87hccVtDZxshdJEXGBKRxrTnfrgQT3Vzf472W63Lekkdy2
-         YaB/RCzp7QvWmpzGflUB0TGDVVpBPupqSODABQ6GHL4NfokohZEdy5lOw7tfAT/pdM8x
-         vz4sSpx75Ne78ROOCj0zoT/Mj/dqLfOZq11bzn0s9Z6VewoUeDZ58/SFhz++h7qf/e5y
-         RKxChzB/etKHLs4aatBfcJKkGuVmiOVn7sJofhFZcZ1dTmDZLtzLCCTbHCC1NOu8dCyR
-         7YuQ==
-X-Gm-Message-State: AOJu0YzIX/YRs01+2729kZdQM4saDy01Yg1QLgKOMbK6rngM4ZOSnG2/
-	x+XBC3qR1MJFtTG0lUyYh+KF/4KhOpMoVNMK4Mvl4PMsBYx5ILT520KlpvYT3Q==
-X-Gm-Gg: Acq92OHC/stZC4TOkAgaFNHFcQl1FzUMrKNQOqVdnDEi0OE4iMKifCPscvg1EIkkeaD
-	8VkNL7je7AogguWiWnGuneOZ1dXGGX2qwf+uQsq7UgCOIl5FctY9IOfyfhQhxzHlvEzHzJfejJj
-	jFIMzbt1Y9x/YCflWPmM+OXqTC8JCaRFtbhLoix7Fo9pgPub0gmlCu35BqKMgnRr5jl8we1SdlN
-	v/t+oP2fx/tb3i5AL1aPZnAHm+UzjEVaHvmJOBQk5yQDiJVQXIvwlrbhB8tAprTu7OcdnhsBtQp
-	ymoqoo+Ebf2DGOiPQt4sxhSe4dfaEyOTmUYWVTXu+2oNsPUTMHJG45s4j9C+T1GWftbHLz6TKkK
-	rDgZj6iByxGQjpgleo3YSQRx/z2xOhKkqj6mmwNm0lCEWpadwLj9AtdmP9ikm9N5pmP48CDjIXO
-	S81kJodhirEW5lm329gL5RlI4=
-X-Received: by 2002:a05:6000:4694:b0:454:35b9:803 with SMTP id ffacd0b85a97d-4602184cademr3759686f8f.30.1780495853866;
-        Wed, 03 Jun 2026 07:10:53 -0700 (PDT)
+        bh=pxN5ZUEEgebfYMNnIrmq2wOyA0Ft5IwUa9ix8QldOKw=;
+        b=WHyyGN764FkvcfwggCVrmHmeriJ3xqzJDGqO2JbYSx/EWbax0HgfYkGj4b3WPavOGM
+         tKQX0BBtBFyU5WXzJAa67PXfnuoEoKvovYzzDjK9Sjl/q1oSIg7yx1Fj5lm7OnXRwShj
+         pwIFUw1EBaI5zkm9lbWbTsC0YbOIFI70wVtMeMhbeqbQGEhhdfi6/O5GRKLolJ8T9ZD5
+         qk+e0UjjxLRKvwvI1ZqQh32m15z7ODOdMiQsaHkwIrG2EV+bky2C7dlLjr6AnejdvgM4
+         07JLc1Afzz4bWbs7PA8vHvWJyRUWpwnH7Kt/uqGoRjbhZY10Ma8bBDkUIhVjoKi6nlE7
+         SRPA==
+X-Gm-Message-State: AOJu0YyAgXlky5VUPVd+Vw8891rlh6kr3QRWkzcdjgJs5S3LNOvdcmQj
+	ERuyNphgMSP9PlNu6M2fUED8wuEjpk54edK0QFW+iGHn8S6BjDDEBNBg
+X-Gm-Gg: Acq92OF3htv+GDnHIVnNsEZkr5Y7K0PyuvmsF1S9wRbvJfNYzgcAc1JQQFE6+ZPZ/qe
+	SuTl1VX208GJeZ9tU2e7fScFo/8Qg4+viojDQvFQqcQOgio/fiwjKIxBacSkJRP66iiVpcn1/iK
+	Jnm3wDO152BIrlVpm28+LZ3xRXgX4gh/JnYHzL3v3e8kZkgsyvDZHuLKZtEeWw17MzeyL54y1U+
+	TSHIBgWkSUQGoOAJR7nkWbZ0zqfqX2APHz/RWNkMD+JzRVJBpxc/VMZrc153MVuBpwHFO1MZMOA
+	htgD6bFGVt/45bOuMd0P7br08826dPjGGSRB1rTFJN6QVE3O2r7qw7cVBpEWGvowmO0EfwqDgS6
+	rPzgK75ufRvsWXUZFEjWJkGko3FWxGpMWzyARWE8WdmMV4A92OA7v2ZBCALAHwAPrSH3jSgho2P
+	cLySAjzJEt2E+9ExQxspWwJxrs0xhdSvBY7A==
+X-Received: by 2002:a05:600c:a142:b0:490:8fd1:72a with SMTP id 5b1f17b1804b1-490b5e8391cmr44116945e9.3.1780495854978;
+        Wed, 03 Jun 2026 07:10:54 -0700 (PDT)
 Received: from xeon ([188.163.112.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcb13sm7217131f8f.2.2026.06.03.07.10.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcb13sm7217131f8f.2.2026.06.03.07.10.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 07:10:53 -0700 (PDT)
+        Wed, 03 Jun 2026 07:10:54 -0700 (PDT)
 From: Svyatoslav Ryhel <clamor95@gmail.com>
 To: Jean Delvare <jdelvare@suse.com>,
 	Guenter Roeck <linux@roeck-us.net>,
@@ -85,9 +85,9 @@ To: Jean Delvare <jdelvare@suse.com>,
 Cc: linux-hwmon@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/3] dt-bindings: hwmon: lm90: Document SMSC EMC1402/1403/1404/1428
-Date: Wed,  3 Jun 2026 17:10:31 +0300
-Message-ID: <20260603141033.111300-2-clamor95@gmail.com>
+Subject: [PATCH v1 2/3] hwmon: (emc1403) Convert to use OF bindings
+Date: Wed,  3 Jun 2026 17:10:32 +0300
+Message-ID: <20260603141033.111300-3-clamor95@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260603141033.111300-1-clamor95@gmail.com>
 References: <20260603141033.111300-1-clamor95@gmail.com>
@@ -97,187 +97,110 @@ List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14689-lists,linux-hwmon=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[suse.com,roeck-us.net,kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14691-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jdelvare@suse.com,m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:clamor95@gmail.com,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[suse.com,roeck-us.net,kernel.org,gmail.com];
 	FORGED_SENDER(0.00)[clamor95@gmail.com,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jdelvare@suse.com,m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:clamor95@gmail.com,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[clamor95@gmail.com,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,yahoo.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F16A63878A
+X-Rspamd-Queue-Id: 0EFC0638897
 
-Document SMSC (now Microchip) EMC1402/1403/1404/1428 thermal sensors.
+From: Jonas Schwöbel <jonasschwoebel@yahoo.de>
 
+Add OF match compatible table to be able to use this driver with Device
+Trees.
+
+Signed-off-by: Jonas Schwöbel <jonasschwoebel@yahoo.de>
 Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
 ---
- .../bindings/hwmon/national,lm90.yaml         | 109 +++++++++++++-----
- 1 file changed, 77 insertions(+), 32 deletions(-)
+ drivers/hwmon/emc1403.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-index 164068ba069d..a1de96e0b87f 100644
---- a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-@@ -12,38 +12,67 @@ maintainers:
+diff --git a/drivers/hwmon/emc1403.c b/drivers/hwmon/emc1403.c
+index 964a8cb278f1..ac84200be71a 100644
+--- a/drivers/hwmon/emc1403.c
++++ b/drivers/hwmon/emc1403.c
+@@ -16,6 +16,7 @@
+ #include <linux/hwmon.h>
+ #include <linux/hwmon-sysfs.h>
+ #include <linux/err.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/sysfs.h>
+ #include <linux/regmap.h>
+ #include <linux/util_macros.h>
+@@ -659,14 +660,16 @@ static int emc1403_probe(struct i2c_client *client)
+ {
+ 	struct thermal_data *data;
+ 	struct device *hwmon_dev;
+-	const struct i2c_device_id *id = i2c_match_id(emc1403_idtable, client);
  
- properties:
-   compatible:
--    enum:
--      - adi,adm1032
--      - adi,adt7461
--      - adi,adt7461a
--      - adi,adt7481
--      - dallas,max6646
--      - dallas,max6647
--      - dallas,max6649
--      - dallas,max6654
--      - dallas,max6657
--      - dallas,max6658
--      - dallas,max6659
--      - dallas,max6680
--      - dallas,max6681
--      - dallas,max6695
--      - dallas,max6696
--      - gmt,g781
--      - national,lm86
--      - national,lm89
--      - national,lm90
--      - national,lm99
--      - nuvoton,nct7716
--      - nuvoton,nct7717
--      - nuvoton,nct7718
--      - nxp,sa56004
--      - onnn,nct72
--      - onnn,nct214
--      - onnn,nct218
--      - onnn,nct1008
--      - ti,tmp451
--      - ti,tmp461
--      - winbond,w83l771
-+    oneOf:
-+      - enum:
-+          - adi,adm1032
-+          - adi,adt7461
-+          - adi,adt7461a
-+          - adi,adt7481
-+          - dallas,max6646
-+          - dallas,max6647
-+          - dallas,max6649
-+          - dallas,max6654
-+          - dallas,max6657
-+          - dallas,max6658
-+          - dallas,max6659
-+          - dallas,max6680
-+          - dallas,max6681
-+          - dallas,max6695
-+          - dallas,max6696
-+          - gmt,g781
-+          - national,lm86
-+          - national,lm89
-+          - national,lm90
-+          - national,lm99
-+          - nuvoton,nct7716
-+          - nuvoton,nct7717
-+          - nuvoton,nct7718
-+          - nxp,sa56004
-+          - onnn,nct72
-+          - onnn,nct214
-+          - onnn,nct218
-+          - onnn,nct1008
-+          - smsc,emc1402
-+          - smsc,emc1403
-+          - smsc,emc1404
-+          - smsc,emc1428
-+          - ti,tmp451
-+          - ti,tmp461
-+          - winbond,w83l771
-+
-+      - items:
-+          - enum:
-+              - smsc,emc1412
-+              - smsc,emc1422
-+              - smsc,emc1442
-+          - const: smsc,emc1402
-+
-+      - items:
-+          - enum:
-+              - smsc,emc1413
-+              - smsc,emc1423
-+          - const: smsc,emc1403
-+
-+      - items:
-+          - enum:
-+              - smsc,emc1414
-+              - smsc,emc1424
-+          - const: smsc,emc1404
-+
-+      - items:
-+          - enum:
-+              - smsc,emc1438
-+          - const: smsc,emc1428
+ 	data = devm_kzalloc(&client->dev, sizeof(struct thermal_data),
+ 			    GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
  
-   interrupts:
-     items:
-@@ -169,6 +198,7 @@ allOf:
-               - national,lm99
-               - nuvoton,nct7718
-               - nxp,sa56004
-+              - smsc,emc1428
-               - winbond,w83l771
-     then:
-       patternProperties:
-@@ -191,6 +221,21 @@ allOf:
-             temperature-offset-millicelsius:
-               maximum: 127937
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - smsc,emc1402
-+              - smsc,emc1403
-+              - smsc,emc1404
-+    then:
-+      patternProperties:
-+        "^channel@([0-2])$":
-+          properties:
-+            temperature-offset-millicelsius:
-+              maximum: 255875
+-	data->chip = id->driver_data;
++	data->chip = (enum emc1403_chip)i2c_get_match_data(client);
++	if (!data->chip)
++		return dev_err_probe(&client->dev, -ENODEV, "Unknown device!\n");
 +
- additionalProperties: false
+ 	data->regmap = devm_regmap_init_i2c(client, &emc1403_regmap_config);
+ 	if (IS_ERR(data->regmap))
+ 		return PTR_ERR(data->regmap);
+@@ -682,10 +685,21 @@ static const unsigned short emc1403_address_list[] = {
+ 	0x18, 0x1c, 0x29, 0x3c, 0x4c, 0x4d, 0x5c, I2C_CLIENT_END
+ };
  
- examples:
++static const struct of_device_id emc1403_of_match[] = {
++	{ .compatible = "smsc,emc1402", .data = (void *)emc1402 },
++	{ .compatible = "smsc,emc1403", .data = (void *)emc1403 },
++	{ .compatible = "smsc,emc1404", .data = (void *)emc1404 },
++	{ .compatible = "smsc,emc1428", .data = (void *)emc1428 },
++	{ }
++
++};
++MODULE_DEVICE_TABLE(of, emc1403_of_match);
++
+ static struct i2c_driver sensor_emc1403 = {
+ 	.class = I2C_CLASS_HWMON,
+ 	.driver = {
+ 		.name = "emc1403",
++		.of_match_table = emc1403_of_match,
+ 	},
+ 	.detect = emc1403_detect,
+ 	.probe = emc1403_probe,
 -- 
 2.53.0
 
