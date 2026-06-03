@@ -1,184 +1,147 @@
-Return-Path: <linux-hwmon+bounces-14673-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14675-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +w7oK3vjH2prrwAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14673-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 10:19:07 +0200
+	id M9b8AEDwH2qfsgAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14675-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 11:13:36 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077DD6359F7
-	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 10:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3AF63606F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 03 Jun 2026 11:13:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iYmZoB1d;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14673-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14673-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=erq.se header.s=loopiadkim1730905327 header.b=Bof6K2td;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14675-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14675-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6CAE301B935
-	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 08:12:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9612330151EB
+	for <lists+linux-hwmon@lfdr.de>; Wed,  3 Jun 2026 09:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A85B3E4C87;
-	Wed,  3 Jun 2026 08:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6108E32F748;
+	Wed,  3 Jun 2026 09:07:42 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.outgoing.loopia.se (smtp.outgoing.loopia.se [93.188.3.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C262D1911;
-	Wed,  3 Jun 2026 08:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAC3379C49
+	for <linux-hwmon@vger.kernel.org>; Wed,  3 Jun 2026 09:07:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780474327; cv=none; b=BvD53Q8tPkb9O5MdIiz6kICAN7L1HlFZx77RcPZQQH3v5dsaZgtzRwpGY8OeOxsgtpmwAGdV/x2wGem0DQvzkzN37+Tmbt+nyUrsVytXQjwouk3Ow7dnGPRprVNKHvlBExKNg53DpneMGp/6uI5vivxolqFDwbdycKRqkZjPS8k=
+	t=1780477662; cv=none; b=gi48Y1Vfgv/oS0cth+i0KGNNlKiZkl+t+rcIxcGRCBns4kI3qwFtRgtToVnx0+SZHymrMthVDqxkYM5rQgSWyoirHYafGDZq8AdrSlzXS9xqVn1gPtB96HzzAq15wRNZaqYPG3UPQN6zZnwmERxdA36+GbjF9GYc5toeJgiQC9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780474327; c=relaxed/simple;
-	bh=+/bRzcE69UTTerm5h4iLYVNNG3eY5R9UdbVCCHb6kks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o4LNyxKz0U6BYpLwcWSPSX6Ztir3JFtZpGOOG6khCZjwj8fMVbzs3GydfdJNIzzpAGQ/IlOzPZs9rt+gyOZMOA8/eBZQrg16YOl6xN5m0BLEEJMrIA/hCs5Aq31Xha8QccOxRS1gXIvVTIV7odV/Lub97XkqLvp6Biv6T+L9EUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iYmZoB1d; arc=none smtp.client-ip=192.198.163.14
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780474325; x=1812010325;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+/bRzcE69UTTerm5h4iLYVNNG3eY5R9UdbVCCHb6kks=;
-  b=iYmZoB1diSb6J+2P1STyjt+65sRyCWgL7OhDOz7V993RnEgBvhnOFB3e
-   n+fnLwwcgsysm3xVAIU8Q0cg0d3/TjmoJBOPxqqlnZtOoINpM7N2iTxaB
-   yInF5INO0IwqyHJgf8rprsDMbYi9TEHTi9RY+89iD5UPQZI6vbur/nOev
-   7Ss/vzx/ROfX94czDNjCAxHJgvSs2fxryp50QBLBh9RBw41EN7XOb965e
-   6py+k+V5RbF3y5bO3/W01Q8WyE/qVRFOsB6zuBgkMBFXEXFLm/pEOhS60
-   ATrGaJ2DGUN3MGLQ3h11mvguXZBWoboztOQ+8tEihWSG0bJVG2B2B3x3k
-   g==;
-X-CSE-ConnectionGUID: mvLqhjDuRWyfYAcdMcQu6A==
-X-CSE-MsgGUID: kFmuk2u/QdKekEO4HwcK4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81304333"
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="81304333"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 01:12:04 -0700
-X-CSE-ConnectionGUID: 9eIrhLwGRCu0lZcJHlEqyQ==
-X-CSE-MsgGUID: n1Hlh6oyRPe8FWGZPp0otA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="249080524"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa005.jf.intel.com with ESMTP; 03 Jun 2026 01:12:03 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 0AB5295; Wed, 03 Jun 2026 10:12:02 +0200 (CEST)
-Date: Wed, 3 Jun 2026 10:12:02 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-	"linux@roeck-us.net" <linux@roeck-us.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Sanman Pradhan <psanman@juniper.net>
-Subject: Re: [PATCH v2] hwmon: (tps53679) Fix device ID comparison and
- printing in tps53676_identify()
-Message-ID: <ah_h0m1JTCzJuLlY@black.igk.intel.com>
-References: <20260330155618.77403-1-sanman.pradhan@hpe.com>
+	s=arc-20240116; t=1780477662; c=relaxed/simple;
+	bh=GZzDIpCba88oaBGJmylGq0xxI3r2qLCCOKGtHPr4wnE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ROEzxmSIMIJb9JdbK7veGGVu9ac/zZzztYqu/Fsj4U08H1fLlQ1VRr5qEw3qB4iseECV6mHhx3XSDJo885rDtyswsWGinoap5dyYnm7v3G4KDNmUbIyIYS6D9oyGX3FlYLwVpsX71hzPNg0IBpKkv+r5qC0710gfLCn/vI4yO6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=erq.se; spf=pass smtp.mailfrom=erq.se; dkim=pass (2048-bit key) header.d=erq.se header.i=@erq.se header.b=Bof6K2td; arc=none smtp.client-ip=93.188.3.37
+Received: from s807.loopia.se (localhost [127.0.0.1])
+	by s807.loopia.se (Postfix) with ESMTP id 56BF2537B91
+	for <linux-hwmon@vger.kernel.org>; Wed, 03 Jun 2026 10:57:48 +0200 (CEST)
+Received: from s934.loopia.se (unknown [172.22.191.5])
+	by s807.loopia.se (Postfix) with ESMTP id 46358535FF5;
+	Wed, 03 Jun 2026 10:57:48 +0200 (CEST)
+Received: from localhost (unknown [172.22.191.6])
+	by s934.loopia.se (Postfix) with ESMTP id 44491A3D613;
+	Wed, 03 Jun 2026 10:57:48 +0200 (CEST)
+X-Virus-Scanned: amavis at amavis.loopia.se
+X-Spam-Flag: NO
+X-Spam-Score: -1.2
+X-Spam-Level:
+Received: from s934.loopia.se ([172.22.191.6])
+ by localhost (s472.loopia.se [172.22.190.12]) (amavis, port 10024) with LMTP
+ id zEUscrFsJuUi; Wed,  3 Jun 2026 10:57:47 +0200 (CEST)
+X-Loopia-Auth: user
+X-Loopia-User: linux@erq.se
+X-Loopia-Originating-IP: 90.231.188.7
+Received: from mailcluster.loopia.se (90-231-188-7-no600.tbcn.telia.com [90.231.188.7])
+	(Authenticated sender: linux@erq.se)
+	by s934.loopia.se (Postfix) with ESMTPSA id 792C3917F0D;
+	Wed, 03 Jun 2026 10:57:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=erq.se;
+	s=loopiadkim1730905327; t=1780477067;
+	bh=OZ/y+bkgDX4jjV/dpgyVVxa/MxK1D4rxKGGkZztqNAo=;
+	h=From:To:Cc:Subject:Date;
+	b=Bof6K2tdLumd4TLF3L5dGVEbEnqtRpy8x1sj5gev4oCE/6ea8k6O8ZsaHEzJIeOPb
+	 HEsZzONXS/pMFaNIq0RZDErPKFL+PhOTlmoVMRawpMXe3uJeCHOeyIINWzrfohq80h
+	 Btkh9eFX4h87n54bPNS2sTLwK4DO6JyDMkXSvej2bS6Os6beJnlVVx4D5eDkeTvRSp
+	 NvY5s7qge5VYriobQ3H+I08YtebqvxQEzOAkrqlFscn6N4V62O0bYKNPhpySLPl7Ti
+	 rrEJRf+zlAXGIOlmKiyxL65s6LYr/ueozGSYrbzQbiRJNKRL7ss56nUYpGWRrHNpMo
+	 z+JDgjvHKpNvQ==
+From: Daniel Nilsson <linux@erq.se>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org,
+	Daniel Nilsson <linux@erq.se>
+Subject: [PATCH 0/1] hwmon: (pmbus) Add support for Flex BMR316, BMR321, BMR350 and BMR351
+Date: Wed,  3 Jun 2026 10:57:11 +0200
+Message-ID: <20260603085712.659432-1-linux@erq.se>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330155618.77403-1-sanman.pradhan@hpe.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[erq.se:s=loopiadkim1730905327];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14673-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sanman.pradhan@hpe.com,m:linux-hwmon@vger.kernel.org,m:linux@roeck-us.net,m:linux-kernel@vger.kernel.org,m:psanman@juniper.net,s:lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-hwmon@vger.kernel.org];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14675-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[linux@erq.se,linux-hwmon@vger.kernel.org];
+	DMARC_NA(0.00)[erq.se];
+	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,m:linux@erq.se,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[linux@erq.se,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[erq.se:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,erq.se:mid,erq.se:from_mime,erq.se:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:from_mime,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,black.igk.intel.com:mid]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 077DD6359F7
+X-Rspamd-Queue-Id: 7D3AF63606F
 
-On Mon, Mar 30, 2026 at 03:56:40PM +0000, Pradhan, Sanman wrote:
-> 
-> tps53676_identify() uses strncmp() to compare the device ID buffer
-> against a byte sequence containing embedded non-printable bytes
-> (\x53\x67\x60). strncmp() is semantically wrong for binary data
-> comparison; use memcmp() instead.
-> 
-> Additionally, the buffer from i2c_smbus_read_block_data() is not
-> NUL-terminated, so printing it with "%s" in the error path is
-> undefined behavior and may read past the buffer. Use "%*ph" to
-> hex-dump the actual bytes returned.
-> 
-> Per the datasheet, the expected device ID is the 6-byte sequence
-> 54 49 53 67 60 00 ("TI\x53\x67\x60\x00"), so compare all 6 bytes
-> including the trailing NUL.
+Add support for BMR316, BMR321, BMR350 and BMR351 DC/DC converter
+modules from Flex to the generic pmbus driver.
 
-Your patch seems okay to me. But just for your information I would do it
-differently. Id est the sequence you got for the comparison is the perfect
-ASCII one, but this is a coincident as the actual ID is in FourCC BCD.
+BMR492, BMR316, BMR321, BMR350 and BMR351 all use the same chip, which
+has the deficiency that it presents a second phantom PAGE even though
+the devices only have a single real PAGE/rail.  By explicitly
+specifying the number of pages via driver_data, as is already in place
+for BMR492, we avoid exposing the phantom PAGEs.
 
-The better check is to compare first two bytes to TI and device ID separately
-as FourCC. Do you want me to send a patch or you can do it yourself?
+Update the documentation with a new datasheet URL.  The datasheets for
+Flex BMRs are now only found via the product selector on flex.com.
 
-(Also note that there is no need to use *ph as we know the length and it's
- always the same, so %6ph suffice, but again, you want to print the FourCC,
- %p4c.)
+The patch has been tested against BMR316, BMR321, BMR350 and BMR351.
 
-...
+Daniel Nilsson (1):
+  hwmon: (pmbus) Add support for Flex BMR316, BMR321, BMR350 and BMR351
 
->  	ret = i2c_smbus_read_block_data(client, PMBUS_IC_DEVICE_ID, buf);
->  	if (ret < 0)
->  		return ret;
-> -	if (strncmp("TI\x53\x67\x60", buf, 5)) {
-> -		dev_err(&client->dev, "Unexpected device ID: %s\n", buf);
-> +	if (ret != 6 || memcmp(buf, "TI\x53\x67\x60\x00", 6)) {
-> +		dev_err(&client->dev, "Unexpected device ID: %*ph\n", ret, buf);
->  		return -ENODEV;
->  	}
-
-#define TPS53676_DEVICE_ID_MAGIC	0x53676000
-
-	if (ret != 6)
-		dev_err(&client->dev, "Malformed response\n");
-		return -EIO;
-	}
-	if (strncmp(buf, "TI", 2)) {
-		dev_err(&client->dev, "Unexpected vendor ID: %2pE\n", buf); // use %pE since it maybe unprintable
-		return -ENODEV;
-	}
-	if (get_unaligned_be32(buf + 2) != _DEVICE_ID_MAGIC) {
-		dev_err(&client->dev, "Unexpected device ID: %p4c\n", buf + 2);
-		return -ENODEV;
-	}
+ Documentation/hwmon/pmbus.rst | 9 +++++----
+ drivers/hwmon/pmbus/pmbus.c   | 4 ++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
 
+base-commit: e7ae89a0c97ce2b68b0983cd01eda67cf373517d
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.2
 
 
