@@ -1,62 +1,62 @@
-Return-Path: <linux-hwmon+bounces-14705-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14706-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id o1S1MwIzIWqBAgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14705-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 10:10:42 +0200
+	id c3VuKG02IWqvBAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14706-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 10:25:17 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5D263DE17
-	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 10:10:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F408E63DFA0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 10:25:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bwKTpipN;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14705-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14705-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fdKvQUzA;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14706-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14706-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F8903072E12
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Jun 2026 08:10:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3721230376AF
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Jun 2026 08:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8847539B94F;
-	Thu,  4 Jun 2026 08:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89439F193;
+	Thu,  4 Jun 2026 08:17:21 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BE23876C7;
-	Thu,  4 Jun 2026 08:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D643A1D0C;
+	Thu,  4 Jun 2026 08:17:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780560626; cv=none; b=Mzf1XMeSsbfRV0HM7xeGKFDU3lmYLdrNXqwJopO+sn1uVBdYkh3r56kRsui0XKdvHGqBQ2ogefDFA1ZTJm+v1waRRi2WM2A/FggykH9NCVZUK8senleoHO4zB1E4Vf7qoW1ufVqxVI3TWOI6Z8M0+NujCXu5TVfL0P1ORRtf5hc=
+	t=1780561041; cv=none; b=WpN9CLfWZgrGCyuo+4iuFte9qieFCT5+w4sISUE5AZ79agWgMfwnbEVxob6dnqoIhWLnj3k5rIWeC+Wcf0Z2IxL2uQKJv6zVKQNjGyJS9fzj8A3niJmoKXRoeDzPtJCo3FolZ/kEZ75c7mYSOe64zdcCqtc4tvisZ2kqPgx1BdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780560626; c=relaxed/simple;
-	bh=EJrr8yiQmlcdEyukp0qCLFb+ItXDayFqyUQGSTpHzSM=;
+	s=arc-20240116; t=1780561041; c=relaxed/simple;
+	bh=WaIpu+mYBmXerhjCY+gB3dP/XRakT3MaV9043JcrdvU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Iv1MGl5vNy6O2XmpzKra2n2MmyQh7rRsHtSvNH89KAXmoqGkBO+ECykyij4JdCjr7+m4Yc27IGVN9NBq5byXczvAVm7VEvIAkcx6/j80mmci3ejC+DKOE99Ua/GZBt4Qyx4lPSiH8VD13BmCedXgCZHTT5PAxKF3Mv4CFjLMosU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwKTpipN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C341F00893;
-	Thu,  4 Jun 2026 08:10:24 +0000 (UTC)
+	 Message-Id; b=KmTkkZqQwcb2g+BvfUXjSzOHtQIitX6MmtT5I2HlTi5Gkf+WQlNw2E3VqhFl2KYvtQlkHUfVHarCCb5MDp02zzQ6idSQaG4bg5xvQZ5Bk8QuIIYXMd3XCLeGJYR9lc2BvowUUKX9T/CsmxxY9uj5Wu6ylKpm6ElSqG3bTDO8oSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdKvQUzA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5251F00893;
+	Thu,  4 Jun 2026 08:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780560625;
-	bh=EJrr8yiQmlcdEyukp0qCLFb+ItXDayFqyUQGSTpHzSM=;
+	s=k20260515; t=1780561040;
+	bh=FJVAbbEBWYarbWavIQRTcWPKhCK7h4/HOCYcRtl00Io=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bwKTpipN97g+d2CLZOlA1zacyF0QlqJKw7wGObR6167HH3EpFlpRuSExVOEBd7LXS
-	 A/kHkdUSazIhnpgebv/zUIAPuorBpk/7/3FLAKRQP3NSQiowMMBCI1r7pgUVaMd11s
-	 OPYO1JMKrFR4n2Suh1TYfJqZ6EHpksTgLcoz2dz1BnCNvBILdCue+8sSz84Tv6jvwE
-	 epeTuZkDJhc0nvCyuLGSnSOtQTGzF/+DhqYhc8CzyuG1ykYl6aAAJsyEPp2LFme5c6
-	 YvGLohtFpvIcDtSTE6jA9J7Eroog/LIpjzIkDJ1eUdIdG6uqIOLFeK7Y/guV/Abo4h
-	 ybLPHkc4duKwQ==
+	b=fdKvQUzAqyg1fnVi/p5vHmdm/+g7xD/h4NwFFFFVEkQDhTuss6mVu60ikBy4i225V
+	 nYkuPgFBijeptACObd9eyNUEV9Wpw3SjTuKzZnO9PKGnQdMDLa/RiCpOyzqfyO7Lcb
+	 RW5xrxnAJU+rCFQiUhMYiQF5HW46IriZx4gocRmQhlgCNtWTQGF3GOsduZkbaNeJ4C
+	 6S2/LPQ2ybySnzhXpdFyZ1yUktMkZWJumSOHHKoVuBdIdM2WUWBXgoQ03HRjSlxi/a
+	 VKiWQQoiTxFbkmgdBwpEzpXhKCVGrSjfl33djxqamb0LpOKxxJmxoMRwMCzVf/bmhA
+	 jh5ZzRH3PEM7Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: hwmon: Add Eswin EIC7700 PVT sensor
+Subject: Re: [PATCH v6 2/2] hwmon: Add Eswin EIC7700 PVT sensor driver
 Reply-To: sashiko-reviews@lists.linux.dev
 To: hehuan1@eswincomputing.com
-Cc: robh@kernel.org, conor+dt@kernel.org, linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260604080525.152-1-hehuan1@eswincomputing.com>
-References: <20260604080525.152-1-hehuan1@eswincomputing.com>
+Cc: linux-hwmon@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260604080552.169-1-hehuan1@eswincomputing.com>
+References: <20260604080552.169-1-hehuan1@eswincomputing.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 08:10:24 +0000
-Message-Id: <20260604081024.E0C341F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 08:17:19 +0000
+Message-Id: <20260604081720.5D5251F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,18 +67,18 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14705-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14706-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,lists.linux.dev:replyto,eswincomputing.com:email,sashiko.dev:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,eswincomputing.com:email,smtp.kernel.org:mid,vger.kernel.org:from_smtp,sashiko.dev:url,lists.linux.dev:replyto];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:hehuan1@eswincomputing.com,m:robh@kernel.org,m:conor+dt@kernel.org,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:hehuan1@eswincomputing.com,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -98,26 +98,87 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D5D263DE17
+X-Rspamd-Queue-Id: F408E63DFA0
 
-> From: Huan He <hehuan1@eswincomputing.com>
->=20
-> Add device tree binding documentation for ESWIN EIC7700 Voltage and
-> Temperature sensor.
->=20
-> The EIC7700 SoC integrates two PVT instances for monitoring SoC and DDR
-> power domains respectively.
->=20
-> Signed-off-by: Yulin Lu <luyulin@eswincomputing.com>
-> Signed-off-by: Huan He <hehuan1@eswincomputing.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Clearing the interrupt status before disabling sensor conversions =
+in init_iface() creates a race condition that can lead to an unhandled inte=
+rrupt storm.
+- [Medium] Missing pm_runtime_disable() in the device cleanup path causes a=
+n unbalanced PM runtime state.
+--
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+commit 5842ad32271f7d967e9f1e10c13474a5b57da8ad
+Author: Huan He <hehuan1@eswincomputing.com>
+
+hwmon: Add Eswin EIC7700 PVT sensor driver
+
+Add support for ESWIN EIC7700 Voltage and Temperature sensor. The driver
+supports temperature and voltage monitoring with polynomial conversion,
+and provides sysfs interface for sensor data access.
+
+> diff --git a/drivers/hwmon/eic7700-pvt.c b/drivers/hwmon/eic7700-pvt.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/drivers/hwmon/eic7700-pvt.c
+[ ... ]
+> +static int eic7700_pvt_init_iface(struct pvt_hwmon *pvt)
+> +{
+> +	/*
+> +	 * Make sure controller are disabled so not to accidentally have ISR
+> +	 * executed before the driver data is fully initialized. Clear the IRQ
+> +	 * status as well.
+> +	 */
+> +	eic7700_pvt_update(pvt->regs + PVT_INT, PVT_INT_CLR, PVT_INT_CLR);
+> +	eic7700_pvt_update(pvt->regs + PVT_ENA, PVT_ENA_EN, 0);
+
+[Severity: High]
+Could this clear-then-disable sequence cause an unhandled interrupt storm?
+
+If a bootloader left the sensor active, a conversion might complete in the
+small window between clearing PVT_INT_CLR and disabling PVT_ENA_EN. This
+would assert the IRQ line.
+
+When the IRQ is later requested in probe(), the ISR eic7700_pvt_hard_isr()
+will fire immediately. However, since the device is suspended,
+pm_runtime_get_if_active() returns <=3D 0, causing the ISR to return IRQ_NO=
+NE
+without clearing the interrupt.
+
+Because the interrupt is level-triggered (IRQF_TRIGGER_HIGH), would this
+result in a continuous interrupt storm that ultimately forces the kernel
+to permanently disable the IRQ line?
+
+Should the conversion engine be disabled before the interrupt is cleared?
+
+[ ... ]
+> +static void eic7700_pvt_disable_pm_runtime(void *data)
+> +{
+> +	struct pvt_hwmon *pvt =3D data;
+> +
+> +	pm_runtime_dont_use_autosuspend(pvt->dev);
+> +	pm_runtime_force_suspend(pvt->dev);
+> +
+> +	if (!IS_ENABLED(CONFIG_PM))
+> +		clk_disable_unprepare(pvt->clk);
+> +}
+
+[Severity: Medium]
+Does this device cleanup path need a call to pm_runtime_disable()?
+
+In eic7700_pvt_probe(), pm_runtime_enable() is called, which alters the
+PM core's disable_depth count. Since pm_runtime_disable() is missing here,
+if the driver is unbound and later rebound, the next pm_runtime_enable()
+will encounter an unbalanced depth.
+
+Could this trigger an "Unbalanced pm_runtime_enable!" warning and cause
+inconsistent PM state tracking?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604080430.126-=
-1-hehuan1@eswincomputing.com?part=3D1
-
+1-hehuan1@eswincomputing.com?part=3D2
 
