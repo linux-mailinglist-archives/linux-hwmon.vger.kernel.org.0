@@ -1,243 +1,124 @@
-Return-Path: <linux-hwmon+bounces-14727-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14729-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DBG+H/BuImqyXAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14727-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:38:40 +0200
+	id qhXkGfJvImr0XAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14729-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:42:58 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5089764593E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:38:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BB96459B4
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:42:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=WT7HMdhl;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14727-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14727-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=163.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gu3SPRLx;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14729-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14729-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6A3AC304F4DD
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 06:32:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FDC6300F9EE
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 06:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D774409E1C;
-	Fri,  5 Jun 2026 06:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4642E3BB13B;
+	Fri,  5 Jun 2026 06:35:53 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F5C40758F;
-	Fri,  5 Jun 2026 06:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0B29A32D;
+	Fri,  5 Jun 2026 06:35:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641116; cv=none; b=jA900WpbYBTy8O63xc8Scktf0FQIc3fmAnoNCjne57wZAPJ1ue1BtrmBltx9merTuJAyOZs7zhdK8WaMypQtM4nlMpcKW42yujV+CDzCpEaMaNqdbDXQr874VHkj/UstfhDscIjT2MgrhozjMcxqzDajEOJdx1AWhqQ3nG8cDfQ=
+	t=1780641353; cv=none; b=hYdekaTfU8M0VOJ7kdvQClBnuUh4Fy9lG10SW0GNGWDqlqzQGMCrF+o0ZPEIv2kaLPGPOOlpCZdQlZFxbKtGLlL/juIM+0CKcm3C8yRwbn9yvDqF+s1EO7QUVSwicOiRh16/frD/Gk+z+71eNZXqYtoK9omJS8fC5IVI0PjVkbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641116; c=relaxed/simple;
-	bh=wfZixIpM8oc/drRUVburnx4hJviXARDaeGZECaDZ1Wg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kaxiLNdp5w6hfKC70/3A3FrPNex7Sn5tGQroCMvfuibgjrzXFhJvls2a+38l5rNazxXjgoEXaJbYyvchA0/NSA3rbNHp07nbXplYGB4uXhU45519BJjjaOn+iLJsBwmL++pIFJkiEi0ZdJJ7/E8gs1FISHQDbCCZSf5XhsbvsLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WT7HMdhl; arc=none smtp.client-ip=117.135.210.2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Z8
-	Nptqq4wNOfaE1HQs8SON1B5R40ZYajOMIfxodq8oE=; b=WT7HMdhlLmkQJCGlf5
-	CdapN8i2810AkwUAdFkrJ+5QJUd6qiVB8Je+AeLNRn4jMc7VizHoVkKRl1YxKimj
-	nLSpLmSqe+CkX1t4HVyvbWX/6kfQPsTmmXEmt2OnjEkEoYafc9SXuXmEF1x6do6C
-	FyCEkIbnqqzFDgn4NRVMSsHEg=
-Received: from ZM.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnl3AjbSJqJU+5BQ--.9698S5;
-	Fri, 05 Jun 2026 14:31:11 +0800 (CST)
-From: Ziming Zhu <zmzhu0630@163.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Ziming Zhu <ziming.zhu@silergycorp.com>
-Subject: [PATCH v2 3/3] hwmon: Add documentation for SQ24860
-Date: Fri,  5 Jun 2026 14:30:42 +0800
-Message-Id: <20260605063042.91776-4-zmzhu0630@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260605063042.91776-1-zmzhu0630@163.com>
-References: <20260605063042.91776-1-zmzhu0630@163.com>
+	s=arc-20240116; t=1780641353; c=relaxed/simple;
+	bh=vTHGQntvE60LKkMZwzWnzB51M5gDPMSgN5lU7Otczo0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=f183+7svZlx/9YQCBMTxTmx7/isMDY7Dc8qtzKOUIfYy3It848nZni+nfPvStTAUs+KOWZ7opyO4VIEiUvwUHWHUgO4WZ/4ROC2jHqJEL9YS6fgVcCS8PDYLbCIQJzEnRmPjUm5aYckxLn+XMZvHF24pCNyP9Fq9XRiH8wWTClM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gu3SPRLx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECBC1F00893;
+	Fri,  5 Jun 2026 06:35:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780641351;
+	bh=vTHGQntvE60LKkMZwzWnzB51M5gDPMSgN5lU7Otczo0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Gu3SPRLx+KV+5opT4vQLxRsb/6mdbZRSNZyBqe6SEQ+GpppwRQtA1vmjaOi/cHoKe
+	 Wv1mA5KOeda4v452mTG7/BaebwsTRCNSpSKs+OKVfEwenOz+uGz3jbCBYqkQ7nIPNV
+	 FjtZU0LfYkM8Y0hEljZrKeD9X7HBZB9o4+ou/xbcpse1vFc/XXvNZwyVW6mrPoyI0R
+	 iWRJTm6Avzr//TPEfW7uoLkuTux1QSqcO1lwliSHeteo6/cePx4QTKHhXFdIMoyS9y
+	 3vhOZmJsNdcfbTtmQ76HlgqEvs3VzKbo0UZxQxEaTyYE43LsgHKwGpePrtLOpyxYv4
+	 KlHhNfEULNmLA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: hwmon: pmbus: Add bindings for
+ Silergy SQ24860
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ziming Zhu" <zmzhu0630@163.com>
+Cc: robh@kernel.org, conor+dt@kernel.org, linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260605063042.91776-2-zmzhu0630@163.com>
+References: <20260605063042.91776-2-zmzhu0630@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 05 Jun 2026 06:35:51 +0000
+Message-Id: <20260605063551.9ECBC1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnl3AjbSJqJU+5BQ--.9698S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJF1DXry3Kw47urW5KFW8Crg_yoWruw4xpF
-	93GrySkw1UXrW7WFW3tw18Zr45Gay8Ar43AF1kJryrZFn8Ar1vkrnrKr13Ja4DKrn5AFWr
-	KF4UtrWUJw4jkFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZAwsUUUUU=
-X-CM-SenderInfo: x2p2x3aqwtiqqrwthudrp/xtbCwBCKg2oibTDULAAA30
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14727-lists,linux-hwmon=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[zmzhu0630@163.com,linux-hwmon@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-14729-lists,linux-hwmon=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[silergycorp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,smtp.kernel.org:mid];
+	FREEMAIL_TO(0.00)[163.com];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:zmzhu0630@163.com,m:robh@kernel.org,m:conor+dt@kernel.org,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:ziming.zhu@silergycorp.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zmzhu0630@163.com,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,silergycorp.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5089764593E
+X-Rspamd-Queue-Id: D9BB96459B4
 
-From: Ziming Zhu <ziming.zhu@silergycorp.com>
+> From: Ziming Zhu <ziming.zhu@silergycorp.com>
+>=20
+> Add devicetree binding documentation for the Silergy SQ24860 eFuse.
+>=20
+> The device is a PMBus hardware monitoring device which reports voltage,
+> current, power, and temperature telemetry. The board-specific IMON
+> resistor value is described with silergy,rimon-micro-ohms.
+>=20
+> Signed-off-by: Ziming Zhu <ziming.zhu@silergycorp.com>
 
-Document the supported sysfs attributes for the Silergy SQ24860 PMBus
-hwmon driver.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Signed-off-by: Ziming Zhu <ziming.zhu@silergycorp.com>
----
- Documentation/hwmon/index.rst   |  1 +
- Documentation/hwmon/sq24860.rst | 96 +++++++++++++++++++++++++++++++++
- 2 files changed, 97 insertions(+)
- create mode 100644 Documentation/hwmon/sq24860.rst
-
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 8b655e5d6b68..1888905cd234 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -242,6 +242,7 @@ Hardware Monitoring Kernel Drivers
-    smsc47m192
-    smsc47m1
-    sparx5-temp
-+   sq24860
-    spd5118
-    stpddc60
-    surface_fan
-diff --git a/Documentation/hwmon/sq24860.rst b/Documentation/hwmon/sq24860.rst
-new file mode 100644
-index 000000000000..f0182b955d8a
---- /dev/null
-+++ b/Documentation/hwmon/sq24860.rst
-@@ -0,0 +1,96 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver sq24860
-+=====================
-+
-+Supported chips:
-+
-+  * Silergy SQ24860
-+
-+    Prefix: 'sq24860'
-+
-+Author:
-+
-+	Ziming Zhu <ziming.zhu@silergycorp.com>
-+
-+Description
-+------------
-+
-+This driver implements support for the Silergy SQ24860 eFuse. The device is an
-+integrated circuit protection and power management device with a PMBus
-+interface.
-+
-+The device supports direct format for reading input voltage, output voltage,
-+auxiliary voltage, input current, input power, and temperature.
-+
-+The current and power measurement scale depends on the resistor connected
-+between the IMON pin and ground. The resistor value can be configured with the
-+``silergy,rimon-micro-ohms`` device tree property. See
-+``Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml`` for details.
-+
-+Due to the specificities of the chip, all history reset attributes are tied
-+together. Resetting the history of one sensor resets the history of all sensors.
-+
-+Sysfs entries
-+-------------
-+
-+The following attributes are supported. Limits are read-write; all other
-+attributes are read-only.
-+
-+======================= ======================================================
-+in1_label               "vin"
-+in1_input               Measured input voltage.
-+in1_average             Average measured input voltage.
-+in1_min                 Minimum input voltage limit.
-+in1_lcrit               Critical low input voltage limit.
-+in1_max                 Maximum input voltage limit.
-+in1_crit                Critical high input voltage limit.
-+in1_min_alarm           Input voltage low warning alarm.
-+in1_lcrit_alarm         Input voltage low fault alarm.
-+in1_max_alarm           Input voltage high warning alarm.
-+in1_crit_alarm          Input voltage high fault alarm.
-+in1_highest             Historical maximum input voltage.
-+in1_lowest              Historical minimum input voltage.
-+in1_reset_history       Write any value to reset history.
-+
-+in2_label               "vmon"
-+in2_input               Measured auxiliary input voltage.
-+
-+in3_label               "vout1"
-+in3_input               Measured output voltage.
-+in3_average             Average measured output voltage.
-+in3_min                 Minimum output voltage limit.
-+in3_min_alarm           Output voltage low alarm.
-+in3_lowest              Historical minimum output voltage.
-+in3_reset_history       Write any value to reset history.
-+
-+curr1_label             "iin"
-+curr1_input             Measured input current.
-+curr1_average           Average measured input current.
-+curr1_max               Maximum input current warning limit.
-+curr1_crit              Critical input over-current fault limit.
-+curr1_max_alarm         Input current warning alarm.
-+curr1_crit_alarm        Input over-current fault alarm.
-+curr1_highest           Historical maximum input current.
-+curr1_reset_history     Write any value to reset history.
-+
-+power1_label            "pin"
-+power1_input            Measured input power.
-+power1_average          Average measured input power.
-+power1_max              Maximum input power warning limit.
-+power1_alarm            Input power warning alarm.
-+power1_input_highest    Historical maximum input power.
-+power1_reset_history    Write any value to reset history.
-+
-+temp1_input             Measured temperature.
-+temp1_average           Average measured temperature.
-+temp1_max               Maximum temperature warning limit.
-+temp1_crit              Critical temperature fault limit.
-+temp1_max_alarm         Temperature warning alarm.
-+temp1_crit_alarm        Temperature fault alarm.
-+temp1_highest           Historical maximum temperature.
-+temp1_reset_history     Write any value to reset history.
-+
-+samples                 Number of samples used for average values.
-+======================= ======================================================
-+
--- 
-2.25.1
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605063042.9177=
+6-1-zmzhu0630@163.com?part=3D1
 
 
