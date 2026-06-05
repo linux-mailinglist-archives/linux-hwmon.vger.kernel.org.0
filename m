@@ -1,63 +1,62 @@
-Return-Path: <linux-hwmon+bounces-14773-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14774-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0SoqL4YdI2o4iwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14773-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 21:03:34 +0200
+	id MhEhKHYfI2qMjAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14774-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 21:11:50 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3085F64AD1D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 21:03:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A4E64ADB7
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 21:11:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7FOWqla;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14773-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14773-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N1Y63tkA;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14774-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14774-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56F7E3041691
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 19:01:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C6583002B63
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 19:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C282840BCB6;
-	Fri,  5 Jun 2026 19:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA7038C437;
+	Fri,  5 Jun 2026 19:06:39 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691BD409E0A
-	for <linux-hwmon@vger.kernel.org>; Fri,  5 Jun 2026 19:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CD6416D0A
+	for <linux-hwmon@vger.kernel.org>; Fri,  5 Jun 2026 19:06:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780686111; cv=none; b=fJ0r2GzoWsYxdXuuEFd9gi/72GxRbEFYT/+CNgBVoZTmrF0ZBYgxKBkJ1YexdSCiNEda41AS/UzbrTx2T8wTTx4AxnvRC5WYYQAppP5JsOKCrAZGaj3ZyDb//iICoCL+Z7+cNRi0BGHBDZT5zxhBAtFbKn/+x4z9ZF29BYnOcBY=
+	t=1780686398; cv=none; b=hYWyjwXsnnG0NIz3g2s952ma2yYdEj0TnOukmRfAZN+7WZISedvk0E0pviWq/qWhaqlFVI3AG+8bFD92Xu+NHbpj5FKFdZ9wLn2R6OzcrBdlV38yX9B/ZDKJNHNYyAVgx4k3Tc4JAOCHA4fmzk9EgQ79FlUR+ykeAFqqsD5cIMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780686111; c=relaxed/simple;
-	bh=Y/Na9Gmk3Wd/Gt0/0mdbEtIYATx73hliQRw2Wk5XHoU=;
+	s=arc-20240116; t=1780686398; c=relaxed/simple;
+	bh=FZ2t7FP88uVt7Pdit6/BdElRGdhtogP61M4oVv+gN50=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WXz1J6JentASkkBybjLqRN+avKlHLY+qityppVnjK+UvpkBX6W5HYhR7vR0YJB2UjaaZeB5og3GreocmJEZZ0zMF9K4qpejYfxb8IeACfV4WD1b+7xg1+kwNf7/prZDuV6ckjJyzLRjVDISsPWFKWotk4eINkkv1oPtgTrgMVWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e7FOWqla; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0D81F00893;
-	Fri,  5 Jun 2026 19:01:46 +0000 (UTC)
+	 Message-Id; b=BR83OS7EKD4JNRMN5bUEapiQh2wnLY8F7/SHIF9x/tvtXG1T9lkkApXP7M6BSlaZLtEx5Mz9V9PC2KXMpH4OCTt/GQeEjewoo7G3lVKkPDpH08xblngYR0tGZMZRlNd9JTwiUSzSNl7lDxM2LVE0J9dRp48UA19GlNYGguRVGLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1Y63tkA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9F91F00893;
+	Fri,  5 Jun 2026 19:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780686106;
-	bh=MJh9414+mmde2DarDvT5I0be/nOZIxCMpMdxH8OzA88=;
+	s=k20260515; t=1780686397;
+	bh=FZ2t7FP88uVt7Pdit6/BdElRGdhtogP61M4oVv+gN50=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e7FOWqla7vQ8OTZFXatHUEqxkHg3UPVrdTlbGXU46E86JmX2VdWN5IIOqIApWf6K7
-	 lyjBugaE9TKkwN70EdMhBYzXUzbqm3RsEnkpCK7kwRxPzIxueiLR6lY6pIyKs+ZvRN
-	 t9At9HnMyscjlxhUtlhwG9HqE33rGfqK3OtZDSnvyQ8/rIHOUn/UIANoYgVybhnHjd
-	 8MreX6QfAB7xoXMTeqMMtWoNosB4SI7A+fiKM5+QlSIpkeZIELPXdm3RinwhB5QXrt
-	 0mp/M1QTMFiUe74zd6fpcmwgllvEx0pK/Lw0sIewwyr+irtx+VjAkN5gGC1TWjfgo5
-	 pWIJmEaMh6BJA==
+	b=N1Y63tkAnMxmiVvEHBRUmjeF1btatrDt02gROUiAGPG5ffhVmv7le8PZ187odbqnL
+	 SMG0lTIrOk9kjp+DkH4qcNuiNK3DOFCnEhd2bUSRzOSUqKA4+ebUpI4yEvKBndHp1T
+	 xI+hCIuUF37LJlvr7KgqP9RKrle+ZJG7uVGxzRqQwjszwc53NOyqU0hzWICuWEOhYX
+	 +pywg/jWD+5TXrLPyWzwuiqIxpKpjGjKMqI00LEsUXav1J6ADSobHXAYBHQBuStl/b
+	 Dsbh/4AQiBN7CWmVe7/F1JFmDFenXTE69liKrgSsI/WGe+eLfvcmA1541ovxipgc7K
+	 WaDtLN9HAZ5kg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/9] platform/x86: dell-ddv: Use new buffer-based WMI
- API
+Subject: Re: [PATCH v4 6/9] hwmon: (dell-smm) Use new buffer-based WMI API
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Armin Wolf" <W_Armin@gmx.de>
 Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260605181433.188847-6-W_Armin@gmx.de>
-References: <20260605181433.188847-6-W_Armin@gmx.de>
+In-Reply-To: <20260605181433.188847-7-W_Armin@gmx.de>
+References: <20260605181433.188847-7-W_Armin@gmx.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 19:01:46 +0000
-Message-Id: <20260605190146.9A0D81F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 19:06:36 +0000
+Message-Id: <20260605190637.4D9F91F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -69,14 +68,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS(0.00)[m:W_Armin@gmx.de,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14773-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14774-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
@@ -97,148 +96,25 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto,gmx.de:email,sashiko.dev:url,smtp.kernel.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,output.data:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,smtp.kernel.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url,vger.kernel.org:from_smtp,lists.linux.dev:replyto,roeck-us.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3085F64AD1D
+X-Rspamd-Queue-Id: E7A4E64ADB7
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] WMI query wrapper functions crash when the underlying ACPI method =
-returns no data (ZERO_SIZE_PTR dereference).
---
+> Use the new buffer-based WMI API to also support ACPI firmware
+> implementations that do not use ACPI buffers for returning the
+> results of a SMM call.
+>=20
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 
-commit 9a4b15969c05e28f24a154f47da550f56ba01716
-Author: Armin Wolf <W_Armin@gmx.de>
-
-platform/x86: dell-ddv: Use new buffer-based WMI API
-   =20
-Use the new buffer-based WMI API to also support ACPI firmware
-implementations that do not use ACPI intergers/strings/packages
-for exchanging data.
-
-> diff --git a/drivers/platform/x86/dell/dell-wmi-ddv.c b/drivers/platform/=
-x86/dell/dell-wmi-ddv.c
-> index 62e3d060f0385..c2120d8ae2988 100644
-> --- a/drivers/platform/x86/dell/dell-wmi-ddv.c
-> +++ b/drivers/platform/x86/dell/dell-wmi-ddv.c
-[ ... ]
-> @@ -158,105 +164,96 @@ static const char * const fan_dock_labels[] =3D {
-[ ... ]
->  static int dell_wmi_ddv_query_integer(struct wmi_device *wdev, enum dell=
-_ddv_method method,
->  				      u32 arg, u32 *res)
->  {
-> -	union acpi_object *obj;
-> +	__le32 *argr __free(kfree) =3D NULL;
-> +	struct wmi_buffer output;
->  	int ret;
-> =20
-> -	ret =3D dell_wmi_ddv_query_type(wdev, method, arg, &obj, ACPI_TYPE_INTE=
-GER);
-> +	ret =3D dell_wmi_ddv_query(wdev, method, arg, &output, sizeof(*argr));
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	if (obj->integer.value <=3D U32_MAX)
-> -		*res =3D (u32)obj->integer.value;
-> -	else
-> -		ret =3D -ERANGE;
-> -
-> -	kfree(obj);
-> +	argr =3D output.data;
-> +	*res =3D le32_to_cpu(*argr);
-
-[Severity: High]
-Can this result in a ZERO_SIZE_PTR dereference?
-
-If wmidev_invoke_method() evaluates the ACPI method successfully but it
-returns no object, it returns 0 (success) and sets output.data to
-ZERO_SIZE_PTR. Since this function only checks if ret < 0, does this
-unconditionally dereference ZERO_SIZE_PTR if the firmware returns no data?
-
-> =20
-> -	return ret;
-> +	return 0;
->  }
-> =20
->  static int dell_wmi_ddv_query_buffer(struct wmi_device *wdev, enum dell_=
-ddv_method method,
-> -				     u32 arg, union acpi_object **result)
-> +				     u32 arg, struct dell_wmi_buffer **result)
->  {
-> -	union acpi_object *obj;
-> -	u64 buffer_size;
-> +	struct dell_wmi_buffer *buffer;
-> +	struct wmi_buffer output;
-> +	size_t buffer_size;
->  	int ret;
-> =20
-> -	ret =3D dell_wmi_ddv_query_type(wdev, method, arg, &obj, ACPI_TYPE_PACK=
-AGE);
-> +	ret =3D dell_wmi_ddv_query(wdev, method, arg, &output, sizeof(*buffer));
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	if (obj->package.count !=3D 2 ||
-> -	    obj->package.elements[0].type !=3D ACPI_TYPE_INTEGER ||
-> -	    obj->package.elements[1].type !=3D ACPI_TYPE_BUFFER) {
-> -		ret =3D -ENOMSG;
-> -
-> -		goto err_free;
-> -	}
-> -
-> -	buffer_size =3D obj->package.elements[0].integer.value;
-> -
-> -	if (!buffer_size) {
-> +	buffer =3D output.data;
-> +	if (!le32_to_cpu(buffer->raw_size)) {
-
-[Severity: High]
-Similarly, does this dereference buffer->raw_size when buffer is ZERO_SIZE_=
-PTR
-if the underlying ACPI method returns no data?
-
-[ ... ]
-> -static int dell_wmi_ddv_query_string(struct wmi_device *wdev, enum dell_=
-ddv_method method,
-> -				     u32 arg, union acpi_object **result)
-> +static ssize_t dell_wmi_ddv_query_string(struct wmi_device *wdev, enum d=
-ell_ddv_method method,
-> +					 u32 arg, char *buf, size_t length)
->  {
-> -	return dell_wmi_ddv_query_type(wdev, method, arg, result, ACPI_TYPE_STR=
-ING);
-> +	struct wmi_string *str __free(kfree) =3D NULL;
-> +	struct wmi_buffer output;
-> +	size_t str_size;
-> +	int ret;
-> +
-> +	ret =3D dell_wmi_ddv_query(wdev, method, arg, &output, sizeof(*str));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	str =3D output.data;
-> +	str_size =3D sizeof(*str) + le16_to_cpu(str->length);
-
-[Severity: High]
-Could str->length crash here for the same reason, if wmidev_invoke_method()
-returns 0 but sets output.data to ZERO_SIZE_PTR?
-
-> +	if (str_size > output.length) {
-> +		dev_warn(&wdev->dev,
-> +			 FW_WARN "WMI string size (%zu) exceeds WMI buffer size (%zu)\n",
-> +			 str_size, output.length);
-> +		return -EMSGSIZE;
-> +	}
-> +
-> +	return wmi_string_to_utf8s(str, buf, length);
->  }
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605181433.1888=
-47-1-W_Armin@gmx.de?part=3D5
+47-1-W_Armin@gmx.de?part=3D6
+
 
