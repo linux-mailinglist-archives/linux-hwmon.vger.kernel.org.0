@@ -1,69 +1,69 @@
-Return-Path: <linux-hwmon+bounces-14737-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14738-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZKkzEC+BImq8ZAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14737-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 09:56:31 +0200
+	id YerfNtqMImo2aAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14738-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 10:46:18 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8CB646308
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 09:56:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B673646884
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 10:46:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Isn1we0g;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14737-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14737-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNwgOdSd;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14738-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14738-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A8613023068
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 07:55:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D5EFF3013866
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 08:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B010B47F2F4;
-	Fri,  5 Jun 2026 07:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F2E494A00;
+	Fri,  5 Jun 2026 08:46:09 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B5B47F2E6;
-	Fri,  5 Jun 2026 07:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38573CD8CA;
+	Fri,  5 Jun 2026 08:46:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780646122; cv=none; b=syblQpx2wWN/gxx1ZbJIh093XaiDObd23nYPHm7HLWG9PbXFnaL3sdIQHMCqqK/CeT1D3FB9CfENyyYEbf9IKQdgMe+x9MspKw6Ol5xF4cYXIQQxurBSS+T3zeE05FoHC2Ded5jfgXK8zBu2wCicQzglM4/L/jU0tSfpBr+q+jo=
+	t=1780649169; cv=none; b=jCnWpLxge1D658PnFEPk4CIw514Mvlxx5VKIhdGU/YKIzQuIcXH3cXckWlnsmLEc5DWhPrxQo1sihsVSK/sRgmy4gNJlTzECCepXxWq7iPV69zabEZLWmHxVGzcUHomZ3rYWi3gfyw9YCi2jsm395Jtj8/vvgyTYCzYgkbvlArs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780646122; c=relaxed/simple;
-	bh=Emdj2NbzQAV88c/PCgYv2F//weGqzDG7T6rtjX9DTUA=;
+	s=arc-20240116; t=1780649169; c=relaxed/simple;
+	bh=Y/Yn5a+st7jcNKLOamu7hkvlg/hwC0dcEladNw/0TeM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vqkd4v2eNkxawl57kGnxMcg1vB0SdTg2J4g2MqRqvE6KJN4+Kw+ZmIC94aG1R7UCO29POtvZJknp4sU947vBLQg+brlh+84sI2pVKnk7a9weFBdPrNBq1EUk2HXf1m5sor7LS3hBDv1adM5sg+TUlJMEFwYSirdgi7yF5v3zbU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Isn1we0g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928EF1F00893;
-	Fri,  5 Jun 2026 07:55:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sciaKSg5vieONOcBcbGz+/KN8rd+zehVSZZlGbVwuCdFXnmxJfMWDuUOVvZ82Ix8mhf4E7RqlE7x5NGpkgFupR89fYBP/hUfGE+hF7L4nMsiWi5RWjBeJHglij7YeQIocquKjRUmKDXWoMiX5Jz7qdHHY5AhvM/WgKPp3pI2fEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNwgOdSd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488A01F00898;
+	Fri,  5 Jun 2026 08:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780646121;
-	bh=SufUsgIiggL6e/QIsAbNMiTlzAF35c8U1qsO70/sUus=;
+	s=k20260515; t=1780649167;
+	bh=cfYjhL+ONZtAyMzZiKF/rHsqkuzOareTCLYQL96UjO0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Isn1we0gRQ0IA56VJ975zayTIgZQq5Q/UX1+bWoFxBuH8QH8uUAvYT7WJHJxt0eeh
-	 UmKSH62XntqctekH4GQbNsJ0cLWeZ1uP1Frds27G+a3hAp7j7wHBtrj6sf5hk+QktT
-	 HvDNRxnDTy4bc6kbfrSXAUcAX6eTh5/5RHE9eYWbWtS00fPcJ4XvyWQFdZYmkbjxz7
-	 GWi4xv+XiYvkO6Ub7+rvh2BRxDZeyO2ydUWM59QsMimuaGXDMvUonpLhMF6CS3Sgzh
-	 sGst1S+VgDdfXYtCAwLW+VplkI6zq2QaVk4r4ijJQq8dxm8/5jFvULNUDDy8qxPszQ
-	 fcFSWBqio6j9g==
-Date: Fri, 5 Jun 2026 08:55:16 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Adam Young <admiyo@os.amperecomputing.com>
-Cc: Jassi Brar <jassisinghbrar@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saket Dumbre <saket.dumbre@intel.com>, Len Brown <lenb@kernel.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
+	b=hNwgOdSdPkbbMmFUGIMDQ9okUGHjSGLtIF+NCJXnaOG/rkeJW2og+h0EZEzVV+sQJ
+	 a6yJmSMspbgJxRMlhynFDhezZD6dQTaaQChT9//1N/GwfTgy9kWn4q7pumMJ2OgDcJ
+	 Bfa1Ye+PWX0zpyf0sa+3pqfSM0BD2VzqVBhz9Cf9Pk+9sh7ZLpNfQZwl91Grl15i6k
+	 94lZ1bg3AlvwrFG5NMG+qGlXzX0WrxJ0/VWfWy75iixadH09qNC31eszWtrfJMbDEW
+	 UI8EoLfLz7hr1eS78bCH+GOtS6H8w5BcPL4au9QtK0XQWBVm/oj08IGJ4EqxsmHj+p
+	 cksUom8VtuDCA==
+Date: Fri, 5 Jun 2026 10:46:02 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Juergen Gross <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-hwmon@vger.kernel.org, linux-pm@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Guenter Roeck <linux@roeck-us.net>,
-	Huisong Li <lihuisong@huawei.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v01] mailbox/pcc.c:  add query channel function
-Message-ID: <20260605-undetectable-polecat-of-wonder-f817c0@sudeepholla>
-References: <20260604203749.168752-1-admiyo@os.amperecomputing.com>
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>
+Subject: Re: [PATCH 5/8] x86/msr: Switch rdmsr_safe_on_cpu() to return a
+ 64-bit quantity
+Message-ID: <aiKMytZNGHj0epSn@gmail.com>
+References: <20260605070826.2995913-1-jgross@suse.com>
+ <20260605070826.2995913-6-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -72,57 +72,55 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604203749.168752-1-admiyo@os.amperecomputing.com>
+In-Reply-To: <20260605070826.2995913-6-jgross@suse.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14737-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:admiyo@os.amperecomputing.com,m:jassisinghbrar@gmail.com,m:rafael@kernel.org,m:saket.dumbre@intel.com,m:lenb@kernel.org,m:sudeep.holla@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:andi.shyti@kernel.org,m:linux@roeck-us.net,m:lihuisong@huawei.com,m:myungjoo.ham@samsung.com,m:kyungmin.park@samsung.com,m:cw00.choi@samsung.com,m:linux-arm-kernel@lists.infradead.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jgross@suse.com,m:linux-kernel@vger.kernel.org,m:x86@kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-pm@vger.kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:linux@roeck-us.net,m:rafael@kernel.org,m:daniel.lezcano@kernel.org,m:rui.zhang@intel.com,m:lukasz.luba@arm.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[mingo@kernel.org,linux-hwmon@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER(0.00)[sudeep.holla@kernel.org,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-14738-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,intel.com,vger.kernel.org,roeck-us.net,huawei.com,samsung.com,lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mingo@kernel.org,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sudeepholla:mid]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C8CB646308
+X-Rspamd-Queue-Id: 7B673646884
 
-On Thu, Jun 04, 2026 at 04:37:48PM -0400, Adam Young wrote:
-> Drivers need information about a channel prior to creating a channel
-> or they risk triggering message delivery on the remote side of a
-> connection.
-> 
-> One of those pieces of infomration is the type of channel.
-> 
-> Add PCC channel type to records and expose PCC channel type to client.
-> 
 
-Please point me to the user of this interface.
+* Juergen Gross <jgross@suse.com> wrote:
 
--- 
-Regards,
-Sudeep
+> In order to prepare retiring rdmsrq_safe_on_cpu() switch
+> rdmsr_safe_on_cpu() to have the same interface as rdmsrq_safe_on_cpu().
+
+Patch #1.
+
+> Switch all rdmsr_safe_on_cpu() callers to use the new interface.
+
+Patch #2.
+
+Thanks,
+
+	Ingo
 
