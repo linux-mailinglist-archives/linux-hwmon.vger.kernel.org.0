@@ -1,63 +1,63 @@
-Return-Path: <linux-hwmon+bounces-14769-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14770-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JlkoJLMUI2pjhwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14769-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 20:25:55 +0200
+	id U14jN/gaI2o3igEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14770-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 20:52:40 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360E264A97A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 20:25:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFE264AC16
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 20:52:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZNdbNh9j;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14769-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14769-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0cHwRPc;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14770-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14770-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9FB283007B83
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 18:25:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 008EC30437A6
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 18:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D283A7F4B;
-	Fri,  5 Jun 2026 18:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7AD3F9A01;
+	Fri,  5 Jun 2026 18:35:52 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877BE3A718C
-	for <linux-hwmon@vger.kernel.org>; Fri,  5 Jun 2026 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9013E5A05
+	for <linux-hwmon@vger.kernel.org>; Fri,  5 Jun 2026 18:35:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780683951; cv=none; b=j++7d59iT9PXs9g/frskkSGPjEmws2nTx0w6yUL5AICjgm6R5h91ngew64Td9E0yRb7TKRwuWU8BXkIUUntv+iYXQGdf7c2Fd81msPTQJsTxW6PSAJKtcAe31zZz5oKYu+HZu3KIxpi91rzNhgaOCwmYBkJc/+K1UjTX3Xntnlg=
+	t=1780684552; cv=none; b=Dd9IBGEbUbHuQhhmGcFWANfYyNJ3xiTzj+rLKvfUPZgDFfAsWnINBkXLkGHeVyHNZsEtbUCKTZaT3PGSwgpfY6y8Ie1tPJR7nPud5/NKKaw95wZSclU2LdAEz6WkUpI1u9Eg9lMJWrOXMYGnpLk54BnqCCiUBL4Hub3BC3arGp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780683951; c=relaxed/simple;
-	bh=BxFQJWsdGYdvEmrwchPa1bO5nqItJA79+oD0IucYtHw=;
+	s=arc-20240116; t=1780684552; c=relaxed/simple;
+	bh=Z8N8+qI6qmQTPcUF9aBx2iIv9DMBwZS+synKbvASKGU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uBFFyQGMjeoohjNHaPbXCgAvfT8sOltsKESjvXDA1bZYNdinWGIbx6m14f5x5TdN3sE40J2EEbZRiZVV6WCsdIFr96muRwn1hFtND4N3UbSloFVgwgUvkvdqSDWv9GIwrfFi5LGxBiTXkxgdYuVkYFh/OBQFZIrcqWjfprhAQIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNdbNh9j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063021F00893;
-	Fri,  5 Jun 2026 18:25:48 +0000 (UTC)
+	 Message-Id; b=iK/8TnXgtAVz5/TADlqkqCmIC8zO9vStwH+zpplS+G/Ii6V/SeovN0WfMotuSQzw7Wxq5MoaaG370hebARS7KywqYQz5CIkz6rsyZ7arNniKwFL6wmqOaRCTfAuE+NPOYqNVTs6PqPB7+K6zKqe3+QQB+Agddvs1oSGSqr9YX4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0cHwRPc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B281F0089A;
+	Fri,  5 Jun 2026 18:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780683949;
-	bh=J8LDzZXIJS38UgOzacmHhy+es6UjK8vEsLVVz9vnVFE=;
+	s=k20260515; t=1780684551;
+	bh=Wz47JaDH0EAW1F7s219HNBoZ/teMbxIC80pQzfQrdgw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZNdbNh9jRQTXjSCywVZVu7XAmAhPa+WbfnqNAMUK3RjaSeeSK/F/L0T5AuRlYGEcw
-	 W/QZfCunbNcauCSPUZqJjgRxI/nx8GKzC0Cj6TyzIKmNW4ycmvOYMFk2ywiohZivc3
-	 WB5TaQxvU/4fL9RpogpRrrkA03IY54izyaM58/UZ5cekTZNVXkTEGVeXCFpnSQKVEK
-	 s95xvWwD5OCD3iJG2WL73Mw8Lo8agdo8xq/Ayq/OQ00CIuEpcXTX+Rxrse8uqcQUZj
-	 v+ynFOqSaX4pRBLNDIQjNsTlJ1yu0tR1c4WBeR40T+/YUi23nxljAtEydXP6Qx/p8s
-	 C6C01xZU9LjiQ==
+	b=k0cHwRPcCizJRbdgFTbUN10X8i+tj8IJzgHrb9P3AVZlk2w6bVwV5QwVdPRh++UlX
+	 FlTDBKX+n/5SoXkeECCbrB+FtJ1t2x6IIW/+4X/6xuN3L7M3PCgvUaHCzLwom4Zvmz
+	 0jbzkhmdFQa9d5NLBNuTR3E/VXB5qvrmdP+PQfHnFblDVxcGLcmipg8IgzXAl9Gi8f
+	 gTi0k6+c7yKRIAZeGQsdwSyamIMeqTnUR1UFLh+jJktpPnzq/J0BjPOOeGw2jfZooy
+	 gGW4k6k5sbo498r1M4wSfXCePJLoedzmFuYfY7tFZl0UZPwuj5X69qInikmLmxU1Ln
+	 TfAg7kdb2NNTQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/9] platform/x86: dell-descriptor: Use new
- buffer-based WMI API
+Subject: Re: [PATCH v4 2/9] platform/x86: dell-privacy: Use new buffer-based
+ WMI API
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Armin Wolf" <W_Armin@gmx.de>
 Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260605181433.188847-2-W_Armin@gmx.de>
-References: <20260605181433.188847-2-W_Armin@gmx.de>
+In-Reply-To: <20260605181433.188847-3-W_Armin@gmx.de>
+References: <20260605181433.188847-3-W_Armin@gmx.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 18:25:48 +0000
-Message-Id: <20260605182549.063021F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 18:35:50 +0000
+Message-Id: <20260605183551.01B281F0089A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -69,14 +69,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS(0.00)[m:W_Armin@gmx.de,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14769-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14770-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
@@ -97,91 +97,69 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto,gmx.de:email,sashiko.dev:url,smtp.kernel.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url,smtp.kernel.org:mid,lists.linux.dev:replyto,gmx.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 360E264A97A
+X-Rspamd-Queue-Id: DCFE264AC16
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Incorrect sizeof argument used in strncmp for object_signature vali=
-dation.
-- [Low] The interface version validation implicitly accepts version 2 witho=
-ut documentation.
+
+Pre-existing issues:
+- [High] Accessing `priv->features_present` outside of `list_mutex` allows =
+a use-after-free if the WMI device is concurrently unbound.
 --
 
-commit 5b70a5d7de7afeabc7feebda00fbadd39ea87afa
+commit a3ad83ddca7fe7cc3bab34b78212f157c5a62096
 Author: Armin Wolf <W_Armin@gmx.de>
 
-platform/x86: dell-descriptor: Use new buffer-based WMI API
+platform/x86: dell-privacy: Use new buffer-based WMI API
 
-This commit updates the dell-descriptor driver to use the new buffer-based
-WMI API. This allows supporting ACPI firmware implementations that do not
-use ACPI buffers for the descriptor.
+This commit updates the dell-privacy driver to use the new buffer-based
+WMI API. This allows it to support ACPI firmware implementations that do
+not use ACPI buffers for the device state.
 
-> diff --git a/drivers/platform/x86/dell/dell-wmi-descriptor.c b/drivers/pl=
-atform/x86/dell/dell-wmi-descriptor.c
-> index c2a1802027190..d1e751d430210 100644
-> --- a/drivers/platform/x86/dell/dell-wmi-descriptor.c
-> +++ b/drivers/platform/x86/dell/dell-wmi-descriptor.c
-
-[ ... ]
-
-> @@ -88,77 +108,47 @@ bool dell_wmi_get_hotfix(u32 *hotfix)
+> diff --git a/drivers/platform/x86/dell/dell-wmi-privacy.c b/drivers/platf=
+orm/x86/dell/dell-wmi-privacy.c
+> index ed099a431ea4d..7bc1bae3a196f 100644
+> --- a/drivers/platform/x86/dell/dell-wmi-privacy.c
+> +++ b/drivers/platform/x86/dell/dell-wmi-privacy.c
 
 [ ... ]
 
-> -	if (strncmp(obj->string.pointer, "DELL WMI", 8) !=3D 0) {
-> -		dev_err(&wdev->dev, "Dell descriptor buffer has invalid signature (%8p=
-h)\n",
-> -			buffer);
-> -		ret =3D -EINVAL;
-> -		descriptor_valid =3D ret;
-> -		goto out;
-> +	if (strncmp(desc->object_signature, " WMI", sizeof(desc->vendor_signatu=
-re))) {
+While reviewing this file, I noticed a pre-existing issue in
+dell_privacy_has_mic_mute().
 
-[Severity: Low]
-Is this using the correct size field? The strncmp compares object_signature
-but passes sizeof(desc->vendor_signature) instead of
-sizeof(desc->object_signature). While functionally benign right now since
-both fields are exactly 4 bytes long, this looks like a copy-paste error
-that could be fragile if the structure ever changes.
+drivers/platform/x86/dell/dell-wmi-privacy.c:dell_privacy_has_mic_mute() {
+    ...
+	mutex_lock(&list_mutex);
+	priv =3D list_first_entry_or_null(&wmi_list,
+			struct privacy_wmi_data,
+			list);
+	mutex_unlock(&list_mutex);
 
-> +		dev_err(&wdev->dev, "Dell descriptor buffer has invalid object signatu=
-re (%4ph)\n",
-> +			desc->object_signature);
-> +		descriptor_valid =3D -ENOMSG;
-> +		return -ENOMSG;
->  	}
->  	descriptor_valid =3D 0;
-> =20
-> -	if (buffer[2] !=3D 0 && buffer[2] !=3D 1)
-> -		dev_warn(&wdev->dev, "Dell descriptor buffer has unknown version (%lu)=
-\n",
-> -			(unsigned long) buffer[2]);
-> -
-> -	priv =3D devm_kzalloc(&wdev->dev, sizeof(struct descriptor_priv),
-> -	GFP_KERNEL);
-> +	if (le32_to_cpu(desc->interface_version) > 2)
+	return priv && (priv->features_present & BIT(DELL_PRIVACY_TYPE_AUDIO));
+}
 
-[Severity: Low]
-Does this code intentionally change the supported version checks?
-The previous code explicitly checked if the version was not 0 and not 1,
-and warned otherwise. This new check implicitly accepts version 2 as a
-valid, known version without warning.
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+could accessing priv->features_present outside of list_mutex allow a
+use-after-free?
 
-Since the commit message doesn't mention adding support for a new interface
-version, should this > 2 check be > 1 instead?
+If the dell-privacy WMI device is concurrently unbound,
+dell_privacy_wmi_remove() will acquire list_mutex, remove priv from the
+list, and unlock it.
 
-> +		dev_warn(&wdev->dev, "Dell descriptor buffer has unknown version (%u)\=
-n",
-> +			 le32_to_cpu(desc->interface_version));
+After remove() returns, the device management framework automatically
+frees the priv memory since it was allocated with devm_kzalloc().
+
+If dell_privacy_has_mic_mute() unlocks the mutex and is preempted before
+returning, would it dereference the priv pointer after it has been freed?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605181433.1888=
-47-1-W_Armin@gmx.de?part=3D1
+47-1-W_Armin@gmx.de?part=3D2
 
