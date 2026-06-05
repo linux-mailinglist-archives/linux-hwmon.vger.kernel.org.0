@@ -1,232 +1,146 @@
-Return-Path: <linux-hwmon+bounces-14715-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id irz0EDTlIWpGQQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14715-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 22:51:00 +0200
+	id 0V9aBxwvImpaTgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:06:20 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95781643795
-	for <lists+linux-hwmon@lfdr.de>; Thu, 04 Jun 2026 22:50:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8273264497A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:06:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GuHlBbt+;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14715-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14715-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=163.com header.s=s110527 header.b=IzKN0iKy;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 914983014C10
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Jun 2026 20:49:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A90A3039C73
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 02:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233D83803F8;
-	Thu,  4 Jun 2026 20:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C993E00BC;
+	Fri,  5 Jun 2026 02:05:56 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085C12571B8
-	for <linux-hwmon@vger.kernel.org>; Thu,  4 Jun 2026 20:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA2737DEAF;
+	Fri,  5 Jun 2026 02:05:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780606169; cv=none; b=kQAtW5ezvXqQ3ftXwkzUStHYdcjNpBEcMJ8+iEVf/fpPmuZnGL2iVDTINhndn02V+QmZhDgPSyWZVEbwwc+24jGXROttLbx1WWkisR8hq4E4eGNp7SQVa6QBbJMlRH9i4aUQDd9o+01yCo+55hsl9NR2yiuPl4ZO9i2cVP0P524=
+	t=1780625155; cv=none; b=Jl9fGFmdOYZSFkjuqlu3c+6XU0h9f1dAacoBWQVNrnhYFMy6O66FEG84bVqCxdxYPYJT48xcqg0Ziec8QNl/7Wfh82IWXfCOTRkZSlidbdtvvgmwzoSsyFBMlINLzIkZ/PzpTfE3NgYh2vCvglQqpY+rWrOAkPcgRab3eDd4g1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780606169; c=relaxed/simple;
-	bh=Z6caB6rSyLIxpIMdxR5ouNsEiirAcpwTRwWKzuR5rPQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nlaVOil//4U/mgKpZK7vOGLZ4r/gSV7XO5WiZkpAwMq1MX/rc7Ji6Ls6rfy1uCfaHDPDDthr4ilC0Qk8wQd8zSzwksazMj7F5XvvURpW7qSHwe9z4Sr7VSlYxqQ1WayyXdmjPMc4A0WeSEL7NYZQVLJoLT5mShW1RPn0clLeqNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuHlBbt+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70841F00893;
-	Thu,  4 Jun 2026 20:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780606167;
-	bh=2Ip/TxAiYex3bIu6FRgtpdPAJli13jkZBsE4Cxg55/c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GuHlBbt+Xhe02g8eiSX0T7IxTar1IvmI8tubT7fQe2N0od/yM1a1B4xYEsSp8IRMt
-	 3ME9u02n7sxlHgE+R+CM1jYpz/LPxik8Gh+M3Owy7PLjqu+Aj5k8Lf6kVAJD2QjcgA
-	 KF1gZUy2xGtjUB3ahSXhWFBSTO5AJPEoo03Xv3QN7K3Zb8zUqMIJpz5eAkt/QQwmVv
-	 StA1aDOHCuM+oSjJ/D4lFmS/HnwWrJTWVVXzPv7vb3mv0uxPD591+WK1xyFHgl7LZy
-	 3MrN9+VT34DCWLrzVs4GmF1nPSEaQKVjEZ9//CzrEV44/O2lD02B9gH+etbp7f5Fdx
-	 faHpR6SFKULJQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v01] mailbox/pcc.c:  add query channel function
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Adam Young" <admiyo@os.amperecomputing.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260604203749.168752-1-admiyo@os.amperecomputing.com>
-References: <20260604203749.168752-1-admiyo@os.amperecomputing.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 20:49:27 +0000
-Message-Id: <20260604204927.C70841F00893@smtp.kernel.org>
+	s=arc-20240116; t=1780625155; c=relaxed/simple;
+	bh=jWMv/OVg0XBOoo5m2/ElvfSL0l48pCnTg9x0hzAzgaE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UbzDrKoue9vuXhxivarxpTCZv9aVwfgGCnJUiB+YT92L/naPkdxd4E02U0qRyQGCtD+aoxtReTT6JDH4LelNY0aAtcxxditmPAOu0GOT1XEYEXyjC/xuuni5OC6iPFO1LdQGLKfAHKFHfatGESeOrwL0pQIpBn0kV4YG+OTulJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IzKN0iKy; arc=none smtp.client-ip=220.197.31.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=93
+	j7WYO5scoCiDafPFE27aT4pcg41KjcRlyGVBbLkYU=; b=IzKN0iKyJfsU7z/6Wa
+	ap5hLO3gnjkaoEQIjXUiBgAHUsspCxJzAHLqXVSD2BYfBiQhdEptdhNuxOalbRMm
+	GOwYIGuZNliFJGk0+6i///JUksdQjw5AL+vaV+f8A6u9uu4hAvhe+5iq0ocpPzNi
+	aOFdF+YAQ5x10zZ+ZzH1nCgaA=
+Received: from ZM.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wAXVW_FLiJq4ffOBQ--.62174S2;
+	Fri, 05 Jun 2026 10:05:00 +0800 (CST)
+From: Ziming Zhu <zmzhu0630@163.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Ziming Zhu <ziming.zhu@silergycorp.com>
+Subject: [PATCH 0/3] *** Add support for Silergy SQ24860 ***
+Date: Fri,  5 Jun 2026 10:04:47 +0800
+Message-Id: <20260605020450.89638-1-zmzhu0630@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXVW_FLiJq4ffOBQ--.62174S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrZrW5AFWUJw17XFy7JF1rCrg_yoW8Jryxpa
+	ykZrZIkw1DJr17X393tF18WF90yry8Xa1YkF9rKw1S9Fn5ZF929ry3Krn0yw1DAr4fGFy7
+	Zr93Kr4v9w17ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UHmh7UUUUU=
+X-CM-SenderInfo: x2p2x3aqwtiqqrwthudrp/xtbCvwzh2moiLsy6kwAA3L
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14715-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:admiyo@os.amperecomputing.com,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14716-lists,linux-hwmon=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[zmzhu0630@163.com,linux-hwmon@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:ziming.zhu@silergycorp.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ALIAS_RESOLVED(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zmzhu0630@163.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amperecomputing.com:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.linux.dev:replyto,vger.kernel.org:from_smtp,sashiko.dev:url]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,silergycorp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 95781643795
+X-Rspamd-Queue-Id: 8273264497A
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+From: Ziming Zhu <ziming.zhu@silergycorp.com>
 
-New issues:
-- [Medium] Uninitialized `mchan` field in the user-provided output structur=
-e.
-- [Low] Dead code in `IS_ERR(chan)` check provides a false sense of securit=
-y.
-- [Low] Commented-out `#include` directives left in a public header file.
+Add support for the Silergy SQ24860 eFuse.
 
-Pre-existing issues:
-- [High] Use-After-Free (UAF) vulnerabilities due to missing driver teardow=
-n on unbind.
---
+SQ24860 is a PMBus device that reports input voltage, output voltage,
+auxiliary voltage, input current, input power, and temperature
+telemetry.
+It also supports average and peak history reporting.
 
-commit a70542fb899e92a284eaf8ce05841d6088a0dece
-Author: Adam Young <admiyo@os.amperecomputing.com>
+The series adds the devicetree binding, PMBus hwmon driver, and hwmon
+documentation.
 
-mailbox/pcc.c: add query channel function
+Tested on a board with SQ24860 at I2C address 0x40. Verified voltage,
+current, power, temperature, samples, and history reset hwmon
+attributes.
 
-This commit adds a new function to allow drivers to query PCC channel
-information before creating a channel. It also exposes the PCC channel type
-to the client by adding it to the channel records.
+Ziming Zhu (3):
+  dt-bindings: hwmon: pmbus: Add bindings for Silergy SQ24860
+  hwmon: pmbus: Add support for Silergy SQ24860
+  hwmon: Add documentation for SQ24860
 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 636879ae1db76..30577c6beefaa 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-[ ... ]
-> +int
-> +pcc_mbox_query_channel(struct pcc_mbox_chan *q_chan, int subspace_id)
-> +{
-> +	struct pcc_mbox_chan *pcc_mchan;
-> +	struct pcc_chan_info *pchan;
-> +	struct mbox_chan *chan;
-> +
-> +	if (subspace_id < 0 || subspace_id >=3D pcc_chan_count)
-> +		return -ENOENT;
-> +	pchan =3D chan_info + subspace_id;
-> +	chan =3D pchan->chan.mchan;
-> +	if (IS_ERR(chan)) {
+ .../bindings/hwmon/pmbus/silergy,sq24860.yaml |  74 +++
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/sq24860.rst               |  96 ++++
+ drivers/hwmon/pmbus/Kconfig                   |  19 +
+ drivers/hwmon/pmbus/Makefile                  |   1 +
+ drivers/hwmon/pmbus/sq24860.c                 | 423 ++++++++++++++++++
+ 6 files changed, 614 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml
+ create mode 100644 Documentation/hwmon/sq24860.rst
+ create mode 100644 drivers/hwmon/pmbus/sq24860.c
 
-[Severity: Low]
-Is this check effective? Since chan is initialized in pcc_mbox_probe() as t=
-he
-address of an element within a devm_kcalloc allocated array
-(&pcc_mbox_channels[i]), it seems it can never be an ERR_PTR. Also, IS_ERR()
-would evaluate to false for a NULL pointer.
+-- 
+2.25.1
 
-> +		pr_err("Channel not found for idx: %d\n", subspace_id);
-> +		return -EBUSY;
-> +	}
-> +	pcc_mchan =3D &pchan->chan;
-> +
-> +	q_chan->shmem_base_addr =3D pcc_mchan->shmem_base_addr;
-> +	q_chan->shmem =3D NULL;
-> +	q_chan->shmem_size =3D pcc_mchan->shmem_size;
-> +	q_chan->latency =3D pcc_mchan->latency;
-> +	q_chan->max_access_rate =3D pcc_mchan->max_access_rate;
-> +	q_chan->min_turnaround_time =3D pcc_mchan->min_turnaround_time;
-> +	q_chan->type =3D pcc_mchan->type;
-
-[Severity: Medium]
-Does this code leave the mchan field uninitialized? If a caller allocates
-q_chan on the stack without zero-initializing it, the mchan field will reta=
-in
-uninitialized stack memory.
-
-If the caller subsequently checks mchan or mistakenly passes the structure =
-to
-pcc_mbox_free_channel(), could this bypass null-checks and cause arbitrary
-pointer dereferences?
-
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(pcc_mbox_query_channel);
-
-[Severity: High]
-This is a pre-existing issue, but could this lead to a use-after-free on
-driver unbind?
-
-The platform driver lacks a .remove callback and does not set
-.suppress_bind_attrs =3D true:
-
-static struct platform_driver pcc_mbox_driver =3D {
-	.probe =3D pcc_mbox_probe,
-	.driver =3D {
-		.name =3D "PCCT",
-	},
-};
-
-If the driver is unbound via sysfs, the driver core automatically frees all
-devm_-managed memory, including pcc_mbox_ctrl, pcc_mbox_channels, and
-chan_info.
-
-However, pcc_mbox_probe() uses mbox_controller_register() instead of
-devm_mbox_controller_register():
-
-	rc =3D mbox_controller_register(pcc_mbox_ctrl);
-
-This leaves the controller registered in the mailbox framework. Subsequent
-attempts to request or query a channel would then access the freed
-chan_info or pcc_mbox_ctrl.
-
-[ ... ]
-> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-> index 840bfc95bae33..8d0fada6e31fb 100644
-> --- a/include/acpi/pcc.h
-> +++ b/include/acpi/pcc.h
-> @@ -8,6 +8,10 @@
-> =20
->  #include <linux/mailbox_controller.h>
->  #include <linux/mailbox_client.h>
-> +#include <linux/acpi.h>
-> +//#include <acpi/actypes.h>
-> +//#include <acpi/actbl.h>
-> +//#include <acpi/actbl2.h>
-
-[Severity: Low]
-Are these commented-out include directives intended to be kept? Leaving dead
-code in a public header file can clutter the API.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604203749.1687=
-52-1-admiyo@os.amperecomputing.com?part=3D1
 
