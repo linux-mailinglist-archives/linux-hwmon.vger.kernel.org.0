@@ -1,47 +1,48 @@
-Return-Path: <linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14719-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0V9aBxwvImpaTgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:06:20 +0200
+	id +c3+DIgvImp0TgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14719-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:08:08 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8273264497A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37EA6449B4
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 04:08:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=IzKN0iKy;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14716-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=163.com header.s=s110527 header.b=T1CCDkZS;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14719-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14719-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A90A3039C73
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 02:06:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3228305986F
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 02:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C993E00BC;
-	Fri,  5 Jun 2026 02:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4597D3BFE38;
+	Fri,  5 Jun 2026 02:06:01 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA2737DEAF;
-	Fri,  5 Jun 2026 02:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E654237AA74;
+	Fri,  5 Jun 2026 02:05:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780625155; cv=none; b=Jl9fGFmdOYZSFkjuqlu3c+6XU0h9f1dAacoBWQVNrnhYFMy6O66FEG84bVqCxdxYPYJT48xcqg0Ziec8QNl/7Wfh82IWXfCOTRkZSlidbdtvvgmwzoSsyFBMlINLzIkZ/PzpTfE3NgYh2vCvglQqpY+rWrOAkPcgRab3eDd4g1U=
+	t=1780625160; cv=none; b=JXMBBniy48h17IY6yNbrg1/UUqDTa+xc+2kKkdtFF+rPOKgXInjJEi5ONiROwI2q6ogo1kCKM6tBVVLh3yBWbcOv4TbBXwLK+q08k1XRskxZVgHMEOeg0rQscfoLSwi2W3GpWLRF8jpwq+bee+m0IhcZa1qJA23Bg+PPwfY0/7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780625155; c=relaxed/simple;
-	bh=jWMv/OVg0XBOoo5m2/ElvfSL0l48pCnTg9x0hzAzgaE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UbzDrKoue9vuXhxivarxpTCZv9aVwfgGCnJUiB+YT92L/naPkdxd4E02U0qRyQGCtD+aoxtReTT6JDH4LelNY0aAtcxxditmPAOu0GOT1XEYEXyjC/xuuni5OC6iPFO1LdQGLKfAHKFHfatGESeOrwL0pQIpBn0kV4YG+OTulJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IzKN0iKy; arc=none smtp.client-ip=220.197.31.3
+	s=arc-20240116; t=1780625160; c=relaxed/simple;
+	bh=hKtJBj6NbpM+g6kmjkW4KSom4gFoNvlMbMdPkKuqkbg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Fv8ZRuKdEr29LiU4ecZ0M5L0WRD+JljltnBoEzUssMGi0qRQP38qjEAKYXf8nz51EHAYXZx0V/Uj7SvQdLB9eaymZEtkCRTGsYVPBv9nsZPM/BBGeYFU8YMh6HiDFKlJ1vEgteBargag3qAOvpcRPB9nypxaHdExP7PUpNV/Z1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=T1CCDkZS; arc=none smtp.client-ip=220.197.31.3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=93
-	j7WYO5scoCiDafPFE27aT4pcg41KjcRlyGVBbLkYU=; b=IzKN0iKyJfsU7z/6Wa
-	ap5hLO3gnjkaoEQIjXUiBgAHUsspCxJzAHLqXVSD2BYfBiQhdEptdhNuxOalbRMm
-	GOwYIGuZNliFJGk0+6i///JUksdQjw5AL+vaV+f8A6u9uu4hAvhe+5iq0ocpPzNi
-	aOFdF+YAQ5x10zZ+ZzH1nCgaA=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=PQ
+	iPGhl1R3XE1rfbgWoU/FE0wGrBbGWg/k63y7WgUeQ=; b=T1CCDkZS+/npucgaCG
+	xUdlWIVEbPtWBrqvWdF4fSDqw0dMVEuRQoccHchWFJk2YJDKEU2ZYrVv/XF5p8HJ
+	i69+i/aqOd5p/wohAVCc4dp9xylh3O2JjbYU+FqAYejm69dwUdwBk6u2L+zq7jGB
+	IEM7vOrYQtNYEo682zJIhA+2k=
 Received: from ZM.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wAXVW_FLiJq4ffOBQ--.62174S2;
-	Fri, 05 Jun 2026 10:05:00 +0800 (CST)
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wAXVW_FLiJq4ffOBQ--.62174S3;
+	Fri, 05 Jun 2026 10:05:03 +0800 (CST)
 From: Ziming Zhu <zmzhu0630@163.com>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Rob Herring <robh@kernel.org>,
@@ -54,10 +55,12 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Ziming Zhu <ziming.zhu@silergycorp.com>
-Subject: [PATCH 0/3] *** Add support for Silergy SQ24860 ***
-Date: Fri,  5 Jun 2026 10:04:47 +0800
-Message-Id: <20260605020450.89638-1-zmzhu0630@163.com>
+Subject: [PATCH 1/3] dt-bindings: hwmon: pmbus: Add bindings for Silergy SQ24860
+Date: Fri,  5 Jun 2026 10:04:48 +0800
+Message-Id: <20260605020450.89638-2-zmzhu0630@163.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260605020450.89638-1-zmzhu0630@163.com>
+References: <20260605020450.89638-1-zmzhu0630@163.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,12 +68,12 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXVW_FLiJq4ffOBQ--.62174S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWrZrW5AFWUJw17XFy7JF1rCrg_yoW8Jryxpa
-	ykZrZIkw1DJr17X393tF18WF90yry8Xa1YkF9rKw1S9Fn5ZF929ry3Krn0yw1DAr4fGFy7
-	Zr93Kr4v9w17ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UHmh7UUUUU=
-X-CM-SenderInfo: x2p2x3aqwtiqqrwthudrp/xtbCvwzh2moiLsy6kwAA3L
+X-CM-TRANSID:_____wAXVW_FLiJq4ffOBQ--.62174S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr18KF18uF15Xr4kWFy3Arb_yoW8Kw1DpF
+	Z5uF9rJr48XryxWw47GFykZ3W5Zr1kAa1j9r9xJw1SyF98XFsYvrZIkrW5XF1UCr10yFy3
+	ZFWqyryxt3s7Cr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbID7UUUUU=
+X-CM-SenderInfo: x2p2x3aqwtiqqrwthudrp/xtbC6A-h2moiLs8JFQAA3p
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -84,7 +87,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14716-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14719-lists,linux-hwmon=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
@@ -104,42 +107,104 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,silergycorp.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[silergycorp.com:email,devicetree.org:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8273264497A
+X-Rspamd-Queue-Id: B37EA6449B4
 
 From: Ziming Zhu <ziming.zhu@silergycorp.com>
 
-Add support for the Silergy SQ24860 eFuse.
+Add devicetree binding documentation for the Silergy SQ24860 eFuse.
 
-SQ24860 is a PMBus device that reports input voltage, output voltage,
-auxiliary voltage, input current, input power, and temperature
-telemetry.
-It also supports average and peak history reporting.
+The device is a PMBus hardware monitoring device which reports voltage,
+current, power, and temperature telemetry. The board-specific IMON
+resistor value is described with silergy,rimon-micro-ohms.
 
-The series adds the devicetree binding, PMBus hwmon driver, and hwmon
-documentation.
-
-Tested on a board with SQ24860 at I2C address 0x40. Verified voltage,
-current, power, temperature, samples, and history reset hwmon
-attributes.
-
-Ziming Zhu (3):
-  dt-bindings: hwmon: pmbus: Add bindings for Silergy SQ24860
-  hwmon: pmbus: Add support for Silergy SQ24860
-  hwmon: Add documentation for SQ24860
-
- .../bindings/hwmon/pmbus/silergy,sq24860.yaml |  74 +++
- Documentation/hwmon/index.rst                 |   1 +
- Documentation/hwmon/sq24860.rst               |  96 ++++
- drivers/hwmon/pmbus/Kconfig                   |  19 +
- drivers/hwmon/pmbus/Makefile                  |   1 +
- drivers/hwmon/pmbus/sq24860.c                 | 423 ++++++++++++++++++
- 6 files changed, 614 insertions(+)
+Signed-off-by: Ziming Zhu <ziming.zhu@silergycorp.com>
+---
+ .../bindings/hwmon/pmbus/silergy,sq24860.yaml | 74 +++++++++++++++++++
+ 1 file changed, 74 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml
- create mode 100644 Documentation/hwmon/sq24860.rst
- create mode 100644 drivers/hwmon/pmbus/sq24860.c
 
+diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml
+new file mode 100644
+index 000000000000..03ef82c11e1a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/pmbus/silergy,sq24860.yaml
+@@ -0,0 +1,74 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++
++$id: http://devicetree.org/schemas/hwmon/pmbus/silergy,sq24860.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Silergy SQ24860 eFuse
++
++maintainers:
++  - Ziming Zhu <ziming.zhu@silergycorp.com>
++
++description:
++  The Silergy SQ24860 is an integrated, high-current circuit protection and
++  power management device with PMBus interface.
++
++properties:
++  compatible:
++    const: silergy,sq24860
++
++  reg:
++    maxItems: 1
++
++  silergy,rimon-micro-ohms:
++    description:
++      Micro-ohms value of the resistance installed between the IMON pin and
++      the ground reference.
++
++  interrupts:
++    description: PMBus SMBAlert interrupt.
++    maxItems: 1
++
++  regulators:
++    type: object
++    description:
++      List of regulators provided by this controller.
++
++    properties:
++      vout:
++        $ref: /schemas/regulator/regulator.yaml#
++        type: object
++        unevaluatedProperties: false
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - silergy,rimon-micro-ohms
++
++additionalProperties: false
++
++examples:
++  - |
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        hw-monitor@40 {
++            compatible = "silergy,sq24860";
++            reg = <0x40>;
++
++            interrupt-parent = <&gpio>;
++            interrupts = <42 8>;
++            silergy,rimon-micro-ohms = <1600000000>;
++
++            regulators {
++                cpu0_vout: vout {
++                    regulator-name = "main_cpu0";
++                };
++            };
++        };
++    };
 -- 
 2.25.1
 
