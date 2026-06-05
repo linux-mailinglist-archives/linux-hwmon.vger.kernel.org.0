@@ -1,62 +1,62 @@
-Return-Path: <linux-hwmon+bounces-14730-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14731-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eOpEEiVxImpfXQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14730-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:48:05 +0200
+	id OQxhByFzImocXgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14731-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:56:33 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D845645A5C
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:48:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06924645B36
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 08:56:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IEynHDB+;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14730-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14730-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="B/Afc4cj";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14731-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14731-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E86BB301176D
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 06:36:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A716F3002D06
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 06:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716E8406270;
-	Fri,  5 Jun 2026 06:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84655406287;
+	Fri,  5 Jun 2026 06:41:19 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6945F40626E;
-	Fri,  5 Jun 2026 06:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6915A2EEE94;
+	Fri,  5 Jun 2026 06:41:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641374; cv=none; b=Jo+4JeII1RAb0Q24Dhir27sEDVb70IoycFbWSVKsBy6nHtoEjFzJIJpU2qhyIM7I4JmYFY7mNwIkisS165ME0UJ4C6LeoxNSfnI/IXVgf2ZWjwqDpQolWzlI3mBHMY7jgakPuythpiKs5Jv4VHFbc+PhbK7QcY77YtLETHoool0=
+	t=1780641679; cv=none; b=nFXodsJiMh8mcOmzRHg7LDgoOWbD/IIDyYgusqYlpRnCTbfc+S6J3wjDYGPDhmbOHLiQPguQKKGiGBglC/q2t3N6TaJbcAJWGMpK2rG1LVmb2YJ53dB3QVhvFmXRpQms8keSn2v6DweQcDWxVZIQRlbeN9VBgfns10vQzp9aB5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641374; c=relaxed/simple;
-	bh=GFOsmSF7xGGHGNve0ZXiihhLPSYg0higCyjq5rNxFsM=;
+	s=arc-20240116; t=1780641679; c=relaxed/simple;
+	bh=uR8m2yLwYEWQ1SbuKy0/li2AhC9n3f4vozlm5rWOwLs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=glz/HO/Tnpk92gJ4KRNvv2nr0moNs12MXEQGCL9POIcqeAUTpZnhU6U6ew40jF78Fw99AksGbQSt7BgVEpEh84Ct9QOxfF/c+J7ChCPRlUWMGc8jgDihoPZhLFo6X0yO1Mi8H1i979bxmMYm2mLPR4qpBJSz1VC5LU2VG4U12oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEynHDB+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B760B1F00893;
-	Fri,  5 Jun 2026 06:36:12 +0000 (UTC)
+	 Message-Id; b=Fsh2le8ZzpLC6UIV3Ew4Wcp3X8QhVcgSYRfq6UzOZv8PgAqxI06xdlK81v2atzdJhelz4fXBjqrz2WxWvOCPbU09BjYGQv86vf1uca52UYGcjXL/UtxTr1WLNIoC4tsQS36l0G5pGP58K1da7bagxtlPDQez/MnQeGVXK0TogVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/Afc4cj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BD31F00893;
+	Fri,  5 Jun 2026 06:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780641373;
-	bh=zqGmJjzMejEpgARljDOHmdjjg2pCSrqlRU8G7+4CtNg=;
+	s=k20260515; t=1780641678;
+	bh=ud3k7fZU9XfEFQU9vT/+h49lwVNX//F+OZPEFdeaMwI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IEynHDB+FO8ANFo70UpYiVXJ/wawvJeKxVa3LW2OBs4DgybjJjBPsKkbQXTDfaseA
-	 VQxgFgkoDGDkaSzzZxil0e9diLWN7CD+CgTixe23sbZMxMmJcfj8wmZUi5tA1EY+PR
-	 3yOsUHo6M0H37yFhOwijRkj9M61A5a5HjU2OKLxHF/O8Ga+qmUsGWtZQmdIQ0ZanxS
-	 6Ytv9rvJRvmFgdaxtStTN7wG6cB7DU4q+iESXfqw3FxDDM0gKwMS1sivZihcEHT9fK
-	 F4hLLCwRH7xblgcD7Zu3kDC4vwb1G6A9KogxF4mcnBoX0LAhKoZ9cOH0MU4UeZ9eZx
-	 LcduiwIVOBMmA==
+	b=B/Afc4cjleMcdoIUAiXR2NHXX57phBVPl/YuhSehXvFSxUMQuZo7zK53Npp1nR6Tq
+	 RPgZuau/frF9Frj8h0WXfKW/zgGyBNHzkD6UIcleAB75mHGdCAjLSb9IZYsXuU2UoN
+	 W+Mjd+8qRtM3x7IzK4d7cyRYfVowiBPY/GBhYqGSvthuiO2en91BBFKhEvH3nKxg3o
+	 lE2PiTNrxjNIPCw0Vg87Xf5GJ9trs3F7/sU0eRWbx5EXJYvL95lE8TKgCat7XVJ94+
+	 78p77CCQFUtUPiFgReLNQgJuoDWuxSndWPd7bmMvjPrT9lZo5GOL0ojlizw59CTGwg
+	 uZlc9MYpoSxyg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] hwmon: Add documentation for SQ24860
+Subject: Re: [PATCH v2 2/3] hwmon: pmbus: Add support for Silergy SQ24860
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ziming Zhu" <zmzhu0630@163.com>
-Cc: linux-hwmon@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260605063042.91776-4-zmzhu0630@163.com>
-References: <20260605063042.91776-4-zmzhu0630@163.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260605063042.91776-3-zmzhu0630@163.com>
+References: <20260605063042.91776-3-zmzhu0630@163.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 06:36:12 +0000
-Message-Id: <20260605063612.B760B1F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 06:41:17 +0000
+Message-Id: <20260605064117.B7BD31F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -75,12 +75,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14730-lists,linux-hwmon=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,silergycorp.com:email,sashiko.dev:url,smtp.kernel.org:mid,lists.linux.dev:replyto,vger.kernel.org:from_smtp];
+	TAGGED_FROM(0.00)[bounces-14731-lists,linux-hwmon=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,silergycorp.com:email,vger.kernel.org:from_smtp,sashiko.dev:url,lists.linux.dev:replyto];
 	FREEMAIL_TO(0.00)[163.com];
 	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:zmzhu0630@163.com,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:zmzhu0630@163.com,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -102,49 +102,105 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D845645A5C
+X-Rspamd-Queue-Id: 06924645B36
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] The 'Hardware Monitoring Kernel Drivers' index list in `Documentati=
-on/hwmon/index.rst` is maintained in alphabetical order. The commit incorre=
-ctly inserts `sq24860` between `sparx5-temp` and `spd5118`. Alphabetically,=
- 'sq' comes after 'sp', so `sq24860` should be placed after `spd5118` and b=
-efore `stpddc60`.
+- [High] Passing a 64-bit divisor to `div_u64()` silently truncates the div=
+isor to 32 bits, causing an incorrect calculation that unconditionally fail=
+s probe, and potentially triggering a kernel panic due to division by zero.
+- [High] Unsigned underflow when writing a low `PMBUS_IIN_OC_FAULT_LIMIT` v=
+alue inadvertently configures the maximum hardware over-current limit, defe=
+ating hardware protection.
 --
 
-commit 65caf89dcee60b08d75fdadfaa3541e74096b753
+commit ba80340cc247f7eb04cd41303e3f6374716421eb
 Author: Ziming Zhu <ziming.zhu@silergycorp.com>
 
-hwmon: Add documentation for SQ24860
+hwmon: pmbus: Add support for Silergy SQ24860
 
-This commit documents the supported sysfs attributes for the Silergy SQ24860
-PMBus hwmon driver.
+Add PMBus hwmon support for the Silergy SQ24860 eFuse.
+The driver reports input voltage, output voltage, auxiliary voltage,
+input current, input power, and temperature.
 
-> diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-> index 8b655e5d6b68b..1888905cd2349 100644
-> --- a/Documentation/hwmon/index.rst
-> +++ b/Documentation/hwmon/index.rst
-> @@ -242,6 +242,7 @@ Hardware Monitoring Kernel Drivers
->     smsc47m192
->     smsc47m1
->     sparx5-temp
-> +   sq24860
->     spd5118
-
-[Severity: Low]
-This isn't a bug, but the Hardware Monitoring Kernel Drivers index list is
-typically maintained in alphabetical order.=20
-
-Since sq comes after sp, should sq24860 be placed after spd5118 and before
-stpddc60 to maintain this sorting?
-
->     stpddc60
->     surface_fan
+> diff --git a/drivers/hwmon/pmbus/sq24860.c b/drivers/hwmon/pmbus/sq24860.c
+> new file mode 100644
+> index 0000000000000..43a2cb542169c
+> --- /dev/null
+> +++ b/drivers/hwmon/pmbus/sq24860.c
 
 [ ... ]
 
+> +static int sq24860_write_iin_cal_gain(struct i2c_client *client, u32 rim=
+on,
+> +					u32 gimon)
+> +{
+> +	u64 temp =3D (u64)6400 * 1000000000 * 1000;
+> +	u64 denom;
+> +	u64 word;
+> +
+> +	if (!rimon || !gimon)
+> +		return -EINVAL;
+> +
+> +	denom =3D (u64)rimon * gimon;
+> +	word =3D div_u64(temp, denom);
+> +	if (word > U16_MAX)
+> +		return -ERANGE;
+
+[Severity: High]
+Does this code inadvertently truncate the 64-bit divisor?
+
+Because denom is a 64-bit unsigned integer, passing it to div_u64() which
+expects a 32-bit divisor will silently truncate denom to its lower 32 bits.
+
+With the default values (rimon =3D 1600000000, gimon =3D 18180), denom eval=
+uates
+to 29,088,000,000,000. Truncating this to 32 bits yields 1,044,881,408, cau=
+sing
+the division to incorrectly yield 6,125,096 instead of 220.
+
+Since this exceeds U16_MAX, won't this unconditionally return -ERANGE and
+fail the probe? Also, if denom happens to be an exact multiple of 2^32,
+could the truncated divisor become 0 and trigger a kernel panic?
+
+Should this use div64_u64() instead?
+
+[ ... ]
+
+> +static int sq24860_write_word_data(struct i2c_client *client,
+> +				    int page, int reg, u16 value)
+> +{
+> +	int ret;
+> +
+> +	switch (reg) {
+
+[ ... ]
+
+> +	case PMBUS_IIN_OC_FAULT_LIMIT:
+> +		value -=3D SQ24860_IIN_OCF_OFF;
+> +		value =3D DIV_ROUND_CLOSEST(((unsigned int)value) * SQ24860_IIN_OCF_DI=
+V,
+> +					  SQ24860_IIN_OCF_NUM);
+> +		value =3D clamp_val(value, 0, 0x3f);
+> +		ret =3D pmbus_write_byte_data(client, page, SQ24860_VIREF, value);
+> +		break;
+
+[Severity: High]
+Will subtracting from value underflow if it is less than 165?
+
+Since value is an unsigned 16-bit integer, if user space requests a
+restrictive over-current limit corresponding to a value less than
+SQ24860_IIN_OCF_OFF (165), value will underflow and wrap around to a
+large positive number.
+
+Because this large value is subsequently clamped to 0x3f (63), won't
+attempting to set a restrictive over-current limit inadvertently configure
+the hardware to its absolute maximum limit instead?
+
+Could value be checked against SQ24860_IIN_OCF_OFF before the subtraction
+to prevent silently defeating the hardware protection?
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605063042.9177=
-6-1-zmzhu0630@163.com?part=3D3
+6-1-zmzhu0630@163.com?part=3D2
 
