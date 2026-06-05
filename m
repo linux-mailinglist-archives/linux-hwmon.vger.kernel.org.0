@@ -1,68 +1,68 @@
-Return-Path: <linux-hwmon+bounces-14754-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14755-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E9D5CMfoImpwfAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14754-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 17:18:31 +0200
+	id y7wxF63nImovfAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14755-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 17:13:49 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7405A649388
-	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 17:18:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDBD6492F0
+	for <lists+linux-hwmon@lfdr.de>; Fri, 05 Jun 2026 17:13:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HZi2SCQq;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14754-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14754-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=RricagGa;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14755-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14755-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04E8B307DF91
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 15:05:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E6BF305CB9B
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Jun 2026 15:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92DA3FFF9D;
-	Fri,  5 Jun 2026 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353663FFFA4;
+	Fri,  5 Jun 2026 15:08:49 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837203845A6;
-	Fri,  5 Jun 2026 15:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65038F950;
+	Fri,  5 Jun 2026 15:08:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671900; cv=none; b=odt/T6ZQ89vO4owozqA83pd61abRFi4qmOaImzawRYwiOgg2ysC9jbSx6uVveKBM0VQK1bd4yzqMWLCSekMMAnYeydOvW6qRQL7RvZlBxrl9Ki1Tmab/RYdY3ndYgnqEa5/EBFxCIVwDieIPhA5kel19NKESAmnq4/BfZiv4nHY=
+	t=1780672129; cv=none; b=ViHg7vL3FkjdIp+zS6zPtS3JKZKhuvP2jq07riUNPQ8DXPoeZEvoD04U53mKYVOrhiOWcVrExG2YV8HHube2pk6V7aC/r10eebySYCkR1LHmdNTFvJaLOrw3w2gGzy3PSWfPhL5fI+suL2/wBYRHY+WdSOjJPgzEBb3ZA0Qtud4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671900; c=relaxed/simple;
-	bh=TPgf9y3BnKaqYbl1c0o8ggrN5JbLtmqFEfR51ZC7tZQ=;
+	s=arc-20240116; t=1780672129; c=relaxed/simple;
+	bh=Vblfc3zkqPaRcqqKJlY9bgV48oroJmcesQSX+IB7JHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jq3A5AVv9vk5vOQKUD6Y7zey2ZS/I2mXK3ebqX/oh+pR2A4BJ3EIjSXRnlKwDZVE9HVxTcOOeMtwh44AO9LmBIh37feTPy8BPiGXPEV3kkcsGecrWGRZh/uEQM43guX4J3XfdbKNDbVWESMmA7hhUPhngIvvRDO2Ht1PkDVkHtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HZi2SCQq; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=rCMm5QsnuFd3I+bt84hBBCHvzuK/090VlkNO/xOylul/32xbiEHpVTcMxqz6a8DPaX6uAJL3OzjFOY06lqbJaSl6kO/LvqLnDkuslh9CJ7MUwm3V5+UkMbzrXFAIAljZDSn03NW95V0DyOBs7hVmDPMbqxeLe+OM/UlChDq2lTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RricagGa; arc=none smtp.client-ip=192.198.163.12
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780671896; x=1812207896;
+  t=1780672128; x=1812208128;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=TPgf9y3BnKaqYbl1c0o8ggrN5JbLtmqFEfR51ZC7tZQ=;
-  b=HZi2SCQqx8sQvwEbwAZ+8kBaePZT3GxTEr4CAv8ZMP5Q93PUlcnJtlnA
-   j2y8ph0a7Y2nMNqOputSY2GP+3jI486KoAj6DROenCX+j5gaRJtkIRqQA
-   dodudtp2XIo3xZHYbVM4eQvI8robB9LnXFSuVOP4qHcJGL6Jy0BGRJSxh
-   2AaiP3xtW2BjQiO7CMESPt+gmxphdi/QI8JyxAnYr9Su+5AZoZ1AC8Yu7
-   w+MH7JLC6zCiWl+kJfwh2jXHF+zR6c6bercmpZlJzd36AhuGRuqQ9zdMZ
-   ucn1TzUX49yc5TN+pn1l/k382QMX113us411XOdDIAnyYiWSwojfbBUdF
-   w==;
-X-CSE-ConnectionGUID: lUvR7DcURwerH+nYuNYdlg==
-X-CSE-MsgGUID: EAFXmvlHRxWF7nDX/Jj9KA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="99078408"
+  bh=Vblfc3zkqPaRcqqKJlY9bgV48oroJmcesQSX+IB7JHY=;
+  b=RricagGaVrjmRqKWqzjWG3lny9abBxppIRjuFRym8mgUVIiY/FsvBlpb
+   ENjP/dGDsWxm8XLCNnV5TO2BIsRnuHzpOkxus+sxfjlPvxJkn73tgt+Lv
+   UxNKTGDzc1eS5JBrySVDYWiKQzaRJbivcVIg0ZvRgB8ZFFkqYwx83BEsM
+   swwbbq3mP3nG/Q2GnRQrRgiVPolK44+iXbcnKfEHlCpWVw6+dqK1P7JzX
+   gjC+/3Qpvz3vBJwhWZRGLIQep88UVEAdicSMRGTLcl9XZBB3riUNx7L8u
+   BVVff96CdJn165Au0lYuRBLXPm0GYkf+pSzuGgU9hNCR5yju8KKlCTafk
+   Q==;
+X-CSE-ConnectionGUID: qbMAtQxxSBKXh08t9SKvuA==
+X-CSE-MsgGUID: qh0Z8wYzS7OLAYxOEGtv8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="85359093"
 X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="99078408"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 08:04:55 -0700
-X-CSE-ConnectionGUID: fVDOZY4JT8+8ELBdEco/Ew==
-X-CSE-MsgGUID: qwz6fp8WQ/OuiAwSXqgzLw==
+   d="scan'208";a="85359093"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 08:08:47 -0700
+X-CSE-ConnectionGUID: 3asCXV1BQty+7gCa3DBTtg==
+X-CSE-MsgGUID: wNRamNYcRUaQ7U4vU4oX3A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="275099356"
+   d="scan'208";a="246693409"
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.26]) ([10.125.109.26])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 08:04:55 -0700
-Message-ID: <83c7e899-2ba7-435f-8ea8-7e893c9f207f@intel.com>
-Date: Fri, 5 Jun 2026 08:04:46 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 08:08:43 -0700
+Message-ID: <633a8b8a-9dd8-410d-a9a5-a9cd2e87e63b@intel.com>
+Date: Fri, 5 Jun 2026 08:08:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -70,18 +70,27 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/10] x86/msr: Switch rdmsr_safe_on_cpu() users to
- rdmsrq_safe_on_cpu()
+Subject: Re: [PATCH v2 00/10] x86/msr: Drop 32-bit variants of *_on_cpu() MSR
+ functions
 To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-hwmon@vger.kernel.org, linux-pm@vger.kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
+ linux-pm@vger.kernel.org, x86@kernel.org, linux-edac@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-perf-users@vger.kernel.org
+Cc: Huang Rui <ray.huang@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Guenter Roeck
- <linux@roeck-us.net>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Tony Luck <tony.luck@intel.com>, Guenter Roeck <linux@roeck-us.net>,
  Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>
+ Lukasz Luba <lukasz.luba@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>
 References: <20260605144314.3031049-1-jgross@suse.com>
- <20260605144314.3031049-8-jgross@suse.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -127,7 +136,7 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260605144314.3031049-8-jgross@suse.com>
+In-Reply-To: <20260605144314.3031049-1-jgross@suse.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -135,21 +144,21 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14754-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jgross@suse.com,m:linux-kernel@vger.kernel.org,m:x86@kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-pm@vger.kernel.org,m:hpa@zytor.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:linux@roeck-us.net,m:rafael@kernel.org,m:daniel.lezcano@kernel.org,m:rui.zhang@intel.com,m:lukasz.luba@arm.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14755-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jgross@suse.com,m:linux-kernel@vger.kernel.org,m:linux-pm@vger.kernel.org,m:x86@kernel.org,m:linux-edac@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:ray.huang@amd.com,m:mario.limonciello@amd.com,m:perry.yuan@amd.com,m:kprateek.nayak@amd.com,m:rafael@kernel.org,m:viresh.kumar@linaro.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:tony.luck@intel.com,m:linux@roeck-us.net,m:daniel.lezcano@kernel.org,m:rui.zhang@intel.com,m:lukasz.luba@arm.com,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:jolsa@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:james.clark@linaro.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[32];
 	FORGED_SENDER(0.00)[dave.hansen@intel.com,linux-hwmon@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -160,21 +169,32 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:mid,intel.com:from_mime,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:mid,intel.com:dkim,intel.com:from_mime,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7405A649388
+X-Rspamd-Queue-Id: EBDBD6492F0
 
 On 6/5/26 07:43, Juergen Gross wrote:
-> In order to prepare retiring rdmsr_safe_on_cpu() switch
-> rdmsr_safe_on_cpu() users to rdmsrq_safe_on_cpu().
+>  arch/x86/events/intel/ds.c                   | 11 +--
+>  arch/x86/include/asm/msr.h                   | 28 +-----
+>  arch/x86/kernel/cpu/mce/amd.c                |  6 +-
+>  arch/x86/kernel/cpu/mce/inject.c             |  8 +-
+>  arch/x86/kernel/msr.c                        |  8 +-
+>  arch/x86/lib/msr-smp.c                       | 89 +++-----------------
+>  drivers/cpufreq/amd-pstate.c                 |  2 +-
+>  drivers/cpufreq/amd_freq_sensitivity.c       |  6 +-
+>  drivers/cpufreq/p4-clockmod.c                | 32 +++----
+>  drivers/cpufreq/speedstep-centrino.c         | 27 +++---
+>  drivers/hwmon/coretemp.c                     | 44 +++++-----
+>  drivers/hwmon/via-cputemp.c                  | 16 ++--
+>  drivers/thermal/intel/intel_tcc.c            | 43 +++++-----
+>  drivers/thermal/intel/x86_pkg_temp_thermal.c | 25 +++---
+>  14 files changed, 128 insertions(+), 217 deletions(-)
 
-This needs a better changelog. This isn't just some kind of mechanical
-replacement. It copies rdmsr_safe_on_cpu()'s implementation into
-rdmsr<Q>_safe_on_cpu(). Yes, it's temporary and the next patch
-effectively undoes it.
+This is wonderful. Thank you for doing this!
 
-But it's exactly the kind of thing a reviewer should be told in a changelog.
+My only real complaint is the lack of changelog for 07/10. Otherwise, it
+looks great to me. Ideally, you'd collect a few more reviews and post a
+v3 rebased right after the next -rc1.
 
-Oh, and considering the size of the changelog at the moment, I think
-there's room. ;)
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 
