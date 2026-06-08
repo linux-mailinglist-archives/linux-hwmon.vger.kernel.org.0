@@ -1,207 +1,151 @@
-Return-Path: <linux-hwmon+bounces-14872-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14873-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tFimJLv4JmoPpAIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14872-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 08 Jun 2026 19:15:39 +0200
+	id MHpkGl/yJmppoQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14873-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 08 Jun 2026 18:48:31 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174D565923A
-	for <lists+linux-hwmon@lfdr.de>; Mon, 08 Jun 2026 19:15:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600E1658E61
+	for <lists+linux-hwmon@lfdr.de>; Mon, 08 Jun 2026 18:48:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=UD4WQgj0;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14872-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14872-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HecMdCPQ;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14873-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14873-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 026BE34FBEE9
-	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jun 2026 15:53:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7582D30B75C6
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jun 2026 16:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F2F31E82F;
-	Mon,  8 Jun 2026 15:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E601346FA7;
+	Mon,  8 Jun 2026 16:23:18 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F55318EE6;
-	Mon,  8 Jun 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B3334388C
+	for <linux-hwmon@vger.kernel.org>; Mon,  8 Jun 2026 16:23:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934022; cv=none; b=JGwR1+MY1lfye6oyh4rdrhrWPMVTdEeyFTjJzIhB7O3wRMkAz6M5O38jr7GBnUSUxQJ/EWOAcp1b32fTyetSrIHOf0sQnSzLgZ7H1U82wJX2Yu3YJBQhVJB1cBrOelA48tKiDLLVyHBHNnVxSF1GvqjUkxpj9L8S+0+sUrHS4WI=
+	t=1780935798; cv=none; b=jBfcM7Y670D2LabyNwPALRwWVy2PJxjZ7kcCEI6WyioG2C2GJmi+gSmEi/urYig3PX0KiVQR6ncpF04Woniyf6DOJ3tcPRa/kHpe8NG02N3o1nVt2lrujPRUCMlwYYxl5isgOWcoWbmKSTm+W6XX0OVyQNuaG+LOhCNmSyTJeeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934022; c=relaxed/simple;
-	bh=Gsdkj7Xwjn/mxP4dcUshnWSdQPSCwBmj0okkEY70A+o=;
+	s=arc-20240116; t=1780935798; c=relaxed/simple;
+	bh=8te2zY0sO0aPP8QOfw6I01FBJQIKoZ/+eGWsj3nDQBo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k9J2n6gHwduP+1sDlHgaffLsZfKJIhz0LQD1kQ0lTty098TVoGJSwFev4l20RZKnRMzlkQk7U4yZBcd0X2GzB0dO2a34yo36Q419OWvyGNH3jMimKLH7COVw0u2BDZAimJGauawka7zhjDyNRTXjTStBVuZ7zHUMdm3GbkOi1Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=UD4WQgj0; arc=none smtp.client-ip=159.69.126.157
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1780934012;
-	bh=Gsdkj7Xwjn/mxP4dcUshnWSdQPSCwBmj0okkEY70A+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UD4WQgj0/ug4woY/AAuvMWRRMRlpcV3Lh6SRzcNBtRec7tFeBKyobfKRPoo9Y6wLw
-	 /pkyw/aCZDq6dhR61dCCd6Hxzk7C6/IbSZruBt6v3Nll6sTSSrDEs2I/sdKpI17iZG
-	 79xBDdb8fp515hnmDn1X1qUtbbb0uqFmlK7xknxY=
-Date: Mon, 8 Jun 2026 17:53:29 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Armin Wolf <W_Armin@gmx.de>, Benson Leung <bleung@chromium.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Guenter Roeck <groeck@chromium.org>, 
-	chrome-platform@lists.linux.dev, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] hwmon: (cros_ec) Allow modification of fan curves
-Message-ID: <bfacbd84-4fcd-4e84-bdda-8bcb900ca6c9@t-8ch.de>
-References: <20260529-cros_ec-hwmon-fan-curve-v1-0-da6792b3830f@weissschuh.net>
- <20260529-cros_ec-hwmon-fan-curve-v1-5-da6792b3830f@weissschuh.net>
- <87825203-0bbb-46a4-8939-a904f5a546ab@gmx.de>
- <6a4a2d2c-4717-4cc9-8dd3-05f8b0905865@t-8ch.de>
- <8b8f5a9f-4a44-4e93-9ff6-c2e13a6b8797@gmx.de>
- <243e6f71-b777-478c-802a-d8f3ed47b3fc@roeck-us.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=N6cPaO+IB92o3BNCaNQKYrUQPApVUc2XTdJQ9V1H5UC8TpbZdJ7c7KUnBNcbRVHiqbj8fGLN3tO2oCx7acR/rIAluIcVsz77G07xOv2TuEGd/SimbH0Jbm6z29ghlG7Gddb/fLzd2OdyQASEE4wjJeDlYKUOu/y5XVm05fS9gy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HecMdCPQ; arc=none smtp.client-ip=74.125.82.176
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-304ec41197bso4196767eec.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 08 Jun 2026 09:23:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780935796; x=1781540596; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/xyJaeMREvFPr6MLUgM5itNfuv/IOwPcbYOyGoFxcyk=;
+        b=HecMdCPQ1i59lPU4qr4EcAV4/1QRMh/G0+Oujd2PN2batwOOL2slTM2LLdjI2iM0mN
+         vaY3id9VHDiBIu1dzLtiIhxpHAYYH2jTO2hwRH7yTJ21NnecTRdKw4rxvTDUCcs/BDml
+         ax/WDpaAYO8Q5qEgjEtE1CNYywArc9zs+CihG7jI9PhyrwTII/eHfHfrEZbdh4CorjBq
+         9Em6R9DNX1da4osXiTxejefUqBHPw7g0bCq4zJ7FRh7lTECxrKaJjE02uJBnULpAltlo
+         rro266xoBORRXNY7Z8y8wU61LwxzW/f3vBjG9vgN45XJ0MA1uNSPEEh+Jv8xTTmzZ6x7
+         h+9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780935796; x=1781540596;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/xyJaeMREvFPr6MLUgM5itNfuv/IOwPcbYOyGoFxcyk=;
+        b=F4oP2dKqc+Uzhr0wnO1h/bcdwfgdTOUUzPT68bjoJncoWVpTcH1uaaQ/A50dViobQY
+         GztgnViMLG8KJHmmNFOIaato8DaOBZ+4P2dobc9YSeTThzAxlYORLDElm0dJ0gNyOFSC
+         3r7/C+v4o1IvliyFYNH29ET9i/avI5c9MdMG64u2TI0RnL7QLg4p+M1mChebEi1h1DQB
+         qn3rb0RFvsAAyBydHgse75cjQ/VvXULvK3MeY6y9nl97VosWVD1hS0RXNiu2hIgRaIwz
+         KCTVPmRGkTuYtU/aPgtyE6NSjL/mFmXLbhMH+HRPgzqERMQ1v4eY+AxRzfEvvQlmUTPO
+         kRsg==
+X-Forwarded-Encrypted: i=1; AFNElJ9xI4aMVrt2Ny+wxoULY4VhLtvfIStLyft0l8vivuufSwGskXkWwM8gwWUBdRlAFd2VElrd+4Jby/2+AA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWhwq5brrOQT2fgNwJ4vwPtqKC8nRoBnVpt96MJL+cWs09g3w5
+	TOuq6i3fPxt/d8x5mVIyzzmuR594UYytnZ60+2gG8hwy8aaM3cMnCqVL
+X-Gm-Gg: Acq92OH6PGwnS/iobPVysjtfgSEbm+EbA0rDHl02WzWXtRXMxw5IBNANr7CX3D9t647
+	3WoX0iOgWq8lUmIGSyFydfczd63wE5Xmv64wsAWSMsVlEmIVuFOlEY42LlWDpqRM+nuELr1g8Wb
+	A1zoEg4vefprrcdzZnzBE7qgXwVIUTm1c7fFPtp8MP/G3rqUWs3fEGLiflYHKS3w32blj4vJyql
+	ksL2/g+x0LjkahtKxqd15tD+ITQ80gSr3DePn8UKXXSRFbHylu+miJXl7fKtjxUCra67HLOJGYt
+	MjrEuJHBnu6PKpXYU/QQG2PotxFGdCXePMN7Po8/iqNkNXcq/IuPoKalsocCzasGce/UU/gi8fR
+	ZU1I1jdl/yibOY31E5PhUAnapHKqUTPqEatzNPk055rWRKF3CZ4NMpX2OIx457tWcUiNJRlErBa
+	Kfy8Sx8Tv2ZO8JRZgM73eoeBB0gk6aDSenRto/oPDanDtSA9s=
+X-Received: by 2002:a05:693c:2c01:b0:2d2:96e8:1bf5 with SMTP id 5a478bee46e88-3077b32a4ddmr8991673eec.3.1780935795967;
+        Mon, 08 Jun 2026 09:23:15 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df64eb9sm15724340eec.25.2026.06.08.09.23.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 09:23:15 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Mon, 8 Jun 2026 09:23:14 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] hwmon: (adt7462) Add of_match_table to support
+ devicetree
+Message-ID: <49e962ce-19ad-4ed8-8fc5-3924f87d430f@roeck-us.net>
+References: <20260608-adt7462-bindings-v2-1-272982c40325@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <243e6f71-b777-478c-802a-d8f3ed47b3fc@roeck-us.net>
+In-Reply-To: <20260608-adt7462-bindings-v2-1-272982c40325@bootlin.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
-	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14872-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:W_Armin@gmx.de,m:bleung@chromium.org,m:skhan@linuxfoundation.org,m:groeck@chromium.org,m:chrome-platform@lists.linux.dev,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[linux@weissschuh.net,linux-hwmon@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmx.de,chromium.org,linuxfoundation.org,lists.linux.dev,vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-14873-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:romain.gantois@bootlin.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:kory.maincent@bootlin.com,m:thomas.petazzoni@bootlin.com,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@weissschuh.net,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[weissschuh.net:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,t-8ch.de:mid]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bootlin.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,roeck-us.net:mid,roeck-us.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 174D565923A
+X-Rspamd-Queue-Id: 600E1658E61
 
-On 2026-06-08 06:34:43-0700, Guenter Roeck wrote:
-> On 6/4/26 03:33, Armin Wolf wrote:
-> > Am 04.06.26 um 11:04 schrieb Thomas Weißschuh:
-> > > On 2026-05-30 18:37:32+0200, Armin Wolf wrote:
-> > > > Am 29.05.26 um 22:31 schrieb Thomas Weißschuh:
-> > > 
-> > > (...)
-> > > 
-> > > > > +static ssize_t temp_auto_point_temp_store(struct device *dev, struct device_attribute *attr,
-> > > > > +                      const char *buf, size_t size)
-> > > > > +{
-> > > > > +    struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
-> > > > > +    struct cros_ec_hwmon_priv *priv = dev_get_drvdata(dev);
-> > > > > +    struct ec_thermal_config config;
-> > > > > +    u32 *temp_field;
-> > > > > +    s64 temp;
-> > > > > +    int ret;
-> > > > > +
-> > > > > +    ret = kstrtos64(buf, 10, &temp);
-> > > > > +    if (ret)
-> > > > > +        return ret;
-> > > > > +
-> > > > > +    temp = cros_ec_hwmon_millicelsius_to_kelvin(temp);
-> > > > > +
-> > > > > +    if (overflows_type(temp, config.temp_fan_off))
-> > > > > +        return -ERANGE;
-> > > > > +
-> > > > > +    guard(hwmon_lock)(dev);
-> > > > > +
-> > > > > +    ret = cros_ec_hwmon_get_thermal_config(priv->cros_ec, sattr->index, &config);
-> > > > > +    if (ret)
-> > > > > +        return ret;
-> > > > > +
-> > > > > +    if (cros_ec_hwmon_attr_is_temp_fan_off(sattr))
-> > > > > +        temp_field = &config.temp_fan_off;
-> > > > > +    else /* temp_fan_max */
-> > > > > +        temp_field = &config.temp_fan_max;
-> > > > > +
-> > > > > +    /* Only allow values which are more aggressive than the current ones */
-> > > > > +    if (temp > *temp_field)
-> > > > > +        return -EINVAL;
-> > > > 
-> > > > i think it would be more practical for users to increase and later decrease the fan curve values.
-> > > > Could the driver copy the original fan curve configuration and use that instead? This would also
-> > > > require to restore the original fan curve during shutdown and removal.
-> > > 
-> > > That would be possible. We would would have to expose these limits
-> > > through a new UAPI as otherwise the user has no way to know about them.
-> > > Restoring the original on shutdown shouldn't be necessary, as the EC
-> > > will reset the curves at shutdown anyways.
-> > 
-> > (And what about kexec?)
-> > 
-> > Ok, i myself would also interested in having a UAPI for communicating fan curve constraints to userspace as i am planning to add a similar feature to the uniwill-laptop driver.
-> > 
-> > I can think of two approaches:
-> > 
-> > 1. Clamp the values into the supported range, userspace will have to read back the written value to know the current setting.
-> > 
+On Mon, Jun 08, 2026 at 05:23:43PM +0200, Romain Gantois wrote:
+> From: Kory Maincent <kory.maincent@bootlin.com>
 > 
-> ... which is widely used in hwmon drivers, so it is not special.
-> We don't usually expect userspace to know the valid attribute range.
-
-That works for me.
-
-What should be clamp to, though?
-The range active during probe or the currently active one?
-
-> > 2. Introducing a new tempX_auto_pointY_temp_min attribute to communicate the constraint to userspace.
-> > 
-> > Guenter, do you have a preference for one of the approaches? Personally
-> > i would prefer approach number 2.
-> > 
+> Add of_match_table to add support of devicetree probing.
 > 
-> Again, we don't usually provide constraints for limit attributes
-> to userspace. Otherwise we would need separate _min and _max attributes
-> for literally every limit attribute. That would add a lot of complexity
-> for little if any gain.
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> [rgantois: Removed of_match_ptr().]
+> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 
-One constraint that exists today is the range accepted by kstrtol(),
-which can return -ERANGE. Not that I want to argue that this is an
-issue and requires change, just pointing it out.
+Applied.
 
-> Worse, almost all attributes do not just have min/max constraints but
-> step size constraints as well. Hardware does not typically accept values
-> in millisecond/millivolt etc. but have varying step sizes. How would you
-> express that ? The hardware won't accept a temperature of, say, 27.123
-> degrees C. Hwmon drivers are expected to adjust that to the next supported
-> value. That means userspace has to read the value back to know that value
-> anyway. Or do you plan to provide the step size to userspace as well ?
-> What would you do if the step size is non-linear ?
-
-To me the step size argument is slightly different than the range one.
-The difference between the values provided by the user and the one
-actually used ones should be fairly small, while for the range it may be
-much larger. Not that it makes a difference here.
-
-> On top of that, _min and _max attributes are already associated with
-> limits. I would find it confusing if new attributes would redefine that
-> naming scheme to supported ranges.
-
-Ack.
-
-(...)
+Thanks,
+Guenter
 
