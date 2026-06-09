@@ -1,120 +1,135 @@
-Return-Path: <linux-hwmon+bounces-14886-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14887-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xMLeFFrBJ2px1gIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14886-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 09:31:38 +0200
+	id xMP9B8zDJ2oS1wIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14887-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 09:42:04 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F3465D3A0
-	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 09:31:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A14E65D530
+	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 09:42:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BCSeMwc8;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14886-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14886-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14887-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14887-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0E466301AF3F
-	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2026 07:29:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A79D3300825B
+	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2026 07:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370253DB64E;
-	Tue,  9 Jun 2026 07:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED8A37AA97;
+	Tue,  9 Jun 2026 07:41:49 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A0B3D8133;
-	Tue,  9 Jun 2026 07:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18912BDC2A;
+	Tue,  9 Jun 2026 07:41:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780990170; cv=none; b=p+qgCftUKnrmhdBxe5/TFr5S7ONM2vk+TWeb8PTP6N123lxWSH2r27IGqe3X3zIQdBred5A1FJBM/vEFekbGcpL5ghIIg0/PkGGiYsUDPcMoBD8lHpnEVt+il+b2M+UaOXyl8PSrYXCemf9xR4q43+BrmqDPfKeL6uC7xGmlNig=
+	t=1780990909; cv=none; b=ZJ2npgvRdnZ+vtWHgRSHlbISy9yc1FtCcz2mfvht/N8HK10engKtR6SDqlmndXSSyg/TjcE2ajRq94b5cvmj5BoH/ku3QwMo68BU1gjWzj3QGs8L5YGeh7Alz3rYyLdsaqRsjavShwAsbtqLNAa1QkEmkAyjIcDW4T+j+aw8ciI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780990170; c=relaxed/simple;
-	bh=OfgtpsB02oaBrxeSv9R85Jh/So79y77Koq9Sgp7WRhY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=us+9F7j+ZKRWn7silEFyUD1LAiqKdUs2Vx1ebA4FPpRIEGeRHUoeR1X2zBPIxwG3YknGvnFWCTp1AUIcaawhkrhAVJHGwQQDi+38rS3oz65tGVn3aGIIcqZGHnc5kTGFNfA6ypwosjQn+LsRyobWIPv89ZRnuYINP9KDxRIGYt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCSeMwc8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636751F00893;
-	Tue,  9 Jun 2026 07:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780990168;
-	bh=OfgtpsB02oaBrxeSv9R85Jh/So79y77Koq9Sgp7WRhY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BCSeMwc8dMWoZyahAGAsF+YB6fw/OSwLHok7ydOYVnCm3DUd0RhNlYB7U273FNihf
-	 sIadXVgwdkE0qcZSAWPj4ZZDrJuTYpKSH4wBIBKlGVseOQJr0C6/fMEtGMtYSsnhkN
-	 6zvmU97HqFCjHcV+tltefUSMRQKP4CwoKo7Xga3w2fSPm1/D9QCxQo3SVsPAKMZcHk
-	 gyjCOtJaGBWwCb0B3h0pH9FMkqteIYlWC4IG79EsMltZazK6iQQ/aVM+c/MNg6Nkxy
-	 R8WDA9WYA3Kt47kW9U+GqxZqDnTO9V12xAVYTNqFdm34r8/w1g0SyLm8StMOdhGWuV
-	 u8Qc0a5m93h4g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: hwmon/pmbus: Add Infineon xdp730
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "ASHISH YADAV" <ashishyadav78@gmail.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, linux-hwmon@vger.kernel.org
-In-Reply-To: <20260609072231.15486-2-Ashish.Yadav@infineon.com>
-References: <20260609072231.15486-2-Ashish.Yadav@infineon.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 07:29:27 +0000
-Message-Id: <20260609072928.636751F00893@smtp.kernel.org>
+	s=arc-20240116; t=1780990909; c=relaxed/simple;
+	bh=a0TlZLYUGvxlDhpq0IRTNK/Qmu508H/v2uERW3SblrA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h6P0wcjPaESN352ejUerNf+dBOyt7UcL+QtQs79hb1Bf1te7p4fU4L1eK6ugupdFDdnZ0Xxp+SMIX1eck2F1wVUMHJ2FByW4mDbQWYpSND/ZAc26psfYdrEZ7+XLsTShlhT/nhy8PsdjGCWpsx/ZR/YAU941BdzzJDXUhZZBpwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+X-UUID: a624b7c863d611f1aa26b74ffac11d73-20260609
+X-CID-CACHE: Type:Local,Time:202606091539+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:9999ec4f-b0b5-4617-bf13-c3b26935d26e,IP:0,U
+	RL:0,TC:0,Content:41,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:66
+X-CID-META: VersionHash:e7bac3a,CLOUDID:bf3a64d8831227134dc6f5bbfef26f94,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:4|15|50,E
+	DM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a624b7c863d611f1aa26b74ffac11d73-20260609
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 46303761; Tue, 09 Jun 2026 15:41:38 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: cryolitia@uniontech.com,
+	Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH] hwmon: (gpd-fan) Reject EC PWM value 0 as invalid
+Date: Tue,  9 Jun 2026 15:41:35 +0800
+Message-Id: <cbdc1df2ed3443b08cbd1fc2652638deaf798c4b.1780990542.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-14886-lists,linux-hwmon=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infineon.com:email,smtp.kernel.org:mid,sashiko.dev:url,lists.linux.dev:replyto,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ashishyadav78@gmail.com,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:robh@kernel.org,m:linux-hwmon@vger.kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:cryolitia@uniontech.com,m:xiaopei01@kylinos.cn,s:lists@lfdr.de];
+	DMARC_NA(0.00)[kylinos.cn];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[xiaopei01@kylinos.cn,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14887-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xiaopei01@kylinos.cn,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4F3465D3A0
+X-Rspamd-Queue-Id: 7A14E65D530
 
-> From: Ashish Yadav <ashish.yadav@infineon.com>
->=20
-> Add documentation for the device tree binding of the XDP730 eFuse.
-> Rename node to efuse to accurately reflect its hardware function.
->=20
-> Signed-off-by: Ashish Yadav <ashish.yadav@infineon.com>
+The EC firmware is expected to return values in [1, pwm_max]. A read of 0
+is illegal and would cause underflow in the conversion formula. Explicitly
+check for 0 and return -EIO.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/hwmon/gpd-fan.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609072231.1548=
-6-1-Ashish.Yadav@infineon.com?part=3D1
+diff --git a/drivers/hwmon/gpd-fan.c b/drivers/hwmon/gpd-fan.c
+index d1993cd645cb..decb61936b95 100644
+--- a/drivers/hwmon/gpd-fan.c
++++ b/drivers/hwmon/gpd-fan.c
+@@ -341,7 +341,11 @@ static int gpd_wm2_read_pwm(struct gpd_fan_data *data)
+ 
+ 	gpd_ecram_read(drvdata, drvdata->pwm_write, &var);
+ 
+-	// Match gpd_generic_write_pwm(u8) below
++	/* EC PWM register valid range is 1 ~ pwm_max; 0 is an invalid state */
++	if (unlikely(!var))
++		return -EIO;
++
++	/* Match gpd_generic_write_pwm() below */
+ 	return DIV_ROUND_CLOSEST((var - 1) * 255, (drvdata->pwm_max - 1));
+ }
+ 
+-- 
+2.25.1
 
 
