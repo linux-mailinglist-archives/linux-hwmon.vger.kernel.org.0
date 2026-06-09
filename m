@@ -1,58 +1,57 @@
-Return-Path: <linux-hwmon+bounces-14915-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14913-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VofJIbxuKGrfEQMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14915-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 21:51:24 +0200
+	id kjF7C7huKGrZEQMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14913-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 21:51:20 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68127663E5E
-	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 21:51:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12D9663E53
+	for <lists+linux-hwmon@lfdr.de>; Tue, 09 Jun 2026 21:51:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cTt5dGz2;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14915-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14915-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hr6LdIFx;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14913-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14913-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 130033083683
-	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2026 19:44:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2DBA30805AC
+	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2026 19:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57BC374A14;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15F3374A07;
 	Tue,  9 Jun 2026 19:43:59 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2B83749EB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEAB342146;
 	Tue,  9 Jun 2026 19:43:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781034239; cv=none; b=PkebFFSj8Hxrco3td7Me2aF/PljxygZ4m0sijV29oZVmzCOfKQFs3eO3eynHrfq0f+L8sEK7wARcvKVCKU3bnv6f3cj8j8o3ciGEvBDmlY42uKEJ4xJ0Xc7kmR88xk4abSxBsewUIQkLVCf/a8HSFfIt/cF3jjK5gNi1Jzx0TjY=
+	t=1781034239; cv=none; b=rv5tXDOKktO/RdGSuBfcOm9na9LQqH8oirw4sm0UAUr0fnA5gcfOFUu3dZxb1yYE13JjfrB42pEzZ2hCpltCMsDDBo1LCQhhy1hwdFasN51Z36yezJk5Hfl0KGbXntIZwyr92+Jd+IjfCop4EhfhjgN5I9G7dCN6ZckuNbgb00k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781034239; c=relaxed/simple;
-	bh=iC0VCGJiyA6nIS7f0KYJXgpHHqq+PFG8Z9bIKvX9Z9Y=;
+	bh=gzBcBqMw3VOFowvnVoTO4lF0wtDv+lGOOZZf2QrR0qs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SXTjZom+2Lh3TMseRpkm0CHmQQHGjnI847LsQuDeJzXV4090TMKpxpcQ4asIQMMMesL3joDv57eyEDaWdsJHbtJej799hVO/2kKXE8X3B+grJ5qtnKzmGnNuu1zZ16NXoXte5Simk+P6hj308kaFlSjn8agtBfIc/iuq3/A3SGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTt5dGz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D8F5C4AF0D;
+	 In-Reply-To:To:Cc; b=ni5Qg04QPtPxHkqGuqpmJ+AeDLwWsPy/+ZUakRt6ZrUDvBihVFFwd5kGbnzmpgnaRPxx5CF3/Jc3JUngAn47ZNxFNAY8ErPhu5h/SoI8aN447fRxCk294loy0DAQpbCq5sIEAlaCbW36Ych3UUR8NpgSTj9bXf1IXlBssQkO61Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hr6LdIFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5AA5AC2BCB9;
 	Tue,  9 Jun 2026 19:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781034239;
-	bh=iC0VCGJiyA6nIS7f0KYJXgpHHqq+PFG8Z9bIKvX9Z9Y=;
+	bh=gzBcBqMw3VOFowvnVoTO4lF0wtDv+lGOOZZf2QrR0qs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cTt5dGz2yUpeeeXLN3Pl+HY9zh+JjYr20esUQXSShxHVnOPyKZ4feIiYX5AR0d7dj
-	 /7+pdHlz/nY9aQrdyAxP5m9XIBnnGS/GQWg6nFswX/KnD1qCF2o8tGL7nn40NCT2pg
-	 S2ZtHjaDSeFb0kdxikQDVPrDNH7L3a0hwucafmLbfrsMnygH/rzrt+SwBeCRXc4IOe
-	 4DBfiF4oO6rCYEIfChV3B6+CrG90bBbLsY4sBuH5xfNhHt6+FJU9S4y06VZjlEtl3t
-	 6ck9t2PJa6DQiis60BasESHIF/7yGOCo2L28V2TXULCeHS73415IZyR9Fy05azt1PG
-	 TlUr7gR7/eUGw==
+	b=hr6LdIFxr1bYKoRRmxLBuL9PgNAOseMGYdvmqnAALtxHbtkPmJPq+5iPEBV9RXuk5
+	 5q1yECriWB60cQcfvDXtnYa+UQleiYZRb8H1jUK5wJYWsPyOPvSD7h3JP5N2G9eaLm
+	 kIh7VXVy3+V+H1Ci8tzpGT6HM+6iqs0jAsaCnpSMuO9Y/zA6HLZKiCGGCaIyI+j2dE
+	 uLHMMMM0ptDnCVsev2Ii3V+kuvCwNjybAxcX7UvoS8oXUUY4iEWDGd4eFr5Tr2XrHG
+	 LmtIX0H9ClmaelPtxq0DXajWdcjC2/j9vjPoo7Kb6mEH2bJi76OtDf19FjIke9EGud
+	 w/Rbun4iyzJ8A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38A95CD8CAD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A645CD98C6;
 	Tue,  9 Jun 2026 19:43:59 +0000 (UTC)
 From: Ferdinand Schwenk via B4 Relay <devnull+ferdinand.schwenk.advastore.com@kernel.org>
-Date: Tue, 09 Jun 2026 21:43:10 +0200
-Subject: [PATCH v3 1/3] hwmon: ina238: add support for samples and
- update_interval
+Date: Tue, 09 Jun 2026 21:43:11 +0200
+Subject: [PATCH v3 2/3] hwmon: Add update_interval_us chip attribute
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -61,7 +60,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-hwmon-ina238-update-interval-us-v2-v3-1-016b55567950@advastore.com>
+Message-Id: <20260609-hwmon-ina238-update-interval-us-v2-v3-2-016b55567950@advastore.com>
 References: <20260609-hwmon-ina238-update-interval-us-v2-v3-0-016b55567950@advastore.com>
 In-Reply-To: <20260609-hwmon-ina238-update-interval-us-v2-v3-0-016b55567950@advastore.com>
 To: Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>, 
@@ -70,11 +69,11 @@ Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, richard.leitner@linux.dev, 
  Ferdinand Schwenk <ferdinand.schwenk@advastore.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781034237; l=10107;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781034237; l=3831;
  i=ferdinand.schwenk@advastore.com; h=from:subject:message-id;
- bh=dQHDtHhV2jsrDYAQ4/1ii6QcUe4fOkIwkUXgWO76amw=;
- b=9R7tda8swC237Nwnvh0aQzEwvFvd5G3NuFs3tE/CiaG2yYn2xCkxVSCAt8gYjgxRnRyr0wEBW
- hN9ndkFjGQvAfmS1HXMeU2wipLgdtWLDBu+GRk+eQJewGq23ttS4hhX
+ bh=naArtmSHACSbi3CCOmku0nt+VQ/y8PXcc6k+1ebdK2A=;
+ b=iD7Gh8kTWmLkvsX8QqENKxVd0ivfEW38LSCpaJTBASHKxxQMe4CtB78zuRoe3weymSyL+WUk2
+ 6H3qRDsGbgIAqVWVWIMuYv2J+e4N5t37X1CiJIiPenCO3KuXMZ2/g0H
 X-Developer-Key: i=ferdinand.schwenk@advastore.com; a=ed25519;
  pk=HyA9NdHJ7NystP+1SyuWJeyXNH2EO4A09FXli9mfs9Q=
 X-Endpoint-Received: by B4 Relay for
@@ -87,11 +86,11 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14915-lists,linux-hwmon=lfdr.de,ferdinand.schwenk.advastore.com];
+	TAGGED_FROM(0.00)[bounces-14913-lists,linux-hwmon=lfdr.de,ferdinand.schwenk.advastore.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-doc@vger.kernel.org,m:richard.leitner@linux.dev,m:ferdinand.schwenk@advastore.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
@@ -112,308 +111,104 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	HAS_REPLYTO(0.00)[ferdinand.schwenk@advastore.com];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,advastore.com:replyto,advastore.com:email,advastore.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 68127663E5E
+X-Rspamd-Queue-Id: D12D9663E53
 
 From: Ferdinand Schwenk <ferdinand.schwenk@advastore.com>
 
-Expose INA238 ADC averaging count (AVG) and conversion timing
-(VBUSCT/VSHCT/VTCT) through chip-level hwmon attributes:
+Some hardware monitoring chips support update intervals below one
+millisecond. The existing update_interval attribute uses millisecond
+granularity, which causes sub-millisecond steps to round to the same
+value and become inaccessible from userspace.
 
-  chip/samples
-  chip/update_interval
-
-Use per-chip conversion-time lookup tables so the same helpers work
-for INA228/INA237/INA238/INA700/INA780 and SQ52206. Cache ADC_CONFIG
-in driver data and update it on writes to avoid extra register reads
-during read-modify-write updates.
-
-Report update_interval in milliseconds as required by the hwmon ABI.
-Compute it from raw ADC cycle time multiplied by the active averaging
-count, and apply the inverse mapping on writes so programmed conversion
-time tracks the selected sample count.
-
-Clamp user-provided update_interval before unit scaling to prevent
-overflow in arithmetic conversions.
-
-Also combine chip attributes in HWMON_CHANNEL_INFO using a bitwise OR
-for a single logical chip channel.
+Introduce update_interval_us, a companion chip-level attribute that
+expresses the same update interval in microseconds. Drivers
+implementing this attribute should also implement update_interval for
+compatibility with millisecond-based userspace interfaces.
 
 Signed-off-by: Ferdinand Schwenk <ferdinand.schwenk@advastore.com>
 ---
- drivers/hwmon/ina238.c | 144 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 142 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-class-hwmon | 14 ++++++++++++++
+ Documentation/hwmon/sysfs-interface.rst     |  4 ++++
+ drivers/hwmon/hwmon.c                       |  1 +
+ include/linux/hwmon.h                       |  2 ++
+ 4 files changed, 21 insertions(+)
 
-diff --git a/drivers/hwmon/ina238.c b/drivers/hwmon/ina238.c
-index ff67b03189f7..dc5dd3ad2557 100644
---- a/drivers/hwmon/ina238.c
-+++ b/drivers/hwmon/ina238.c
-@@ -15,6 +15,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/regmap.h>
-+#include <linux/util_macros.h>
+diff --git a/Documentation/ABI/testing/sysfs-class-hwmon b/Documentation/ABI/testing/sysfs-class-hwmon
+index cfd0d0bab483..b185bdfc7186 100644
+--- a/Documentation/ABI/testing/sysfs-class-hwmon
++++ b/Documentation/ABI/testing/sysfs-class-hwmon
+@@ -27,6 +27,20 @@ Description:
+ 		Some devices have a variable update rate or interval.
+ 		This attribute can be used to change it to the desired value.
  
- /* INA238 register definitions */
- #define INA238_CONFIG			0x0
-@@ -49,6 +50,17 @@
- #define INA238_DIAG_ALERT_BUSUL		BIT(3)
- #define INA238_DIAG_ALERT_POL		BIT(2)
++What:		/sys/class/hwmon/hwmonX/update_interval_us
++Description:
++		The interval at which the chip will update readings,
++		expressed in microseconds.
++		Unit: microsecond
++
++		RW
++
++		Some devices have a variable update rate or interval and
++		require finer-than-millisecond control.
++		This attribute can be used to change it to the desired value.
++		Drivers implementing this attribute should also implement
++		update_interval for millisecond-based userspace interfaces.
++
+ What:		/sys/class/hwmon/hwmonX/inY_min
+ Description:
+ 		Voltage min value.
+diff --git a/Documentation/hwmon/sysfs-interface.rst b/Documentation/hwmon/sysfs-interface.rst
+index f76e9f8cc1ad..94e1bbce172a 100644
+--- a/Documentation/hwmon/sysfs-interface.rst
++++ b/Documentation/hwmon/sysfs-interface.rst
+@@ -106,6 +106,10 @@ Global attributes
+ `update_interval`
+ 		The interval at which the chip will update readings.
  
-+/* INA238_ADC_CONFIG register field masks and shifts */
-+#define INA238_ADC_CONFIG_MODE_MASK	GENMASK(15, 12)
-+#define INA238_ADC_CONFIG_VBUSCT_SHIFT	9
-+#define INA238_ADC_CONFIG_VBUSCT_MASK	GENMASK(11, 9)
-+#define INA238_ADC_CONFIG_VSHCT_SHIFT	6
-+#define INA238_ADC_CONFIG_VSHCT_MASK	GENMASK(8, 6)
-+#define INA238_ADC_CONFIG_VTCT_SHIFT	3
-+#define INA238_ADC_CONFIG_VTCT_MASK	GENMASK(5, 3)
-+#define INA238_ADC_CONFIG_AVG_SHIFT	0
-+#define INA238_ADC_CONFIG_AVG_MASK	GENMASK(2, 0)
++`update_interval_us`
++		The interval at which the chip will update readings,
++		expressed in microseconds for finer resolution.
 +
- #define INA238_REGISTERS		0x20
  
- #define INA238_RSHUNT_DEFAULT		2500	/* uOhm */
-@@ -101,6 +113,21 @@ static const struct regmap_config ina238_regmap_config = {
- 	.val_bits = 16,
- };
- 
-+/* Lookup table for conversion times in usec for INA238 family */
-+static const u16 ina238_conv_time[] = {
-+	50, 84, 150, 280, 540, 1052, 2074, 4120,
-+};
-+
-+/* Lookup table for conversion times in usec for SQ52206 */
-+static const u16 sq52206_conv_time[] = {
-+	66, 118, 310, 566, 1070, 2090, 4140, 8230,
-+};
-+
-+/* Lookup table for number of samples used in averaging mode */
-+static const int ina238_avg_samples[] = {
-+	1, 4, 16, 64, 128, 256, 512, 1024,
-+};
-+
- enum ina238_ids { ina228, ina237, ina238, ina700, ina780, sq52206 };
- 
- struct ina238_config {
-@@ -112,6 +139,7 @@ struct ina238_config {
- 	u32 power_calculate_factor;	/* fixed parameter for power calculation, from datasheet */
- 	u32 bus_voltage_lsb;		/* bus voltage LSB, in nV */
- 	int current_lsb;		/* current LSB, in uA */
-+	const u16 *conv_time;		/* conversion time lookup table */
- };
- 
- struct ina238_data {
-@@ -124,6 +152,7 @@ struct ina238_data {
- 	int current_lsb;		/* current LSB, in uA */
- 	int power_lsb;			/* power LSB, in uW */
- 	int energy_lsb;			/* energy LSB, in uJ */
-+	u16 adc_config;			/* cached ADC_CONFIG register value */
- };
- 
- static const struct ina238_config ina238_config[] = {
-@@ -135,6 +164,7 @@ static const struct ina238_config ina238_config[] = {
- 		.config_default = INA238_CONFIG_DEFAULT,
- 		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 16,
-+		.conv_time = ina238_conv_time,
- 	},
- 	[ina237] = {
- 		.has_20bit_voltage_current = false,
-@@ -144,6 +174,7 @@ static const struct ina238_config ina238_config[] = {
- 		.config_default = INA238_CONFIG_DEFAULT,
- 		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 12,
-+		.conv_time = ina238_conv_time,
- 	},
- 	[ina238] = {
- 		.has_20bit_voltage_current = false,
-@@ -153,6 +184,7 @@ static const struct ina238_config ina238_config[] = {
- 		.config_default = INA238_CONFIG_DEFAULT,
- 		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 12,
-+		.conv_time = ina238_conv_time,
- 	},
- 	[ina700] = {
- 		.has_20bit_voltage_current = false,
-@@ -163,6 +195,7 @@ static const struct ina238_config ina238_config[] = {
- 		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 12,
- 		.current_lsb = 480,
-+		.conv_time = ina238_conv_time,
- 	},
- 	[ina780] = {
- 		.has_20bit_voltage_current = false,
-@@ -173,6 +206,7 @@ static const struct ina238_config ina238_config[] = {
- 		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 12,
- 		.current_lsb = 2400,
-+		.conv_time = ina238_conv_time,
- 	},
- 	[sq52206] = {
- 		.has_20bit_voltage_current = false,
-@@ -182,6 +216,7 @@ static const struct ina238_config ina238_config[] = {
- 		.config_default = SQ52206_CONFIG_DEFAULT,
- 		.bus_voltage_lsb = SQ52206_BUS_VOLTAGE_LSB,
- 		.temp_resolution = 16,
-+		.conv_time = sq52206_conv_time,
- 	},
- };
- 
-@@ -261,6 +296,97 @@ static int ina228_read_voltage(struct ina238_data *data, int channel, long *val)
- 	return 0;
- }
- 
-+/* Converting ADC_CONFIG register value to update_interval in usec */
-+static inline u32 ina238_reg_to_interval_us(struct ina238_data *data)
-+{
-+	const u16 *ct = data->config->conv_time;
-+	u32 vbusct = ct[(data->adc_config & INA238_ADC_CONFIG_VBUSCT_MASK) >>
-+			INA238_ADC_CONFIG_VBUSCT_SHIFT];
-+	u32 vshct  = ct[(data->adc_config & INA238_ADC_CONFIG_VSHCT_MASK) >>
-+			INA238_ADC_CONFIG_VSHCT_SHIFT];
-+	u32 vtct   = ct[(data->adc_config & INA238_ADC_CONFIG_VTCT_MASK) >>
-+			INA238_ADC_CONFIG_VTCT_SHIFT];
-+
-+	return vbusct + vshct + vtct;
-+}
-+
-+static inline u32 ina238_samples(struct ina238_data *data)
-+{
-+	return ina238_avg_samples[(data->adc_config & INA238_ADC_CONFIG_AVG_MASK) >>
-+				  INA238_ADC_CONFIG_AVG_SHIFT];
-+}
-+
-+/* Converting update_interval in msec to a single conversion time in usec */
-+static inline u32 ina238_interval_ms_to_conv_time(long interval, u32 samples)
-+{
-+	u64 interval_us;
-+
-+	interval = clamp_val(interval, 0, INT_MAX / 1000);
-+	interval_us = (u64)interval * 1000;
-+
-+	/*
-+	 * update_interval reports the ADC cycle time including averaging.
-+	 * The target per-field conversion time is interval_us / (samples * 3).
-+	 */
-+	return DIV_ROUND_CLOSEST_ULL(interval_us, samples * 3);
-+}
-+
-+static int ina238_read_chip(struct device *dev, u32 attr, long *val)
-+{
-+	struct ina238_data *data = dev_get_drvdata(dev);
-+
-+	switch (attr) {
-+	case hwmon_chip_samples:
-+		*val = ina238_samples(data);
-+		return 0;
-+	case hwmon_chip_update_interval:
-+		/* Return in msec */
-+		*val = DIV_ROUND_CLOSEST(ina238_reg_to_interval_us(data) *
-+					ina238_samples(data), 1000);
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int ina238_write_chip(struct device *dev, u32 attr, long val)
-+{
-+	struct ina238_data *data = dev_get_drvdata(dev);
-+	u16 adc_config;
-+	int idx, ret;
-+
-+	switch (attr) {
-+	case hwmon_chip_samples:
-+		idx = find_closest(val, ina238_avg_samples,
-+				   ARRAY_SIZE(ina238_avg_samples));
-+		adc_config = (data->adc_config & ~INA238_ADC_CONFIG_AVG_MASK) |
-+			     (idx << INA238_ADC_CONFIG_AVG_SHIFT);
-+		ret = regmap_write(data->regmap, INA238_ADC_CONFIG, adc_config);
-+		if (ret)
-+			return ret;
-+		data->adc_config = adc_config;
-+		return 0;
-+	case hwmon_chip_update_interval:
-+		val = ina238_interval_ms_to_conv_time(val, ina238_samples(data));
-+		idx = find_closest(val, data->config->conv_time,
-+				   ARRAY_SIZE(ina238_conv_time));
-+		adc_config = (data->adc_config &
-+			      ~(INA238_ADC_CONFIG_VBUSCT_MASK |
-+				INA238_ADC_CONFIG_VSHCT_MASK |
-+				INA238_ADC_CONFIG_VTCT_MASK)) |
-+			     ((u16)idx << INA238_ADC_CONFIG_VBUSCT_SHIFT) |
-+			     ((u16)idx << INA238_ADC_CONFIG_VSHCT_SHIFT) |
-+			     ((u16)idx << INA238_ADC_CONFIG_VTCT_SHIFT);
-+		ret = regmap_write(data->regmap, INA238_ADC_CONFIG, adc_config);
-+		if (ret)
-+			return ret;
-+		data->adc_config = adc_config;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int ina238_read_in(struct device *dev, u32 attr, int channel,
- 			  long *val)
- {
-@@ -587,6 +713,8 @@ static int ina238_read(struct device *dev, enum hwmon_sensor_types type,
- 		       u32 attr, int channel, long *val)
- {
- 	switch (type) {
-+	case hwmon_chip:
-+		return ina238_read_chip(dev, attr, val);
- 	case hwmon_in:
- 		return ina238_read_in(dev, attr, channel, val);
- 	case hwmon_curr:
-@@ -607,6 +735,8 @@ static int ina238_write(struct device *dev, enum hwmon_sensor_types type,
- 			u32 attr, int channel, long val)
- {
- 	switch (type) {
-+	case hwmon_chip:
-+		return ina238_write_chip(dev, attr, val);
- 	case hwmon_in:
- 		return ina238_write_in(dev, attr, channel, val);
- 	case hwmon_curr:
-@@ -629,6 +759,14 @@ static umode_t ina238_is_visible(const void *drvdata,
- 	bool has_energy = data->config->has_energy;
- 
- 	switch (type) {
-+	case hwmon_chip:
-+		switch (attr) {
-+		case hwmon_chip_samples:
-+		case hwmon_chip_update_interval:
-+			return 0644;
-+		default:
-+			return 0;
-+		}
- 	case hwmon_in:
- 		switch (attr) {
- 		case hwmon_in_input:
-@@ -692,6 +830,8 @@ static umode_t ina238_is_visible(const void *drvdata,
- 				HWMON_I_MIN | HWMON_I_MIN_ALARM)
- 
- static const struct hwmon_channel_info * const ina238_info[] = {
-+	HWMON_CHANNEL_INFO(chip,
-+			   HWMON_C_SAMPLES | HWMON_C_UPDATE_INTERVAL),
- 	HWMON_CHANNEL_INFO(in,
- 			   /* 0: shunt voltage */
- 			   INA238_HWMON_IN_CONFIG,
-@@ -798,8 +938,8 @@ static int ina238_probe(struct i2c_client *client)
- 	}
- 
- 	/* Setup ADC_CONFIG register */
--	ret = regmap_write(data->regmap, INA238_ADC_CONFIG,
--			   INA238_ADC_CONFIG_DEFAULT);
-+	data->adc_config = INA238_ADC_CONFIG_DEFAULT;
-+	ret = regmap_write(data->regmap, INA238_ADC_CONFIG, data->adc_config);
- 	if (ret < 0) {
- 		dev_err(dev, "error configuring the device: %d\n", ret);
- 		return -ENODEV;
+ ********
+ Voltages
+diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
+index 9695dca62a7e..c481bb535e35 100644
+--- a/drivers/hwmon/hwmon.c
++++ b/drivers/hwmon/hwmon.c
+@@ -572,6 +572,7 @@ static const char * const hwmon_chip_attrs[] = {
+ 	[hwmon_chip_curr_reset_history] = "curr_reset_history",
+ 	[hwmon_chip_power_reset_history] = "power_reset_history",
+ 	[hwmon_chip_update_interval] = "update_interval",
++	[hwmon_chip_update_interval_us] = "update_interval_us",
+ 	[hwmon_chip_alarms] = "alarms",
+ 	[hwmon_chip_samples] = "samples",
+ 	[hwmon_chip_curr_samples] = "curr_samples",
+diff --git a/include/linux/hwmon.h b/include/linux/hwmon.h
+index 301a83afbd66..5a5882fee299 100644
+--- a/include/linux/hwmon.h
++++ b/include/linux/hwmon.h
+@@ -39,6 +39,7 @@ enum hwmon_chip_attributes {
+ 	hwmon_chip_power_reset_history,
+ 	hwmon_chip_register_tz,
+ 	hwmon_chip_update_interval,
++	hwmon_chip_update_interval_us,
+ 	hwmon_chip_alarms,
+ 	hwmon_chip_samples,
+ 	hwmon_chip_curr_samples,
+@@ -55,6 +56,7 @@ enum hwmon_chip_attributes {
+ #define HWMON_C_POWER_RESET_HISTORY	BIT(hwmon_chip_power_reset_history)
+ #define HWMON_C_REGISTER_TZ		BIT(hwmon_chip_register_tz)
+ #define HWMON_C_UPDATE_INTERVAL		BIT(hwmon_chip_update_interval)
++#define HWMON_C_UPDATE_INTERVAL_US	BIT(hwmon_chip_update_interval_us)
+ #define HWMON_C_ALARMS			BIT(hwmon_chip_alarms)
+ #define HWMON_C_SAMPLES			BIT(hwmon_chip_samples)
+ #define HWMON_C_CURR_SAMPLES		BIT(hwmon_chip_curr_samples)
 
 -- 
 2.54.0
