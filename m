@@ -1,128 +1,232 @@
-Return-Path: <linux-hwmon+bounces-14972-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14973-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9gftHXSGKWrFYgMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14972-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 17:44:52 +0200
+	id fpbRG4mNKWphZQMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14973-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 18:15:05 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F4066AF7A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 17:44:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D35366B455
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 18:15:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mNH+vbQh;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14972-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14972-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Tpqg89JO;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14973-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14973-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26E013045DDC
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 15:27:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFCE0336960F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 15:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5CE3B47E2;
-	Wed, 10 Jun 2026 15:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C358C42848D;
+	Wed, 10 Jun 2026 15:57:38 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF033314C2;
-	Wed, 10 Jun 2026 15:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142DE42883B
+	for <linux-hwmon@vger.kernel.org>; Wed, 10 Jun 2026 15:57:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781105221; cv=none; b=d/NRQvPPSH6Ng266g8IrYm/ciLRGqCYaNq16rKQHTINR+RO6+3YZuKUD0loNm4cjPM68evTvDKAeyKvUF4hthvW9xxkVQagDPvqaRP/fUgpVSwp9Ku78wrSme7r1e0ERGHhy927VOJ7391+Rp6UHVRgDAs0MsfTee7PQf8oy4NU=
+	t=1781107058; cv=none; b=cx2C0pxEUGGCUwUjoQ0PH7nO9Q0E6+9QNsMFGgsYaaechpZ0NCvAgerofqiv9mvgTrCG5dHCcLLtUJ8QRDq+ztdlMagzN3YJhhHEi1rMDTrUQBUr9zuQk8TSvQQcJVvhH8/iAtyQnqK9UuI+/hbTo+WXokdHLrYE+Nk53jMSGTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781105221; c=relaxed/simple;
-	bh=05J4jL4vvicjqZIh5x0uCzsGaVYewEyXAkBIvQutAYY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JjYIPkAeAkzXjyi8AxGlGlooA9nn94mntIRmHwBhG+ClAqISvnGRE8xe9m0zGzQL91O8UiUsXmiUsNaBOX1M8+JryR+pbnegX+z5b77t0uts1+1+t80UhSq6m4UAdgIIbAbVKukzdukHvGMJN7/xtrI09E2k5RT7wRK8hwxO2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNH+vbQh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D761F00893;
-	Wed, 10 Jun 2026 15:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781105220;
-	bh=rHL/1SvVGos3++XfJ+SDUccixV9Z7hBd00j4hKhwmBA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mNH+vbQhg7lcJcXSStBKXa8RxavD10gE7jGvaUa8ywekWJLWOHq4jYCzm/eRaSqnq
-	 /77gIw1YEbkdJoXj0B0zlNKEDfkOiftbRT7labzDxyZFNQcJrDMH8t3K5FFe5NK2G7
-	 CTX+X3Wa2Kjxj5NcGG1/Xyz6ErfyrlbzSjCzQWRLS+YEkWMQokoRK9U5xRMDFg9mDC
-	 1rJnn7+Or2wrhYWUKfp8wg5roMzKcC3LGyP5uJGsYaAwqu1SQzJROpQ/6PhhUDTEM2
-	 RDVl+ScleAaw82BjKWtF+opLqfCcDL5ZHsNEDHGG3QgmITZuJxcLJ/5UKH+og+JR1y
-	 CLS7I4hajSA+Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 2/2] hwmon: temperature: add support for EMC1812
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marius Cristea" <marius.cristea@microchip.com>
-Cc: devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260610-hw_mon-emc1812-v11-2-cef809af5c19@microchip.com>
-References: <20260610-hw_mon-emc1812-v11-2-cef809af5c19@microchip.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 15:26:58 +0000
-Message-Id: <20260610152659.A2D761F00893@smtp.kernel.org>
+	s=arc-20240116; t=1781107058; c=relaxed/simple;
+	bh=oTSaQY+9D5qhLcY1Wf9pqn6FEBc7ivW9+Td1eoJV7gM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hcfl+i030i9WfYudCvE6+pY5UcYEaCNKcgLDz9DpmOaSqAus6651WHu2nMFm7UMnoZFPuDevD/qgM+DC8DdtkT2aNWIxXO9NTr6/eQXkZ3UTkv1SEvaOEg9HTp093Bqrwzvpez6ah5U8lIo8wz+timvo7xtsmcCEjmOki/9cMY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tpqg89JO; arc=none smtp.client-ip=74.125.82.175
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-304d8362a58so3103eec.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 10 Jun 2026 08:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781107056; x=1781711856; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=j3Y+Zhn4vDDB0roEdMHVYjzPSRem/jkfPJO2WcDGHXM=;
+        b=Tpqg89JOV0ME1frJaUh6d91V4QSFq/yKgUkSgl0/9a9/5bzgyPM55qdhonYiWX9IIl
+         Bdd9e0dhw85qJykHSDApWxPuDmpv3tkmCXertAlVjKNWN1d86Qg2QXcZnzPAAGkzTZcm
+         iCoUky8O3ITyKuT6MmTgQuXgwhRH0g9dleomiBx6hpL0G3TcGRHkTOeSPKn41H0y/t3i
+         daQog69vorVzRgqO/YxPbxLrPx54bq6pygVNl/nMnzauaofuYUmSt7X3FSu3j1gllw8z
+         CbtRzdhkm4AwuNNhNu0DZPhpraqm+y1bnw9wprmDPXUZrE6nfaJc8+r+oIEJu38dgdhh
+         zRJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781107056; x=1781711856;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j3Y+Zhn4vDDB0roEdMHVYjzPSRem/jkfPJO2WcDGHXM=;
+        b=mzcy2ac6QxuAZmGpc5Q651l/SOpVo0/5UrfNIQ8uHtFhV5884dGSvPFZGmxy3AZftM
+         AJNi4ROgkBt3vj2NgDlCARf4isZlStbFdyUcjzt8dpsZS5KWCfw4wW8htQs2DmVz28wZ
+         pD6EbBIIPERf5XZFSOc86V5cBFAq6r5dKGpfvxFiCjz8vkP+xblIJjKZ8vatC0cdnpDh
+         mw7N+P28vOXBqnCFDnUeHdXqo0mAqGm3N6VjWzH5+pwhozkIft9QgjmgoiTw2h/g4ryn
+         zev3cfQyOBazYBCzX26HRqoNILLr5Ns9dNcXh+HTHozI6aC+PoHcL2qW3+W0jOEGehRP
+         yfSA==
+X-Gm-Message-State: AOJu0Yx/Z+AtbVBgnOqNrMYaza93V1DIFRSdnmBgPYLkFh9iy14K2Ct3
+	uS5HFetYF/gAJiTecnboFuT+Zez8sv9oK9uj2/DL6Go4uJNg5FmqmqbrT9P+6oaf
+X-Gm-Gg: Acq92OHLblqDjwybAWJ4Qp2EnrXghv5B+bR8bDOVbPAllLP7EFfHQjdphg7omM/uELF
+	fWsuVe751SO7DWzuUTceIk8zqbs9jEScWAtguChB8SlLzdYXxQXpug341WhaEjX6mAgCn5lbr7w
+	ouishH6B+Rd6YnVSXKGwWegES6mvUBnYHhKkH/HMJxqKPkXD+db4HTqAQxCZzQ7YUR3p6/GAhyv
+	9+3Zj+5okLM4G1db4UgYuDRqtDuhKoBMNGUbZ3Pzg3LxHr5nQUncXrG6LdgS3yB6pPbeveiw7iI
+	W/cWYo5+/N6HbXjX4P/bhFn1ZuAPICFQIsMkU3/R5vpBJdcc0KfqilYa1wOjfNIMTcyx7zRW/eu
+	QYu4cZabNhYhwTxdd+R4wkOR2epzPKvrc9xk6W3k5hmhwD0r86h+fjCHOSgVaZOjss6nvR8mi3K
+	oVb89dGlhV0cx76pHC5BHPSmiWtQc37Q3vJ5ax6w6wtlhvViQ=
+X-Received: by 2002:a05:7301:b0b:b0:304:e587:50b8 with SMTP id 5a478bee46e88-3078011bbd5mr8472835eec.18.1781107055967;
+        Wed, 10 Jun 2026 08:57:35 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074dcbe995sm33570077eec.13.2026.06.10.08.57.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 08:57:35 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+To: Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>
+Subject: [PATCH] hwmon: (ina2xx) Fix overflow issues
+Date: Wed, 10 Jun 2026 08:57:31 -0700
+Message-ID: <20260610155732.12686-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14972-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,lists.linux.dev:replyto,smtp.kernel.org:mid,vger.kernel.org:from_smtp,microchip.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:marius.cristea@microchip.com,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-hwmon@vger.kernel.org,m:linux@roeck-us.net,m:loic.poulain@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14973-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	FORGED_SENDER(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,roeck-us.net:email,roeck-us.net:mid,roeck-us.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48F4066AF7A
+X-Rspamd-Queue-Id: 4D35366B455
 
-> This is the hwmon driver for Microchip EMC1812/13/14/15/33
-> Multichannel Low-Voltage Remote Diode Sensor Family.
->=20
-> EMC1812 has one external remote temperature monitoring channel.
-> EMC1813 has two external remote temperature monitoring channels.
-> EMC1814 has three external remote temperature monitoring channels,
-> channels 2 and 3 support anti parallel diode.
-> EMC1815 has four external remote temperature monitoring channels and
-> channels 1/2  and 3/4 support anti parallel diode.
-> EMC1833 has two external remote temperature monitoring channels and
-> channels 1 and 2 support anti parallel diode.
-> Resistance Error Correction is supported on channels 1/2 and 3/4.
->=20
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+Sashiko reports the following overflow problems:
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+In ina2xx_get_value(), the INA2XX_POWER calculation is:
+    val = regval * data->power_lsb_uW;
+The result is returned as a signed 32-bit int. For the INA232 with a common
+2mOhm shunt, power_lsb_uW becomes 40,000. When the 16-bit regval exceeds
+53,687, the product exceeds INT_MAX. This overflows the 32-bit signed math,
+wrapping to a negative integer and reporting erroneous negative power
+readings to userspace.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610-hw_mon-emc=
-1812-v11-0-cef809af5c19@microchip.com?part=3D2
+For INA2XX_POWER, the upper bound is clamped:
+    val = clamp_val(val, 0, UINT_MAX - data->power_lsb_uW);
+clamp_val() implicitly casts the upper bound to a 32-bit signed long on
+32-bit platforms. This results in a negative number, meaning any valid
+power limit is clamped to a negative value and ultimately programmed as 0.
+Similarly, for INA2XX_SHUNT_VOLTAGE, the initial clamp uses SHRT_MAX *
+shunt_div instead of division. The subsequent multiplication:
+    val *= data->config->shunt_div;
+overflows LONG_MAX on 32-bit platforms for high inputs, wrapping to a
+negative value and also programming the hardware limit to 0.
+
+For INA2XX_BUS_VOLTAGE on parts with bus_voltage_shift > 0, the calculation
+(val * 1000) << shift can exceed LONG_MAX for limits over ~134V, wrapping
+to negative and setting the limit to 0.
+
+Have ina2xx_get_value() return a long variable to improve the supported
+value range on 64-bit systems and to match the type os values returned
+to the hwmon core.
+
+Clamp the result of 'regval * data->power_lsb_uW' to LONG_MAX to fix the
+INA2XX_POWER calculation overflow.
+
+Change the initial clamp for INA2XX_SHUNT_VOLTAGE to SHRT_MAX / shunt_div
+to fix the shunt limit overflow.
+
+For INA2XX_BUS_VOLTAGE, limit the initial clamp to 130V instead of 200V
+to avoid the overflow.
+
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Fixes: ab7fbee452be ("hwmon: (ina2xx) Fix various overflow issues")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/ina2xx.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
+index c4742e84b999..0615666e430e 100644
+--- a/drivers/hwmon/ina2xx.c
++++ b/drivers/hwmon/ina2xx.c
+@@ -16,6 +16,7 @@
+ #include <linux/i2c.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
++#include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+@@ -266,10 +267,10 @@ static u16 ina226_interval_to_reg(long interval)
+ 	return FIELD_PREP(INA226_AVG_RD_MASK, avg_bits);
+ }
+ 
+-static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
+-			    unsigned int regval)
++static long ina2xx_get_value(struct ina2xx_data *data, u8 reg,
++			     unsigned int regval)
+ {
+-	int val;
++	long val;
+ 
+ 	switch (reg) {
+ 	case INA2XX_SHUNT_VOLTAGE:
+@@ -283,7 +284,7 @@ static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
+ 		val = DIV_ROUND_CLOSEST(val, 1000);
+ 		break;
+ 	case INA2XX_POWER:
+-		val = regval * data->power_lsb_uW;
++		val = clamp_val((u64)regval * data->power_lsb_uW, 0, LONG_MAX);
+ 		break;
+ 	case INA2XX_CURRENT:
+ 		/* signed register, result in mA */
+@@ -380,17 +381,17 @@ static u16 ina226_alert_to_reg(struct ina2xx_data *data, int reg, long val)
+ {
+ 	switch (reg) {
+ 	case INA2XX_SHUNT_VOLTAGE:
+-		val = clamp_val(val, 0, SHRT_MAX * data->config->shunt_div);
++		val = clamp_val(val, 0, DIV_ROUND_CLOSEST(SHRT_MAX, data->config->shunt_div));
+ 		val *= data->config->shunt_div;
+ 		val <<= data->config->shunt_voltage_shift;
+ 		return clamp_val(val, 0, SHRT_MAX);
+ 	case INA2XX_BUS_VOLTAGE:
+-		val = clamp_val(val, 0, 200000);
++		val = clamp_val(val, 0, 130000);
+ 		val = (val * 1000) << data->config->bus_voltage_shift;
+ 		val = DIV_ROUND_CLOSEST(val, data->config->bus_voltage_lsb);
+ 		return clamp_val(val, 0, USHRT_MAX);
+ 	case INA2XX_POWER:
+-		val = clamp_val(val, 0, UINT_MAX - data->power_lsb_uW);
++		val = clamp_val(val, 0, LONG_MAX - data->power_lsb_uW);
+ 		val = DIV_ROUND_CLOSEST(val, data->power_lsb_uW);
+ 		return clamp_val(val, 0, USHRT_MAX);
+ 	case INA2XX_CURRENT:
+-- 
+2.45.2
 
 
