@@ -1,202 +1,120 @@
-Return-Path: <linux-hwmon+bounces-14937-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14939-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id q8MsBZ3DKGr4JAMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14937-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 03:53:33 +0200
+	id tGrsNQXFKGphJQMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14939-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 03:59:33 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13A5665551
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 03:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3306655E9
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 03:59:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14937-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14937-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xzz5x00x;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-14939-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-14939-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83F103155304
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 01:49:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6377A307513E
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Jun 2026 01:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5941F339B3D;
-	Wed, 10 Jun 2026 01:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEF81A6824;
+	Wed, 10 Jun 2026 01:54:36 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4472EC54C;
-	Wed, 10 Jun 2026 01:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B41F03D9
+	for <linux-hwmon@vger.kernel.org>; Wed, 10 Jun 2026 01:54:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781056169; cv=none; b=DqMXkXz3/gFyfqkfAkNixh6IL23WMCxFABqrh0MVrE+BlNlwILI8ZZDlaLvbVwzev2uPpmd5+NIYH1d7QUvInj6Ip8Iv40EFDBxSBgH3gRB8kZuSQTu83ayGOL/7msk0v8G0COOGjc/fkqFFbOOBguzwXDdsuuRumyTNXByesfg=
+	t=1781056476; cv=none; b=tgzdbHJOhGPvecZTZy23BWR1G4rVKLFAeg6Lmym6na3I2X/JmJ5A9ed42khiIxPBV6Tz/I4AYG8XGeHmhQtRq16up2VnZkkwTzrYdF5d2G1CqoeZ4fH8BCgGtFrn+54shpwfi72BfRCs01NhESvwCIDmc9u9x+t8zAas7Uzj5Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781056169; c=relaxed/simple;
-	bh=cVXQlRjygCDxAOwydV9uY5a/QLQC+hzXzqe89qZudig=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jil3ebI9jLx4KCSgFgcNOn2lPv6OERA7s6QQsiFpZShMeSt30PIJb+o/BAPNYxf7PQbIUVh5T/AnaGP9X9+4Xwnc1RKbE6CLZuH58t0MXZcy+dmVIOO9WjR3XAdFT+TtmT3DZT1S0/n/MPTixZymTN+CN9adBI4ouqP8N4xHQI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-X-UUID: 97d333aa646e11f1aa26b74ffac11d73-20260610
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:49705e76-6389-4b32-bf89-d084d9a00e80,IP:0,U
-	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c834a6ad2cd66ce09ef2683dbc640129,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|865|898,TC:nil,Content:0|1
-	5|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 97d333aa646e11f1aa26b74ffac11d73-20260610
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2027105824; Wed, 10 Jun 2026 09:49:18 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: cryolitia@uniontech.com,
-	Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v4 4/4] hwmon: (gpd-fan): fix race condition between device removal and sysfs access
-Date: Wed, 10 Jun 2026 09:49:12 +0800
-Message-Id: <4400828422cf3a88adad4db224d9efccdb1049d2.1781055639.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1781055639.git.xiaopei01@kylinos.cn>
-References: <cover.1781055639.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1781056476; c=relaxed/simple;
+	bh=dficSiNNPsH6XpS3O2P/aULaXzlnjoYIr/pvp0afwlc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=GBawfZuWtPYVWGAjCecqX2UjId0ID45f1fhIF2Bt8u5ShrqrLXR8A+PHTCTjwCr5aJ093K2kFGDa/wqpwn3F5uyxZhQ+BGF714zS0RvGpoh1tFwQg+JLEwTQbIjYquOse73sygQoTJUGhxx5C2nbjJmDaCZ6EBUoQJfL5fwzbHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xzz5x00x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBEB1F00893;
+	Wed, 10 Jun 2026 01:54:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781056470;
+	bh=dficSiNNPsH6XpS3O2P/aULaXzlnjoYIr/pvp0afwlc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Xzz5x00xy8wTkt4WY8DQ7mk2x7G+j+rqD/sHgLSLogkBhXGQIsTaGxnYeS738n08i
+	 H3ilZMwr2dEWU3vjfvZ3OSoqYcm/atWVfS4IVtmmGzUQNt9RrfAz1YOcvd9ONUEffL
+	 4rkBu2QjoJmkwitDBoyeqGKoy6wj9nj1b377U/XUH+ieJvZ+ER1PBcA1EAZMKPZZsW
+	 xIquaID+AcQcb8A4d3na268xjmVaQNBPvIhXghndSLevFqpnpdherwejPsd15GtfHy
+	 MqbeJXbrySZ3OPFgC2pUoShX61J8xb12yhvKl/VlCAglnh5NKd7pJ65M4kGQfnLX9P
+	 znEFsEeldIJZw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 3/4] hwmon: (gpd-fan): upgrade log level from warn to
+ err for platform device creation failure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pei Xiao" <xiaopei01@kylinos.cn>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <aeb2eaa6df90178b18057a8022a0eccde7bbc82c.1781055639.git.xiaopei01@kylinos.cn>
+References: <aeb2eaa6df90178b18057a8022a0eccde7bbc82c.1781055639.git.xiaopei01@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 10 Jun 2026 01:54:28 +0000
+Message-Id: <20260610015429.5FBEB1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:cryolitia@uniontech.com,m:xiaopei01@kylinos.cn,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-14937-lists,linux-hwmon=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14939-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:xiaopei01@kylinos.cn,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xiaopei01@kylinos.cn,linux-hwmon@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiaopei01@kylinos.cn,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,smtp.kernel.org:mid,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A13A5665551
+X-Rspamd-Queue-Id: 5B3306655E9
 
-Replace the manual gpd_fan_remove() callback with a devres-managed
-action using devm_add_action_or_reset(). The original remove hook
-resets the fan to AUTOMATIC mode, but the hwmon sysfs interface
-(registered with devm_hwmon_device_register_with_info()) remains
-active until after the remove callback completes. This creates a
-race window where a concurrent userspace sysfs access can interleave
-with the EC I/O sequence, potentially corrupting EC registers.
+> When platform_create_bundle() fails, the error is fatal and prevents the
+> driver from loading. Use pr_err() instead of pr_warn() to clearly indicate
+> a critical failure.
+>=20
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 
-Using devm_add_action_or_reset() registers the reset function as a
-devres action. Due to the LIFO release order of devres, the hwmon
-device is unregistered (sysfs removed) before the reset action
-executes, eliminating the race condition.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Fixes: 0ab88e239439 ("hwmon: add GPD devices sensor driver")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
-changes in v4:
-No changes.
-
-changes in v3:
-1.Add v3 tag
-
-changes in v2:
-1.Fix a race condition between device removal and sysfs access report by
-sashiko-bot
----
- drivers/hwmon/gpd-fan.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/hwmon/gpd-fan.c b/drivers/hwmon/gpd-fan.c
-index 1b57a5add934..d1993cd645cb 100644
---- a/drivers/hwmon/gpd-fan.c
-+++ b/drivers/hwmon/gpd-fan.c
-@@ -609,6 +609,16 @@ static void gpd_init_ec(struct gpd_fan_data *data)
- 		gpd_win4_init_ec(data);
- }
- 
-+static void gpd_fan_reset_hardware(void *pdata)
-+{
-+	struct gpd_fan_data *data = pdata;
-+
-+	if (data) {
-+		data->pwm_enable = AUTOMATIC;
-+		gpd_set_pwm_enable(data, AUTOMATIC);
-+	}
-+}
-+
- static int gpd_fan_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -617,6 +627,7 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	struct device *hwdev;
- 	struct gpd_fan_data *data;
- 	const struct gpd_fan_drvdata *match;
-+	int ret;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
- 	if (!res)
-@@ -644,6 +655,11 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	dev_set_drvdata(dev, data);
- 
- 	gpd_init_ec(data);
-+
-+	ret = devm_add_action_or_reset(dev, gpd_fan_reset_hardware, data);
-+	if (ret)
-+		return ret;
-+
- 	hwdev = devm_hwmon_device_register_with_info(dev,
- 						     DRIVER_NAME,
- 						     data,
-@@ -655,19 +671,8 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void gpd_fan_remove(struct platform_device *pdev)
--{
--	struct gpd_fan_data *data = dev_get_drvdata(&pdev->dev);
--
--	if (data) {
--		data->pwm_enable = AUTOMATIC;
--		gpd_set_pwm_enable(data, AUTOMATIC);
--	}
--}
--
- static struct platform_driver gpd_fan_driver = {
- 	.probe = gpd_fan_probe,
--	.remove = gpd_fan_remove,
- 	.driver = {
- 		.name = KBUILD_MODNAME,
- 	},
--- 
-2.25.1
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1781055639.gi=
+t.xiaopei01@kylinos.cn?part=3D3
 
 
