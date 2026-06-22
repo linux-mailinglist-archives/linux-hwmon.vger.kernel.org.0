@@ -1,64 +1,64 @@
-Return-Path: <linux-hwmon+bounces-15249-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15251-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C9dgOYVBOWqbpQcAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15249-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 16:07:01 +0200
+	id DjU9NCRCOWrRpQcAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15251-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 16:09:40 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F17B6B02AC
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 16:07:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 614EE6B031A
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 16:09:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=QLVwbWNQ;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15249-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15249-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=amd.com header.s=selector1 header.b=YLUpqvas;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15251-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15251-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B878430F26A6
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 13:59:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89FA530B48C1
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jun 2026 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70983B8139;
-	Mon, 22 Jun 2026 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4413F3B8BBB;
+	Mon, 22 Jun 2026 13:59:26 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010041.outbound.protection.outlook.com [40.93.198.41])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011041.outbound.protection.outlook.com [52.101.57.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1243B7763;
-	Mon, 22 Jun 2026 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A8F3B6354;
+	Mon, 22 Jun 2026 13:59:24 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782136756; cv=fail; b=gDIFaXwwAQGnDsZ7PZ/eRrrq0ypVHmHQPZu+1pLfStHbCxm0bQR3i+xBlrna+GD/+IrEDfNsKhdjc0HHFQjxaXGCxLtEo61BFh13X/XB1DMrWxUTXA7uEOD7EKQoIc1kBwkebMnHlDbGSrVB6cWrFmEkTRcO3BZVCRbaEZvIK4c=
+	t=1782136766; cv=fail; b=LYIkY5QTKI9R7spsREpY670bntg//k9OMIbyJ8COE3OXSCsxrIOQl/itvsjBZFMnphHLMqPANvM8VxVKzOh5DjV4+H12SqD0oqwxY31pWa16foC0ESpi8K+qSuafpevGo0MTkDvlt0VsEi+km99LGofndyl7KNW4A+oE9hDeY94=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782136756; c=relaxed/simple;
-	bh=ZIu6/Kv52RFBtwoEYeOK0QFipJaTw/BORXYCtOrBrLc=;
+	s=arc-20240116; t=1782136766; c=relaxed/simple;
+	bh=EWx4oX2c7ODgcDg/XEIFstTv4EOTuE7N/Vcx9Xe1J48=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rwwgsxpJoGL2OVZ9rldmdkXhSkvjaDHyYDdxhsSHC2j15OjL4pNyqCNbtJazcNKvESLzDPjMudoAg6w09/YecqFnbZXA25ldym6Am/Z1y8t/+zsc15jxL8P0/asKeLTReE3qNzXhjD+nA3XA8OcZt6k6mWEj+MobI7XP73sWbso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QLVwbWNQ; arc=fail smtp.client-ip=40.93.198.41
+	 MIME-Version:Content-Type; b=EWZIFBFqBa+vidALFvM6eQkUn54raeUv4brMukcwlwxSpapziwJ0tqsMKMVm+O8FFkD8gaUKASchoFyZv04Iz3nXAqCLbyvTg5xTFi3u0o84I9bDkTK2Ocg27PPTJHMJPDMspMoMZms5apA0svnUopYA1YUBJOwxQaaBbQqZ+hM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YLUpqvas; arc=fail smtp.client-ip=52.101.57.41
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q8LS2AaqTBudonN9oZcp0wT52+HVdQ+HY3eEs3lXMyB33XsII+Xtrj4qUy0qSXXHj3CoYP9p7Arixx1SyyxHuEqhLKzdpGf9xdGYlwqRYFgM6I32mZe8RCRYdMC82tQQ/gN5jb8AooksJktgUL1GNQnvBQ167bHT+dNKuglufxzrcAPkAOfgbZIgaYUh5I3xBGygeAEM4XfcfZBW2fzg1LmFcIHbdxu3Vb8aPdTZ3+iKaI5HbmI3bMl1kQaT80WSdHaTs6AATCfedz5P3v+SeG/YLiby6umVLYNuIrCIOqSlLQ7WDkUabuDil9cnbPw2xoPHltAmqoS996gzFLL3OQ==
+ b=OIeCcKrOG4fiGlcp8rgfx0oNaX1jcLYc9pYI6Jo4gKS4CWGiKIXwf5iLEVueFqMpV9WbPQrfCEDV3AYhzFxTdUDsZ8ebj9E3//zgJUptavwoRGSRYt6IFxHHe3eLpuD9a907rrKScqzY8AWIqis9KeIQxCT/JapErlhOyw2pSAyIs+6IvEW/A4SaeBOmVfsD7RKSAfQgRe1mBbpHEL+G6PZCTAxCw562vHINRPFYjV7h/Gd54P9s39GwcFKTVbhrvKQXJLQxvmt50P+jaOwqwkDICTxRJjhvuD1YrJCMP47XLSZ0005sRs7PhHKrAviUfIYMVLU//Ki+OzxVJixbHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d0/8Fy1ZoZAvFJfaz1DxJ27z7B+GvvpK1yC6StVJGHc=;
- b=bKn0oktUE8fYgQW7B9cIZ9Q95id1QMkN4C9nDfL3wKjlUwpKDg4m/9d4KBzHQXm43HJozISvE0nqlnv/U922F8ETGdAP4omo2co85aqYamdMo3FHYEHzHtYqRyPaniOlp/mhC5ZCyCGDBu4B58YP86fHX44K0tsI4TU0eNlIKkTTS7rTvgZrR7I1djn1udJcGQGTUVswRdvKvviW1/gPibullhcds9MfwtsAbva9ynsDRMSsFMAte13OUxhc6BwSjqDzyL8JZs50wtg0dhUHs6o2DQIwtdUM9i+sMGgvwVewfv2bbBZDMN3/zJEGY4/6EpdJc8UxnStqC74wz4FKRw==
+ bh=EB6OPMNX5ZX2hTp32+AvWYAoHKDeqDqB1hgiTEgHZuY=;
+ b=qBoVc79HYYA4/qMKeyfgzJYy59NokOaGgQ1BOVLsQ1Qu97KpK9Bh2a7Hvx9Xk6ZaYDW4TZBVo3Gxl9fXRJ8LJJidQ7KKwd3/cXtryRXyKgJ1Pd78GGWVQRpkFwIrII06nUCUUP+DldcbJ2qGpHsy/fo+0FCrAXEzIyszrL72bXWxuuEaP++Blq0eKTcY51nUY6mBFhn9eXnH2VdibWcVMbSH6PcjyUoDfy0lxVJE4bvDmylmeP51r1nb2TxZeQVj+oVwdbYKug5/IgU3wvNOOtvzcnK3UNlxzyHCN/6tZkwaKe57OWsr8YLiOwvm2iIpm98c+Y1zfLxPpcBtmgUs9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d0/8Fy1ZoZAvFJfaz1DxJ27z7B+GvvpK1yC6StVJGHc=;
- b=QLVwbWNQCRP/1vgYtupg3D6Dgz2t4XMrD72cS6SZE2R7Wtrf3L+MHRuI2mbgR/D+TefYb1u1OFs2Q03NHzsq6ChamxH1dn3IsO/sEgiclSYN4ybV0Hip99/9FBv4LecbNVe/EKdowmrYAlaemcztHmpHxJM8Z1J622V5/uBKDHM=
-Received: from MW4P220CA0013.NAMP220.PROD.OUTLOOK.COM (2603:10b6:303:115::18)
- by SAWPR12MB999117.namprd12.prod.outlook.com (2603:10b6:806:4e3::17) with
+ bh=EB6OPMNX5ZX2hTp32+AvWYAoHKDeqDqB1hgiTEgHZuY=;
+ b=YLUpqvas+LB3aYK0z2cZc1KEAsTRbmvSwRkDaS3s3ZRAWMmOedd1iFImPh02Ru7EXBqaMnKvY+ddYuhlPisLNTqI/ZefAKZVxuXRT46ddifpr3/+nYd4dcuWtIrPUiJ1e/LHQ4qAtA6slNVfkRtfDHTnShZFhQLvWdwJdQOjAys=
+Received: from SJ0PR03CA0047.namprd03.prod.outlook.com (2603:10b6:a03:33e::22)
+ by PH0PR12MB7931.namprd12.prod.outlook.com (2603:10b6:510:289::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Mon, 22 Jun
- 2026 13:59:12 +0000
-Received: from MWH0EPF000C618E.namprd02.prod.outlook.com
- (2603:10b6:303:115:cafe::2c) by MW4P220CA0013.outlook.office365.com
- (2603:10b6:303:115::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Mon,
- 22 Jun 2026 13:59:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
+ 2026 13:59:20 +0000
+Received: from MWH0EPF000C6192.namprd02.prod.outlook.com
+ (2603:10b6:a03:33e:cafe::39) by SJ0PR03CA0047.outlook.office365.com
+ (2603:10b6:a03:33e::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.20 via Frontend Transport; Mon,
+ 22 Jun 2026 13:59:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -66,13 +66,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000C618E.mail.protection.outlook.com (10.167.249.100) with Microsoft
+ MWH0EPF000C6192.mail.protection.outlook.com (10.167.249.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Mon, 22 Jun 2026 13:59:11 +0000
+ 15.21.113.7 via Frontend Transport; Mon, 22 Jun 2026 13:59:19 +0000
 Received: from dcsm-trdripper1.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 22 Jun
- 2026 08:59:08 -0500
+ 2026 08:59:16 -0500
 From: Akshay Gupta <Akshay.Gupta@amd.com>
 To: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-hwmon@vger.kernel.org>
@@ -80,9 +80,9 @@ CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <linux@roeck-us.net>,
 	<arnd@arndb.de>, <gregkh@linuxfoundation.org>,
 	<NaveenKrishna.Chatradhi@amd.com>, <Anand.Umarji@amd.com>,
 	<Akshay.Gupta@amd.com>, <Prathima.Lk@amd.com>
-Subject: [PATCH v3 7/8] hwmon: Add mutex protecting for sbtsi read/write through hwmon
-Date: Mon, 22 Jun 2026 19:28:20 +0530
-Message-ID: <20260622135821.2190260-8-Akshay.Gupta@amd.com>
+Subject: [PATCH v3 8/8] docs: misc: amd-sbi: Document SBTSI userspace interface
+Date: Mon, 22 Jun 2026 19:28:21 +0530
+Message-ID: <20260622135821.2190260-9-Akshay.Gupta@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260622135821.2190260-1-Akshay.Gupta@amd.com>
 References: <20260622135821.2190260-1-Akshay.Gupta@amd.com>
@@ -92,109 +92,194 @@ List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C618E:EE_|SAWPR12MB999117:EE_
-X-MS-Office365-Filtering-Correlation-Id: da866e58-d828-4947-4e7b-08ded0666fef
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6192:EE_|PH0PR12MB7931:EE_
+X-MS-Office365-Filtering-Correlation-Id: 664791bb-d0e5-4be9-7a13-08ded06674f1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|23010399003|22082099003|18002099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|18002099003|11063799006|6133799003|3023799007|56012099006|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	kDUDVjopzV9ZGXaBMP0KDMbAOjJ6l2K6AHJ8EqtJftFdbPAUq1oXFWsgBPR0yDJ+dJ8GmaN7L5463wvzeDqTHdltPUloa05h+V1vt+gOAkyDXaBRZeKYyEXTNjXbO7d4KqGGKgWMTrTXXXW0eMJrnccXM4RfNZ8kmj5ugRbIGWJNvgEuWfzKn5ViONCBUITgm6+4X84tiCZ6FFrvVg5Z0oWSAw4bBblK2Sc7PiEkFzFeNbUTico8S52VYxalJHmG9/btHJRXmKkdaYtXRS7OhwZXn6arSx7bZpw+yC4k9ZSbqvzKU7pDZP5RtwmGiAA1sFKzrfJIQRJ9E6JDJQ8L2zwY/W+71dlM/+lvFBc/Oe2Oc44mm3XfETU2VbF4AMje+Su9jHz8ZzNNosKtyuuMMhACpEt0Y9b/5jtzlNezjtz4CBuzAQ/1x/r1eadJlfP6BrNC5wRvG6kj+QMMU8e5HSW4efyewMb9azqYQJiIw1CREBnfRB6RIck0Sw/5QJLYeZsFLrZUOnWe294OgwqGKZq8fX5Eci9c1y6nLfolSaZVQWi5m/vadUjHwe30wh7CwLENtcOZFZgIE9jcBpIOEk0D50hzKAdqoBYz4VhikSVhuwW+HkiVyOxWElVq24//hUWewLT4a4AuiUEuSfRK+wQyLKWpY6V+2XCML4U2ZjJ8cViAD02fEUBGCimTc93x2jDBGeD2ZBQAgsADU0Dqrw==
+	wnJmQUOIiaBHca7mg0HsM2cg/yJzilfO1hjZV1SHu8F7DrWLDZBXvai5RuBKImkKS+LdOOI+V5rcZjK8D4Ki33R2ptyIx70wz4EsbiPTlBe4ec7LpKUiW5HubcmypU4mLIUd7HCiW59j4oVy//pXROnCsbfCUNEllnea5rTSbvu7GDJOBz5Wk3rVnDAclBhPHi3aVEmuSjfwtYf5D1yILKLFY+D6mrj7cjIBHaBPiw1iQWK0cxxep+D08ih0FQZ2EOkdCspyUofVdGlXQfHniJ9q18UMCUAMSTNFh/1gmmbaxXZ938UTtrWkH6gdgrMLaFEL0n2aT0ZNG/muDXqO/tGxsQoPm7CT8kXyHRKUlipBckNcBaekokTkd8vRXzVHyhRZfJ2utyj37uuJ0Gid40IF9qjhH9p9FbzPvIyhZF+rKPRp/NI3ecV3TU2YFr+m/ALLeJlDtEIG7a9CR1per1vg+WcRboKtpsUcXt9YDeT0mZQpqQW1wgCG0z2cWS4xm5eq4bedfvUJJWoYgugXU39JqLEC9w5ZmBxnVR0raewPilZIrTgEDCMG9Otdb9b6q3IPDQRBGPnCer1jeFpml4gvf2hz9u9+fl7nmgOC6WtWdUnsCjQUzNt+XEOKd8Du7n7V+scCv8hLDnrdtiTOoAhifaSD2fPBHLx32yjw8u7gueRSO+1Fg2s1+4gO4qZ+JsTe5zJ9kcjV1mI01D/MGw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(18002099003)(11063799006)(6133799003)(3023799007)(56012099006)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	iGJ/c4PiNnW60t1CnKxaFTQOj76G40OVY0iM6gyiu1d/qC9/pyrsBhY02BcY6YhaM7METII2Lb9CE22wkfnGzYscJEqQYSwuzMC46gXz4I3qG3GtmGJKoZAjAQnzpFCHt18J1Zqyi+3MBh6oCwBFNzs9oEBnuceF6vrIX/wW4KaaIKXEWXcCHzMM8GnTt67PwWk5KIrSrWss4gWZQqsekC35PphNp6hulOXVx25Qbub3c6q5yF5bgIfXpS7rmeIl4X2ghGW+RAEW9t7rWbdM0g6WawIeNmLbTx7xoFszPO/+fmTXXP6LNV5C6DMMLoUAE5sN0g8CNzM7xc98BCZKK7jaxXR6zfLD4lbxVqPzCUrrYJfVefxC9iWtaIjhl4EblhPvc1DmAnsFN4YmcaqMsYtjnT090eIx5mcS52FQ0a6iYJPo8yACZg+qEF2AMvZp
+	8tZ5QvS1WDw3lFTvJsTY0v+zVY//ZhVCfCJrU6WOcMlYfKYoF0GHfceu6hTmipnx8VAMwF49WaXu9DVYm3AVP7xkCNd85HgtEBWdu3R6PMGyrs8qQUHq1fqjwU3Mp9t2m7qPjbKjLmAffhe0e7iEgcyd3NCG6zU/NscSJHPATRiTCGMnyOdzxh9glYajSbXgDUjxBtXBzfKQIFZaMXCHaPROL8+/uoo+XqdEWYwHOrRl3Q833JvhnwcTBqskBT+SiiWRxzFIjiEN0VPaKS6ue9pWgn7cSD/f8CRou9VFls6v2MV2a0H5CwtWMwPyMTT8GDb+bk5GxgDhENqaT8mBr+k7QE7Sr4v4G+VJTP8v7G4j3GJg2EN231S+9KCPYU8CIK7Z1xz3RxcBCb7ts4zQcZ+ufckOCt/J74Bp4xOTvLjbuXn2fNkZ6hplBT3rOfrc
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 13:59:11.5565
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 13:59:19.9572
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: da866e58-d828-4947-4e7b-08ded0666fef
+X-MS-Exchange-CrossTenant-Network-Message-Id: 664791bb-d0e5-4be9-7a13-08ded06674f1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C618E.namprd02.prod.outlook.com
+	MWH0EPF000C6192.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999117
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7931
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS(0.00)[m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux@roeck-us.net,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:NaveenKrishna.Chatradhi@amd.com,m:Anand.Umarji@amd.com,m:Akshay.Gupta@amd.com,m:Prathima.Lk@amd.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15251-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[Akshay.Gupta@amd.com,linux-hwmon@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-15249-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[Akshay.Gupta@amd.com,linux-hwmon@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:url,amd.com:from_mime,amd.com:dkim,amd.com:email,amd.com:mid,vger.kernel.org:from_smtp];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[Akshay.Gupta@amd.com,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[amd.com:+];
 	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	TAGGED_RCPT(0.00)[linux-hwmon];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F17B6B02AC
+X-Rspamd-Queue-Id: 614EE6B031A
 
 From: Prathima <Prathima.Lk@amd.com>
 
-Add a mutex and take it around SBTSI read/write paths so that only
-one transaction runs at a time. The lock is held only for the
-duration of the bus transfer and associated driver bookkeeping, not
-across blocking work unrelated to SBTSI.
+- Document AMD sideband IOCTL description defined
+  for SBTSI and its usage.
+  User space C-APIs are made available by esmi_oob_library [1],
+  which is provided by the E-SMS project [2].
 
-This is a concurrency hardening fix.
+  Link: https://github.com/amd/esmi_oob_library [1]
+  Link: https://www.amd.com/en/developer/e-sms.html [2]
+
+Include a user-space open example for /dev/sbtsi-* and list auxiliary
+bus sysfs paths.
 
 Reviewed-by: Akshay Gupta <Akshay.Gupta@amd.com>
 Signed-off-by: Prathima <Prathima.Lk@amd.com>
 ---
 Changes since v2:
-- New patch
+- Update misc node names info as per socket
 
- drivers/hwmon/sbtsi_temp.c | 2 ++
- 1 file changed, 2 insertions(+)
+Changes since v1:
+- Elaborate the document
+ Documentation/misc-devices/amd-sbi.rst | 68 ++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-index d7ae986d824c..11c8108d69b2 100644
---- a/drivers/hwmon/sbtsi_temp.c
-+++ b/drivers/hwmon/sbtsi_temp.c
-@@ -70,6 +70,7 @@ static int sbtsi_temp_read(struct sbtsi_data *data, u8 reg1, u8 reg2,
- {
- 	int ret;
+diff --git a/Documentation/misc-devices/amd-sbi.rst b/Documentation/misc-devices/amd-sbi.rst
+index f91ddadefe48..fbbbc504119f 100644
+--- a/Documentation/misc-devices/amd-sbi.rst
++++ b/Documentation/misc-devices/amd-sbi.rst
+@@ -48,6 +48,60 @@ Access restrictions:
+  * APML Mailbox messages and Register xfer access are read-write,
+  * CPUID and MCA_MSR access is read-only.
  
-+	guard(sbtsi)(data);
- 	ret = sbtsi_xfer(data, reg1, val1, true);
- 	if (!ret)
- 		ret = sbtsi_xfer(data, reg2, val2, true);
-@@ -84,6 +85,7 @@ static int sbtsi_temp_write(struct sbtsi_data *data, u8 reg_int, u8 reg_dec,
- {
- 	int ret;
++SBTSI device
++============
++
++sbtsi driver under the drivers/misc/amd-sbi creates miscdevice
++/dev/sbtsi-* to let user space programs run APML TSI register xfer
++commands.
++
++The driver supports both I2C and I3C transports for SB-TSI targets.
++The transport is selected by the bus where the device is enumerated.
++
++Misc device:
++ * In 1P socket 0: /dev/sbtsi-4c
++ * In 2P socket 0: /dev/sbtsi-4c, socket 1: /dev/sbtsi-48
++
++.. code-block:: bash
++
++   $ ls -al /dev/sbtsi-4c
++   crw-------    1 root     root       10, 116 Apr  2 05:22 /dev/sbtsi-4c
++
++
++Access restrictions:
++ * Only root user is allowed to open the file.
++ * APML TSI Register xfer access is read-write.
++
++SBTSI hwmon interface
++=====================
++
++The sbtsi_temp auxiliary driver binds to the auxiliary device published
++by the core sbtsi driver on the auxiliary bus. The auxiliary device is
++named amd-sbtsi.temp-sensor.<addr> where <addr> is the device's dynamic
++address.
++
++It registers a hwmon device, providing a standard Linux hwmon interface
++for reading CPU temperature and managing temperature limits.
++
++The hwmon device appears under ``/sys/class/hwmon/`` when both ``sbtsi.ko``
++and ``sbtsi_temp.ko`` are loaded.
++
++Verify auxiliary bus device::
++
++  ls /sys/bus/auxiliary/devices/
++  # e.g. amd-sbtsi.temp-sensor.X
++
++Example usage::
++
++  # Read current temperature
++  cat /sys/class/hwmon/hwmon<N>/temp1_input
++
++  # Set high temperature limit to 70 °C
++  echo 70000 > /sys/class/hwmon/hwmon<N>/temp1_max
++
++  # Verify
++  cat /sys/class/hwmon/hwmon<N>/temp1_max
++
+ Driver IOCTLs
+ =============
  
-+	guard(sbtsi)(data);
- 	ret = sbtsi_xfer(data, reg_int, &val_int, false);
- 	if (!ret)
- 		ret = sbtsi_xfer(data, reg_dec, &val_dec, false);
+@@ -63,6 +117,9 @@ Driver IOCTLs
+ .. c:macro:: SBRMI_IOCTL_REG_XFER_CMD
+ .. kernel-doc:: include/uapi/misc/amd-apml.h
+    :doc: SBRMI_IOCTL_REG_XFER_CMD
++.. c:macro:: SBTSI_IOCTL_REG_XFER_CMD
++.. kernel-doc:: include/uapi/misc/amd-apml.h
++   :doc: SBTSI_IOCTL_REG_XFER_CMD
+ 
+ User-space usage
+ ================
+@@ -85,6 +142,16 @@ Next thing, open the device file, as follows::
+     exit(1);
+   }
+ 
++To open SB-TSI device::
++
++  int file;
++
++  file = open("/dev/sbtsi-4c", O_RDWR);
++  if (file < 0) {
++    /* ERROR HANDLING */
++    exit(1);
++  }
++
+ The following IOCTLs are defined:
+ 
+ ``#define SB_BASE_IOCTL_NR      	0xF9``
+@@ -92,6 +159,7 @@ The following IOCTLs are defined:
+ ``#define SBRMI_IOCTL_CPUID_CMD		_IOWR(SB_BASE_IOCTL_NR, 1, struct apml_cpuid_msg)``
+ ``#define SBRMI_IOCTL_MCAMSR_CMD	_IOWR(SB_BASE_IOCTL_NR, 2, struct apml_mcamsr_msg)``
+ ``#define SBRMI_IOCTL_REG_XFER_CMD	_IOWR(SB_BASE_IOCTL_NR, 3, struct apml_reg_xfer_msg)``
++``#define SBTSI_IOCTL_REG_XFER_CMD      _IOWR(SB_BASE_IOCTL_NR, 4, struct apml_tsi_xfer_msg)``
+ 
+ 
+ User space C-APIs are made available by esmi_oob_library, hosted at
 -- 
 2.34.1
 
