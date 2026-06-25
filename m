@@ -1,231 +1,235 @@
-Return-Path: <linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15348-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WGhMFZ9bPWoj1wgAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:27 +0200
+	id 5kWdJpJePWoi2AgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15348-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 19:00:02 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8006C789A
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DD96C7A33
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 19:00:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rVGF3vJ3;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PUW1vl1L;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15348-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15348-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C25F8301D300
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:47:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28D3830234FA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461FF3E8C64;
-	Thu, 25 Jun 2026 16:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9383EB106;
+	Thu, 25 Jun 2026 16:59:56 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066161A9F87;
-	Thu, 25 Jun 2026 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E4E3EB0F4
+	for <linux-hwmon@vger.kernel.org>; Thu, 25 Jun 2026 16:59:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782406043; cv=none; b=W4+lkHFlVwIgyJ0RIPAl7944aAFyeiOpuS0frkpgnzkwF6O1OXZ2bCFKYPoPigDDEa1QQXhPObarTbiiV0N1LAVt246ofFYu0y07J4BWvVjLKP58a0UmBHrUnYlVDzi9gSL6PECU2ipxDlFn9Qp7WJeliaew3rhCwP7iEnAV0eg=
+	t=1782406796; cv=none; b=f6DW8inJtL9udf+Cb/3B2Yxihn7bX9OhMjoMgVnkeNX7m5LYCXaei7HgASP3t/TJjkZIqSE6lmQOW2Zvs7NDQRvrVohpHkZa60Ug0C9CP5xz5crC8x0kKAFslXH2bZmwROZlNgU6IwE6nJUgNvyciD4IzdRDF80FK0OFc21Ksuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782406043; c=relaxed/simple;
-	bh=CNS5lnxrF1UxTeAeVAO4vafSNJKHqDLrqOcxDZI/9oI=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYukWCXlNQ9KPsw0m3iM7sjzKxMFfEn6Qfoik8igb7YGjFIrnZEWSb/UMPSSOxNQGc1zvYgdRZHTsb6cqXVl4yhphxvmaKyMP3On13OihypahHBMPywV8PdRdbSlRT7PQIklCI4TdhdvTNRcDqqb0q2MbdD/W59fnqLKIjTRs44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rVGF3vJ3; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PFmOEe486684;
-	Thu, 25 Jun 2026 16:47:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=UkWQt6Z8aR8puNgIW
-	vyj5aMgFGkNXcLMEEVb9XubUC4=; b=rVGF3vJ3m94x3wesJxknqvZMSkahRSHA7
-	B+HbMyQTvTWCobc4LygP2lfrBQKxUdrlVGzJuYftdhO/udHrfrj3MU1iKhxQyA6H
-	nC5/9cOlGSGINhCM/XpsIL+zp2vyU2lZFOMcVoc21WpHMENrUonCVcxAJNP3UOLL
-	Se5YRoiPzvuA20AGoTw+CkcDbPneNSCEWb47P6q23aGfvz7yfK8WDvFcGn1IAQLd
-	Fi6O0FmGJBMvdpkf8Hzp4b3BwN/NDJXMVLrcHaKvPHdvM0aDCyW11SHttNszpMkK
-	GyjdkLnoqn78Hv+Gvx7yARrBqel9IOPQXUc9YPUeoVsMJRfPulviA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjc3tyfw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 16:47:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PGYgns016405;
-	Thu, 25 Jun 2026 16:47:05 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex66kf3gw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 16:47:05 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PGl4YI39060212
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2026 16:47:04 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4260E5805F;
-	Thu, 25 Jun 2026 16:47:04 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9580958053;
-	Thu, 25 Jun 2026 16:47:03 +0000 (GMT)
-Received: from pfw153.pfw.tadn.ibm.com (unknown [9.5.7.52])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Jun 2026 16:47:03 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: eajames@linux.ibm.com, linux@roeck-us.net, psanman@juniper.net,
-        arnd@arndb.de, ninad@linux.ibm.com, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/1] hwmon: (occ) Fix sysfs device unreg deadlock
-Date: Thu, 25 Jun 2026 11:46:53 -0500
-Message-ID: <20260625164700.2797362-2-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260625164700.2797362-1-ninad@linux.ibm.com>
+	s=arc-20240116; t=1782406796; c=relaxed/simple;
+	bh=zV9d8AItHFg684bqybM1tDzvLtUnpZpfoH54jwp2UZU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tbsHZCfWn+Z/O04uNzeXTEL4KEnSrAW3Yy38RAblIItASnPz5xZcGcsXOtpYkpDVfMdRDw5pFAQ6bcKQpaxSLX9+WGBgi6fkUnSxMKenvi04T6XxEztCldcKIKR6zvyoE2g6BIXNZGszc3b75HGkNj9JeXFUz7WR51M0fu7LtuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PUW1vl1L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A301F00A3A;
+	Thu, 25 Jun 2026 16:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782406794;
+	bh=oo2CUbYUmYIqZZhdYgUQ5WLIFKsJbGRuqimHYFccrT8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PUW1vl1LzZK/+L2WFfx/wFw3gJKBh2BbxSb44aBTMV+4G/lBaf+yZzbLr8dCiYiSx
+	 KA/8GCTuuMjdpMUafxmlmVQ2g8YcDuduE4fNsG6+fKZl4GCwwdcXfTK4vsD364bYgt
+	 U2sEdJuyq80Y9mXexPBhTdCeAsGHPVGBAMRy0G+7e0hiEucBuGvXf3OV2SU5aZmPk8
+	 RyDymVZjLG8kySbd2+fVu0Ze2MdKLiJsWxQIhKxZviQkbCj/u9bXhk98XfKQZ7pllx
+	 5n1kZORlXL71WB/6XXA9Q+7dSVWmMATCRB+FXtxUnIl1xqWz0BbeHSrrCDhTtBE9/p
+	 a3UG3jWKLAKUA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 1/1] hwmon: (occ) Fix sysfs device unreg deadlock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ninad Palsule" <ninad@linux.ibm.com>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260625164700.2797362-2-ninad@linux.ibm.com>
 References: <20260625164700.2797362-1-ninad@linux.ibm.com>
+ <20260625164700.2797362-2-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 25 Jun 2026 16:59:54 +0000
+Message-Id: <20260625165954.B7A301F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=X4Ni7mTe c=1 sm=1 tr=0 ts=6a3d5b8a cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=PO-QMXBumzaoU13EfK0A:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX2gYzI6fNfRXp
- kBh0MtQADi7a8CQrs9b+8aaxtW3GV/xGDYFnCNN8A8SeyJvhG0k3rlNa6/5e7VsLXz9ef53HQbg
- 9RdTMual6MOOxUCBivvorI/1FWWcy7Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX/93yR2PoLStd
- awyzEjzjo7NO5TPAxK5DmSk8patP/dTap3BCgqE5WeK9xUmKYTUrWvTS1y9qGUQZCPNyqZ9W5Xo
- IDzV/XiNhueJHhJEhVBgN4gCWCb5v+Le2w6o9RtEb25zM7gTV8BTB6Gqcl5xl0hgwll0Mi/qSXw
- 9MUxQx7nCoVejj94AMimWI32FCusl/P9Tpw48HC/5EBewtyF1UjLxEO1ZJRjrt9HQ6/ZAAFFxY0
- PgqCHjMo8BR9Z5sjy6wwEr0qeTWg/r0Sv6qsuUjyX1Zl+P0zAvKt6u0YItzlNcUaAb2Wkrx1BCp
- MGJsLaVKPjZlf/pgce8qO8IqQFp+s2w6Wa7uRdODgzu/tAvr7WUJCCLKIabzsAIxFI1IiyAQZbw
- zxEPycISw/J/QGwdN/r0Sq0xAiJuFTcmIXOf4IV7YN8bcjz6eDcuXPza8h4nYPvd7MJdd1NDGyU
- MJz6nw5axEjGN8hmQjg==
-X-Proofpoint-ORIG-GUID: xh16AkkNjfoKkHqqDM5qVU6o33PG2rJ9
-X-Proofpoint-GUID: xh16AkkNjfoKkHqqDM5qVU6o33PG2rJ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-25_02,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250140
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15346-lists,linux-hwmon=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[ninad@linux.ibm.com,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:eajames@linux.ibm.com,m:linux@roeck-us.net,m:psanman@juniper.net,m:arnd@arndb.de,m:ninad@linux.ibm.com,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ninad@linux.ibm.com,linux-hwmon@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.ibm.com:mid,linux.ibm.com:from_mime];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15348-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ninad@linux.ibm.com,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD8006C789A
+X-Rspamd-Queue-Id: 99DD96C7A33
 
-Release the driver lock before unregistering the hwmon device to prevent
-a deadlock. The device_unregister() call can block waiting for sysfs
-operations to complete, but those operations may be blocked waiting for
-the same lock held during unregistration.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-The deadlock occurs when:
-1. Thread A holds the driver lock and calls device_unregister()
-2. device_unregister() waits for sysfs operations to drain
-3. Thread B is blocked in a sysfs read operation waiting for the driver
-   lock
-4. Neither thread can proceed, causing a hung task
+New issues:
+- [High] Releasing the driver lock before unregistering the hwmon device in=
+troduces a data race on the shared `occ->group` structures.
+- [High] Pending sysfs reads execute hardware access via `occ_poll()` after=
+ the device has been explicitly deactivated due to a missing `occ->active` =
+check.
 
-This was observed during power system remote restart operations when
-concurrent sysfs accesses occurred during OCC active state transitions.
+Pre-existing issues:
+- [High] The exact same sysfs unregistration deadlock fixed in `occ_active(=
+)` remains unfixed in `occ_shutdown()`.
+- [High] Repeatedly toggling the OCC active state via sysfs causes an unbou=
+nded memory leak due to `devm_kcalloc` allocations that are never explicitl=
+y freed.
+--
 
-Kernel log excerpt showing the deadlock:
-  INFO: task openpower-occ-c:1430 blocked for more than 122 seconds.
-  Call trace:
-   schedule+0x28/0xfc
-   kernfs_drain+0xc8/0x174
-   __kernfs_remove.part.0+0x138/0x21c
-   kernfs_remove_by_name_ns+0x7c/0xcc
-   [...]
-   device_unregister+0x1c/0x5c
-   hwmon_device_unregister+0x58/0xb0
-   occ_active+0x6c/0xe74
-   occ_active_store+0x54/0x80
+commit 834d342f5072edda5a28c9ccd24f73161c2356f5
+Author: Ninad Palsule <ninad@linux.ibm.com>
 
-Reproducer:
-  Run these two scripts in parallel:
+hwmon: (occ) Fix sysfs device unreg deadlock
 
-  Script 1 (continuous sysfs read):
-    while true; do
-        cat /sys/class/hwmon/hwmon14/power15_cap_user
-    done
+This commit addresses a deadlock when unregistering the hwmon device by
+releasing the driver lock before calling hwmon_device_unregister(). This
+allows pending sysfs operations to complete without blocking unregistration.
 
-  Script 2 (OCC active state toggle):
-    while true; do
-        echo 0 > /sys/bus/platform/drivers/occ-hwmon/occ-hwmon.1/occ_active
-        echo 1 > /sys/bus/platform/drivers/occ-hwmon/occ-hwmon.1/occ_active
-        sleep 0.2
-    done
+> diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+> --- a/drivers/hwmon/occ/common.c
+> +++ b/drivers/hwmon/occ/common.c
+> @@ -1149,15 +1149,22 @@ int occ_active(struct occ *occ, bool active)
+>  			goto unlock;
+>  		}
+>  	} else {
+> +		struct device *hwmon_dev =3D occ->hwmon;
+> +
+>  		if (!occ->active) {
+>  			rc =3D -EALREADY;
+>  			goto unlock;
+>  		}
+> =20
+> -		if (occ->hwmon)
+> -			hwmon_device_unregister(occ->hwmon);
+>  		occ->active =3D false;
+>  		occ->hwmon =3D NULL;
+> +
+> +		mutex_unlock(&occ->lock);
 
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
- drivers/hwmon/occ/common.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+[Severity: High]
+Could releasing occ->lock here expose the shared occ->group structures to
+concurrent modification?
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index 42cc6068bb08..a5641dbbba2f 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -1149,15 +1149,22 @@ int occ_active(struct occ *occ, bool active)
- 			goto unlock;
- 		}
- 	} else {
-+		struct device *hwmon_dev = occ->hwmon;
-+
- 		if (!occ->active) {
- 			rc = -EALREADY;
- 			goto unlock;
- 		}
- 
--		if (occ->hwmon)
--			hwmon_device_unregister(occ->hwmon);
- 		occ->active = false;
- 		occ->hwmon = NULL;
-+
-+		mutex_unlock(&occ->lock);
-+
-+		if (hwmon_dev)
-+			hwmon_device_unregister(hwmon_dev);
-+
-+		return 0;
- 	}
- 
- unlock:
--- 
-2.51.0
+If one thread unregisters the device while another thread concurrently
+activates it, the activating thread calls occ_setup_sensor_attrs() which
+dynamically reallocates the attributes:
 
+occ_setup_sensor_attrs()
+    ...
+    occ->group.attrs =3D devm_kcalloc(...)
+
+Since the unregistering thread is simultaneously iterating over occ->groups,
+does this risk a NULL pointer dereference in sysfs_remove_file() due to
+reading an uninitialized pointer?
+
+> +
+> +		if (hwmon_dev)
+> +			hwmon_device_unregister(hwmon_dev);
+
+[Severity: High]
+Since occ->lock is dropped before unregistering, could pending sysfs access=
+es
+now communicate with deactivated hardware?
+
+If a sysfs read or write is waiting for occ->lock in occ_update_response() =
+or
+occ_set_user_power_cap(), it will wake up once the lock is released here.
+Because those functions do not verify if occ->active is still true after
+acquiring the lock, will they proceed to call occ_poll() or send_cmd() on a
+device that has just been deactivated?
+
+> +
+> +		return 0;
+>  	}
+> =20
+>  unlock:
+
+[ ... ]
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the exact same deadlock
+still exist in occ_shutdown()?
+
+Looking at occ_shutdown():
+
+occ_shutdown() {
+    mutex_lock(&occ->lock);
+    occ_shutdown_sysfs(occ);
+    if (occ->hwmon)
+        hwmon_device_unregister(occ->hwmon);
+    ...
+}
+
+Since this continues to hold occ->lock while unregistering the hwmon device,
+wouldn't a concurrent sysfs read waiting for occ->lock in
+occ_update_response() cause an AB-BA deadlock during driver unbind?
+
+[Severity: High]
+This is a pre-existing issue, but does repeatedly toggling the active state
+via sysfs cause an unbounded memory leak of occ->attrs?
+
+When the device is activated, occ_setup_sensor_attrs() allocates arrays:
+
+occ_setup_sensor_attrs() {
+    occ->attrs =3D devm_kcalloc(dev, num_attrs, sizeof(*occ->attrs),
+                              GFP_KERNEL);
+    ...
+}
+
+Since these are devres allocations, they are only cleaned up when the platf=
+orm
+device unbinds. When occ_active is toggled to false, they are not explicitly
+freed. If a management script repeatedly writes to the occ_active sysfs
+attribute, will this continuously leak occ->attrs and occ->group.attrs?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625164700.2797=
+362-2-ninad@linux.ibm.com?part=3D1
 
