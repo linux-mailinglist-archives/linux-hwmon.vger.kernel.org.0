@@ -1,131 +1,162 @@
-Return-Path: <linux-hwmon+bounces-15345-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fq6JLp1YPWqU1ggAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15345-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:34:37 +0200
+	id 0+5EOKVbPWol1wgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:33 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405316C77EE
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:34:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E4B6C78A0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hqM+geLq;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15345-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15345-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Azc3K9Wz;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B18DF301AC1A
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:34:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 845D03014E6C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAFD3B47E6;
-	Thu, 25 Jun 2026 16:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256873EB0EE;
+	Thu, 25 Jun 2026 16:47:24 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18231684B0;
-	Thu, 25 Jun 2026 16:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8221F1534;
+	Thu, 25 Jun 2026 16:47:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782405274; cv=none; b=S1tM83PEEsNnx/GcPRi3eq/sWVWgYYXCo4SF0vlqy+JLqdEptqx2Oj4igBrInvxhgQWWNEmsgx+K1Jeb9KH5DMuE/j3ReCTFZ86QHnnlgv5KSCi4+gr/bDOR9m5yxIXfPFV1LFgXe8MQc9Ih48k+Tnvk1OeAbS4HG1Ibar/tCV4=
+	t=1782406044; cv=none; b=TdmXevBeF2VB1nV9l2oyOdB+0tE/Bdg7vBKRdaIJzI8WopLsilBBYxhQwwABY22lbOO3r/OgEtOsJIC1d03f+3ImcVBR8P2J1DVr9u6/ILuUP1QR2u9LimptrufD1aWGXFJeoaiQfZ3PWes4k1BpsKpAZ3lVZYDApH950/QoyXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782405274; c=relaxed/simple;
-	bh=4G/LNNM3b1qOUplHc09UGSAyOeAo6risik2UZldc5cM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ck7GLBPrXtJf0P5LrdmQwq+w9Jf7Nxj22FFUevPblJTeqG2WJwcSVJjzSeCQZ5bk0UozAUbZvzTg0TjCqE8LV5gLkXccCN23Q8eZ5HZ0nRA0feT0AWp8W7Zyp0p/xvQd4muJGRwnQ9FbqfMqghJabplufHB0O1Ey4Px2PUX6esA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqM+geLq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7DC1F000E9;
-	Thu, 25 Jun 2026 16:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782405273;
-	bh=4G/LNNM3b1qOUplHc09UGSAyOeAo6risik2UZldc5cM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hqM+geLqLtKDwoPOmnGlO2HR7UprnhmjwnNic+QGVqzdjMYYukmI7R9J3ZlbCZHp7
-	 jRT/oKg0HSN59NQxPPvSj5FjNTjI9kXZAky9dTz9GivTeu+g6dn4BHdlgAvCMqZHpO
-	 xz3babkj8FJhZ1Zy0jneHq1qubU9o2ZROWVeuyp6FfMMn4L9sFkdeIcpNG55Gx+W2n
-	 H+Z2PaCnl5iBcEG9Iq9LqehHdJjKOVGcwBu6dMesbUWAtcX2dEJ0J+8pd+Bn/MvXTQ
-	 Xy1FkfPRszFXjTcywC06S7EZ1vCUtlqRJSgOLJOUqvRf22SXFpSWe1b+ZP7V4jKblL
-	 xOQYjrptDfBvw==
-Date: Thu, 25 Jun 2026 17:34:28 +0100
-From: Conor Dooley <conor@kernel.org>
-To: hehuan1@eswincomputing.com
-Cc: linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, p.zabel@pengutronix.de,
-	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ningyu@eswincomputing.com,
-	linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com,
-	luyulin@eswincomputing.com, dongxuyang@eswincomputing.com
-Subject: Re: [PATCH v8 1/2] dt-bindings: hwmon: Add Eswin EIC7700 PVT sensor
-Message-ID: <20260625-koala-dedicator-96bd3057cf48@spud>
-References: <20260625061049.1614-1-hehuan1@eswincomputing.com>
- <20260625061147.1631-1-hehuan1@eswincomputing.com>
+	s=arc-20240116; t=1782406044; c=relaxed/simple;
+	bh=l2eKcj9yOvAlPePBWGdTTxgBNyrL1Mn+l4/P1WENf3g=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=cwXFEkJOIDZbBBm2ZsYnc5Anj4TmIYeEPzP3F+ugQGZfhE373BtOTwjNHW+Kmm3PQJMIi21daAI/BYQ0yD45Sm0a85zw1uHpsr8rtAsVaFtgDSo3KN3V4LrDWGUGExx/yg7Dz2Km0Pae7atkofUEFSO6zn8zSzoFoYhah2JDaoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Azc3K9Wz; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PFmSmO378724;
+	Thu, 25 Jun 2026 16:47:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=VRZkdulMwHtmebzR8E0un/g91g2Knlijy1cbfZ6uh
+	MQ=; b=Azc3K9WzA/tSNzYMy0XkWQ9pQj1l2BVKyV9zOD0d3PBO0suYA6eqYMLd2
+	95xeBLrz00aujx7an1kIEW+4tglk6VbiUzzNbTuF24ra+S/wAIzz0m86uLfY+ekT
+	7vWZKizndxh+qtjZOo4UfhWmK+4+LZsTYxChn3FaHQkphZcyKgYyj1Ec4YK1XJNC
+	s0C9/pk63ZJE7O8hQJWAPbre2o27VZgI8/5Vumo2NnQQ0mWsNjiwfzxJlvBWk0oA
+	BNTFBxSOlytrOXeE1s02CHPypNqPS915awrgnJseIQP6Iu9Dyh3dzI+ZAF5TIweH
+	h00Sza9W3eQ7AgsiG6+SZFfBcBO4A==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9gtjhy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jun 2026 16:47:05 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PGYeRu022159;
+	Thu, 25 Jun 2026 16:47:04 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex6phq0xf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jun 2026 16:47:04 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PGkVmk24314512
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Jun 2026 16:46:31 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7255A58043;
+	Thu, 25 Jun 2026 16:47:03 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC84D58053;
+	Thu, 25 Jun 2026 16:47:02 +0000 (GMT)
+Received: from pfw153.pfw.tadn.ibm.com (unknown [9.5.7.52])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 25 Jun 2026 16:47:02 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: eajames@linux.ibm.com, linux@roeck-us.net, psanman@juniper.net,
+        arnd@arndb.de, ninad@linux.ibm.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/1] Fix sysfs device unregistration deadlock
+Date: Thu, 25 Jun 2026 11:46:52 -0500
+Message-ID: <20260625164700.2797362-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3lS29/ShfriVpN9k"
-Content-Disposition: inline
-In-Reply-To: <20260625061147.1631-1-hehuan1@eswincomputing.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8EkwjBCPXoDBtR9PQMk3ROxESp64WM20
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfXwspZZzR54BYJ
+ PpXbPrk3lYQe/Jmyj89ApErVYVFfmk+cb4N12JZXt45OaZ+gcrXkLplOkzpAjx3UG/+bRl9BLUd
+ j1RaSWkHZl71VfvGY7ZYJbmICR/tInU=
+X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a3d5b89 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=MDdrSkxlTI22Go2xdIMA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX2Iqiq45Z8tom
+ al/5dcsorpchn7NulXzAqL+exkkrrwiTDT7oHFDx/BF3gIQY9qV2mDGCyxRos04rAhXEMl96Pnt
+ A2JYREPaWoQ1vp8tiVJ2f9BDV+2rWRZLfYZ+QyFa2xI3hDvzFwZRJkEuT/i4N7YX7rn/o4WC00m
+ dEYg8TnUh0Bgcf3X2fjxJVZ4BVI3oW4zArnaRaoQRqpyRsIOZ0sHxDgp+CsBVNWJV3i8ymwuhuQ
+ ceIA6Bym1P3Mkos6DsQfgCM0PufT4uFzpzBqQu1pxRk3ss5DPMEdnrCnWKyruc5xQ6lavYqBITV
+ eOBHq3EduL/a5swnw+NSW2OiC7FZ8RpBaS7D6FXozXnZ3ZHBdzUKmJWzrKoM3Me5hfyXW/qDGMn
+ PtNVjXY8saV235/rPjEUHPZHVlsEAaktVzE+Bz4tLGatn7jo7H12WE/OxVKSFFOcp2XL3nTXDNP
+ HiyjdDx+pboMOcLmlbQ==
+X-Proofpoint-ORIG-GUID: 8EkwjBCPXoDBtR9PQMk3ROxESp64WM20
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-25_02,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250140
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.26 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15345-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:hehuan1@eswincomputing.com,m:linux@roeck-us.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:p.zabel@pengutronix.de,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ningyu@eswincomputing.com,m:linmin@eswincomputing.com,m:pinkesh.vaghela@einfochips.com,m:luyulin@eswincomputing.com,m:dongxuyang@eswincomputing.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[conor@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-15347-lists,linux-hwmon=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[ninad@linux.ibm.com,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:eajames@linux.ibm.com,m:linux@roeck-us.net,m:psanman@juniper.net,m:arnd@arndb.de,m:ninad@linux.ibm.com,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ninad@linux.ibm.com,linux-hwmon@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,microchip.com:email,spud:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 405316C77EE
+X-Rspamd-Queue-Id: D6E4B6C78A0
 
+Hello,
 
---3lS29/ShfriVpN9k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Please review the changes to fix deadlock in the occ-hwmon driver. This
+avoids kernel crash due to hung application process.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Ninad Palsule (1):
+  hwmon: (occ) Fix sysfs device unreg deadlock
 
---3lS29/ShfriVpN9k
-Content-Type: application/pgp-signature; name=signature.asc
+ drivers/hwmon/occ/common.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.51.0
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaj1YlAAKCRB4tDGHoIJi
-0uV2AQDAPqTMDCyZZXKg5nEtT4hV/Ay+5GSNwwpMf3sXlpRKrAD+OZ1q0Rf1kP/G
-LIHn6CDZjB3hAcU0yy5MmB7afhU+LQk=
-=t2nx
------END PGP SIGNATURE-----
-
---3lS29/ShfriVpN9k--
 
