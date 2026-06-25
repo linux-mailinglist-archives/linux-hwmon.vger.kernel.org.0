@@ -1,82 +1,85 @@
-Return-Path: <linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0+5EOKVbPWol1wgAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:33 +0200
+	id WGhMFZ9bPWoj1wgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:27 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E4B6C78A0
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8006C789A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 18:47:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Azc3K9Wz;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15347-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=rVGF3vJ3;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15346-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 845D03014E6C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:47:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C25F8301D300
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jun 2026 16:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256873EB0EE;
-	Thu, 25 Jun 2026 16:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461FF3E8C64;
+	Thu, 25 Jun 2026 16:47:23 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8221F1534;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066161A9F87;
 	Thu, 25 Jun 2026 16:47:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782406044; cv=none; b=TdmXevBeF2VB1nV9l2oyOdB+0tE/Bdg7vBKRdaIJzI8WopLsilBBYxhQwwABY22lbOO3r/OgEtOsJIC1d03f+3ImcVBR8P2J1DVr9u6/ILuUP1QR2u9LimptrufD1aWGXFJeoaiQfZ3PWes4k1BpsKpAZ3lVZYDApH950/QoyXw=
+	t=1782406043; cv=none; b=W4+lkHFlVwIgyJ0RIPAl7944aAFyeiOpuS0frkpgnzkwF6O1OXZ2bCFKYPoPigDDEa1QQXhPObarTbiiV0N1LAVt246ofFYu0y07J4BWvVjLKP58a0UmBHrUnYlVDzi9gSL6PECU2ipxDlFn9Qp7WJeliaew3rhCwP7iEnAV0eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782406044; c=relaxed/simple;
-	bh=l2eKcj9yOvAlPePBWGdTTxgBNyrL1Mn+l4/P1WENf3g=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=cwXFEkJOIDZbBBm2ZsYnc5Anj4TmIYeEPzP3F+ugQGZfhE373BtOTwjNHW+Kmm3PQJMIi21daAI/BYQ0yD45Sm0a85zw1uHpsr8rtAsVaFtgDSo3KN3V4LrDWGUGExx/yg7Dz2Km0Pae7atkofUEFSO6zn8zSzoFoYhah2JDaoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Azc3K9Wz; arc=none smtp.client-ip=148.163.158.5
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PFmSmO378724;
-	Thu, 25 Jun 2026 16:47:05 GMT
+	s=arc-20240116; t=1782406043; c=relaxed/simple;
+	bh=CNS5lnxrF1UxTeAeVAO4vafSNJKHqDLrqOcxDZI/9oI=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jYukWCXlNQ9KPsw0m3iM7sjzKxMFfEn6Qfoik8igb7YGjFIrnZEWSb/UMPSSOxNQGc1zvYgdRZHTsb6cqXVl4yhphxvmaKyMP3On13OihypahHBMPywV8PdRdbSlRT7PQIklCI4TdhdvTNRcDqqb0q2MbdD/W59fnqLKIjTRs44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rVGF3vJ3; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PFmOEe486684;
+	Thu, 25 Jun 2026 16:47:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=VRZkdulMwHtmebzR8E0un/g91g2Knlijy1cbfZ6uh
-	MQ=; b=Azc3K9WzA/tSNzYMy0XkWQ9pQj1l2BVKyV9zOD0d3PBO0suYA6eqYMLd2
-	95xeBLrz00aujx7an1kIEW+4tglk6VbiUzzNbTuF24ra+S/wAIzz0m86uLfY+ekT
-	7vWZKizndxh+qtjZOo4UfhWmK+4+LZsTYxChn3FaHQkphZcyKgYyj1Ec4YK1XJNC
-	s0C9/pk63ZJE7O8hQJWAPbre2o27VZgI8/5Vumo2NnQQ0mWsNjiwfzxJlvBWk0oA
-	BNTFBxSOlytrOXeE1s02CHPypNqPS915awrgnJseIQP6Iu9Dyh3dzI+ZAF5TIweH
-	h00Sza9W3eQ7AgsiG6+SZFfBcBO4A==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9gtjhy-1
+	content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=UkWQt6Z8aR8puNgIW
+	vyj5aMgFGkNXcLMEEVb9XubUC4=; b=rVGF3vJ3m94x3wesJxknqvZMSkahRSHA7
+	B+HbMyQTvTWCobc4LygP2lfrBQKxUdrlVGzJuYftdhO/udHrfrj3MU1iKhxQyA6H
+	nC5/9cOlGSGINhCM/XpsIL+zp2vyU2lZFOMcVoc21WpHMENrUonCVcxAJNP3UOLL
+	Se5YRoiPzvuA20AGoTw+CkcDbPneNSCEWb47P6q23aGfvz7yfK8WDvFcGn1IAQLd
+	Fi6O0FmGJBMvdpkf8Hzp4b3BwN/NDJXMVLrcHaKvPHdvM0aDCyW11SHttNszpMkK
+	GyjdkLnoqn78Hv+Gvx7yARrBqel9IOPQXUc9YPUeoVsMJRfPulviA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjc3tyfw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jun 2026 16:47:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PGYgns016405;
+	Thu, 25 Jun 2026 16:47:05 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex66kf3gw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 25 Jun 2026 16:47:05 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PGYeRu022159;
-	Thu, 25 Jun 2026 16:47:04 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex6phq0xf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 16:47:04 +0000 (GMT)
 Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PGkVmk24314512
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PGl4YI39060212
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2026 16:46:31 GMT
+	Thu, 25 Jun 2026 16:47:04 GMT
 Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7255A58043;
+	by IMSVA (Postfix) with ESMTP id 4260E5805F;
+	Thu, 25 Jun 2026 16:47:04 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9580958053;
 	Thu, 25 Jun 2026 16:47:03 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC84D58053;
-	Thu, 25 Jun 2026 16:47:02 +0000 (GMT)
 Received: from pfw153.pfw.tadn.ibm.com (unknown [9.5.7.52])
 	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Jun 2026 16:47:02 +0000 (GMT)
+	Thu, 25 Jun 2026 16:47:03 +0000 (GMT)
 From: Ninad Palsule <ninad@linux.ibm.com>
 To: eajames@linux.ibm.com, linux@roeck-us.net, psanman@juniper.net,
         arnd@arndb.de, ninad@linux.ibm.com, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/1] Fix sysfs device unregistration deadlock
-Date: Thu, 25 Jun 2026 11:46:52 -0500
-Message-ID: <20260625164700.2797362-1-ninad@linux.ibm.com>
+Subject: [PATCH v1 1/1] hwmon: (occ) Fix sysfs device unreg deadlock
+Date: Thu, 25 Jun 2026 11:46:53 -0500
+Message-ID: <20260625164700.2797362-2-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260625164700.2797362-1-ninad@linux.ibm.com>
+References: <20260625164700.2797362-1-ninad@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -85,29 +88,29 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8EkwjBCPXoDBtR9PQMk3ROxESp64WM20
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfXwspZZzR54BYJ
- PpXbPrk3lYQe/Jmyj89ApErVYVFfmk+cb4N12JZXt45OaZ+gcrXkLplOkzpAjx3UG/+bRl9BLUd
- j1RaSWkHZl71VfvGY7ZYJbmICR/tInU=
-X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a3d5b89 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Authority-Analysis: v=2.4 cv=X4Ni7mTe c=1 sm=1 tr=0 ts=6a3d5b8a cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=MDdrSkxlTI22Go2xdIMA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX2Iqiq45Z8tom
- al/5dcsorpchn7NulXzAqL+exkkrrwiTDT7oHFDx/BF3gIQY9qV2mDGCyxRos04rAhXEMl96Pnt
- A2JYREPaWoQ1vp8tiVJ2f9BDV+2rWRZLfYZ+QyFa2xI3hDvzFwZRJkEuT/i4N7YX7rn/o4WC00m
- dEYg8TnUh0Bgcf3X2fjxJVZ4BVI3oW4zArnaRaoQRqpyRsIOZ0sHxDgp+CsBVNWJV3i8ymwuhuQ
- ceIA6Bym1P3Mkos6DsQfgCM0PufT4uFzpzBqQu1pxRk3ss5DPMEdnrCnWKyruc5xQ6lavYqBITV
- eOBHq3EduL/a5swnw+NSW2OiC7FZ8RpBaS7D6FXozXnZ3ZHBdzUKmJWzrKoM3Me5hfyXW/qDGMn
- PtNVjXY8saV235/rPjEUHPZHVlsEAaktVzE+Bz4tLGatn7jo7H12WE/OxVKSFFOcp2XL3nTXDNP
- HiyjdDx+pboMOcLmlbQ==
-X-Proofpoint-ORIG-GUID: 8EkwjBCPXoDBtR9PQMk3ROxESp64WM20
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=PO-QMXBumzaoU13EfK0A:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX2gYzI6fNfRXp
+ kBh0MtQADi7a8CQrs9b+8aaxtW3GV/xGDYFnCNN8A8SeyJvhG0k3rlNa6/5e7VsLXz9ef53HQbg
+ 9RdTMual6MOOxUCBivvorI/1FWWcy7Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE0MCBTYWx0ZWRfX/93yR2PoLStd
+ awyzEjzjo7NO5TPAxK5DmSk8patP/dTap3BCgqE5WeK9xUmKYTUrWvTS1y9qGUQZCPNyqZ9W5Xo
+ IDzV/XiNhueJHhJEhVBgN4gCWCb5v+Le2w6o9RtEb25zM7gTV8BTB6Gqcl5xl0hgwll0Mi/qSXw
+ 9MUxQx7nCoVejj94AMimWI32FCusl/P9Tpw48HC/5EBewtyF1UjLxEO1ZJRjrt9HQ6/ZAAFFxY0
+ PgqCHjMo8BR9Z5sjy6wwEr0qeTWg/r0Sv6qsuUjyX1Zl+P0zAvKt6u0YItzlNcUaAb2Wkrx1BCp
+ MGJsLaVKPjZlf/pgce8qO8IqQFp+s2w6Wa7uRdODgzu/tAvr7WUJCCLKIabzsAIxFI1IiyAQZbw
+ zxEPycISw/J/QGwdN/r0Sq0xAiJuFTcmIXOf4IV7YN8bcjz6eDcuXPza8h4nYPvd7MJdd1NDGyU
+ MJz6nw5axEjGN8hmQjg==
+X-Proofpoint-ORIG-GUID: xh16AkkNjfoKkHqqDM5qVU6o33PG2rJ9
+X-Proofpoint-GUID: xh16AkkNjfoKkHqqDM5qVU6o33PG2rJ9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-25_02,2026-06-24_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1011 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250140
 X-Rspamd-Action: no action
@@ -117,12 +120,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15347-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15346-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[ninad@linux.ibm.com,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:eajames@linux.ibm.com,m:linux@roeck-us.net,m:psanman@juniper.net,m:arnd@arndb.de,m:ninad@linux.ibm.com,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
@@ -132,10 +135,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.ibm.com:mid,linux.ibm.com:from_mime];
 	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -143,19 +146,85 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6E4B6C78A0
+X-Rspamd-Queue-Id: BD8006C789A
 
-Hello,
+Release the driver lock before unregistering the hwmon device to prevent
+a deadlock. The device_unregister() call can block waiting for sysfs
+operations to complete, but those operations may be blocked waiting for
+the same lock held during unregistration.
 
-Please review the changes to fix deadlock in the occ-hwmon driver. This
-avoids kernel crash due to hung application process.
+The deadlock occurs when:
+1. Thread A holds the driver lock and calls device_unregister()
+2. device_unregister() waits for sysfs operations to drain
+3. Thread B is blocked in a sysfs read operation waiting for the driver
+   lock
+4. Neither thread can proceed, causing a hung task
 
-Ninad Palsule (1):
-  hwmon: (occ) Fix sysfs device unreg deadlock
+This was observed during power system remote restart operations when
+concurrent sysfs accesses occurred during OCC active state transitions.
 
+Kernel log excerpt showing the deadlock:
+  INFO: task openpower-occ-c:1430 blocked for more than 122 seconds.
+  Call trace:
+   schedule+0x28/0xfc
+   kernfs_drain+0xc8/0x174
+   __kernfs_remove.part.0+0x138/0x21c
+   kernfs_remove_by_name_ns+0x7c/0xcc
+   [...]
+   device_unregister+0x1c/0x5c
+   hwmon_device_unregister+0x58/0xb0
+   occ_active+0x6c/0xe74
+   occ_active_store+0x54/0x80
+
+Reproducer:
+  Run these two scripts in parallel:
+
+  Script 1 (continuous sysfs read):
+    while true; do
+        cat /sys/class/hwmon/hwmon14/power15_cap_user
+    done
+
+  Script 2 (OCC active state toggle):
+    while true; do
+        echo 0 > /sys/bus/platform/drivers/occ-hwmon/occ-hwmon.1/occ_active
+        echo 1 > /sys/bus/platform/drivers/occ-hwmon/occ-hwmon.1/occ_active
+        sleep 0.2
+    done
+
+Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+---
  drivers/hwmon/occ/common.c | 11 +++++++++--
  1 file changed, 9 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 42cc6068bb08..a5641dbbba2f 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -1149,15 +1149,22 @@ int occ_active(struct occ *occ, bool active)
+ 			goto unlock;
+ 		}
+ 	} else {
++		struct device *hwmon_dev = occ->hwmon;
++
+ 		if (!occ->active) {
+ 			rc = -EALREADY;
+ 			goto unlock;
+ 		}
+ 
+-		if (occ->hwmon)
+-			hwmon_device_unregister(occ->hwmon);
+ 		occ->active = false;
+ 		occ->hwmon = NULL;
++
++		mutex_unlock(&occ->lock);
++
++		if (hwmon_dev)
++			hwmon_device_unregister(hwmon_dev);
++
++		return 0;
+ 	}
+ 
+ unlock:
 -- 
 2.51.0
 
