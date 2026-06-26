@@ -1,141 +1,128 @@
-Return-Path: <linux-hwmon+bounces-15375-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15376-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0HTCEORMPmrKCwkAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15375-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 11:56:52 +0200
+	id xNzsDWhPPmoBDQkAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15376-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 12:07:36 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3306CBDDE
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 11:56:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E29F6CBED0
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 12:07:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=YTvn0uMW;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15375-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15375-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=debian.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Htjfgtjl;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15376-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15376-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3AF01301066D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 09:56:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12401306A37E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 10:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5334F3EA94C;
-	Fri, 26 Jun 2026 09:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAF63EB0F4;
+	Fri, 26 Jun 2026 10:06:02 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E533BB66C;
-	Fri, 26 Jun 2026 09:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AA318B0F;
+	Fri, 26 Jun 2026 10:06:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782467809; cv=none; b=LxeS7WnxAdK+zT8DgpyAXsdji+4KSUKUB5EYT2CrKCJVfn82JE3yB7r6qTGlKvzR8jZrBvBLOMixqrc8pIGtX1BGphkZWg8XjsY4gSfbRrNuAxuI87w8tFh04ftOnNob9eNuo1DQpZvhTfP5WiT5RYWjkp2e/13mkJgXdtdaGlo=
+	t=1782468362; cv=none; b=MyiZEG2BSoqX4cDUY/6phkEkayiVQ/1yQ9CS7IG0JbSchWNh0Gtht0Wds6tvFDjHi5wo1O6uJ8ggPAyrBAS0tUfzVxfD+tK7nA1BWHYohORecEo6WKvLG9oIibN9NacpWS6QLlKwpLjugQvJgmJsYEAvtW6OtY+mNQQoST182Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782467809; c=relaxed/simple;
-	bh=RE0qhOfkQ7ruenyzlEj7Bxrp/hmm+5LmZjxXe8hCEhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kpMRKAgAM/ylzHvkmQ3f+h7yztj2Me8J71HG3ZqWuFwG48F8Dp9QcpTKCUiFA3oFRXpb9VFk8CJ2yVM75shG9K150obigW/zjsA5V9ar4IlY0PoWCyUgvyFKeOqBS39Al7raReUuL1i+xgtDVuFbe+gnZ7wswo2j2st8pKiZMWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=YTvn0uMW; arc=none smtp.client-ip=82.195.75.108
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=PRjTLPlPgo4RP++aNKoyqSFzF5p07vlm/FWH4+ncEtw=; b=YTvn0uMWt750zGg234gGUAVN7X
-	LWkp3LeykRqkJumToA5aojtkKJSYnrjisD72fARWxKnZaPAJo6g3mnuO1DveLBo7hiNmf/KK7GYSb
-	dj+3REQZHHnhx3RzLlznr8PdcGeYv3Bl0nET1BrUnoFNLUu3Xqz4rQLGfsZXNWrJIMZA4sYF03/AZ
-	VuY2wx6XtWua6K/LoSD/iz4eG6xMLIVACguZDf0wU4ram5A739/cZKMcEN7axoOt/6oqgBDNATGwa
-	D3pCB318HoLQwcmGabF4HWG4WvIKIxLmD9DuLX4Ujt2CLKI4T7W3C7wJs9yi8kXsRBshtRu/Jd0YP
-	IPgzfzjg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wd3Ie-003t3h-3C;
-	Fri, 26 Jun 2026 09:56:41 +0000
-Date: Fri, 26 Jun 2026 02:56:34 -0700
-From: Breno Leitao <leitao@debian.org>
-To: linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kernel-team@meta.com, linux-mm@kvack.org
-Cc: Breno Leitao <leitao@debian.org>, kerneljasonxing@gmail.com, 
-	iipeace5@gmail.com, gavinguo@igalia.com, linux@jordanrome.com, amscanne@meta.com, 
-	sj@kernel.org, gpiccoli@igalia.com, Daniel Gomez <da.gomez@kernel.org>, 
-	mfo@igalia.com, platform-driver-x86@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Subject: [ANNOUNCEMENT] LPC 2026: System Monitoring and Observability
- Microconference
-Message-ID: <aj5KJEIsTl6IK0nX@gmail.com>
+	s=arc-20240116; t=1782468362; c=relaxed/simple;
+	bh=rKmflEMbcMZIfVItGcgxoOJgLvnhrqPw2LKP5XZ6M/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tkWDYZip+XVfuwUli7WzTy0B1c6v1rRknYJrIH/V3h3ntDSR3wfg6SasJKkP0nKOul2gOG/PzQjneMWXPJsCFLnS4YfhDugYv2UAGmk9xLl8RA+Ont8ogWCciVEZIPoGMy7TH4xvJhbU86rcJj/V03dDq4RVUtFqTQ2CIwXFnhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Htjfgtjl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC391F00A3A;
+	Fri, 26 Jun 2026 10:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782468361;
+	bh=jcKh58iL8WIQzcHbsnUmBBybvD/z8aXyoKwE5jmOnqw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HtjfgtjlM7MLRnsky5UjtpriqwNF7+wcettAJnB84XxsNRllXEmOPaqdSo3P8Khp0
+	 Xt1cPeuTYrAw3+hniySXZJXtrJkIlVDO0JR72SJniQ2j/EF48SCsYmKkPTM8YpUGPF
+	 u9XDrMBkTuxA/AJxMDinT25ToJ9ERYDEtcXqnYPTA/aS1/mgqKYaw/KaY1cWVHJ+w8
+	 qhDwM/XtRRmxWRLTZmXp1isXXD1PaaxVwnfDI44YdOI964FAdePTuqB/oUKgqOhNuI
+	 fT5Ui2hPNIiAI2qXkKn812koYbPO88oJZWlaY5+Aew8lhYYhfgsDq8USfY3IddhJWo
+	 zL2wO5H8FR0Jw==
+Date: Fri, 26 Jun 2026 12:05:57 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Flaviu Nistor <flaviu.nistor@gmail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, 
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: hwmon: chipcap2: Add label property
+Message-ID: <20260626-prodigious-rottweiler-of-tolerance-cbeedb@quoll>
+References: <20260625160423.17882-1-flaviu.nistor@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Debian-User: leitao
+In-Reply-To: <20260625160423.17882-1-flaviu.nistor@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15375-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-acpi@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:kernel-team@meta.com,m:linux-mm@kvack.org,m:leitao@debian.org,m:kerneljasonxing@gmail.com,m:iipeace5@gmail.com,m:gavinguo@igalia.com,m:linux@jordanrome.com,m:amscanne@meta.com,m:sj@kernel.org,m:gpiccoli@igalia.com,m:da.gomez@kernel.org,m:mfo@igalia.com,m:platform-driver-x86@vger.kernel.org,m:acpica-devel@lists.linux.dev,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[leitao@debian.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-15376-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[debian.org,gmail.com,igalia.com,jordanrome.com,meta.com,kernel.org,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS(0.00)[m:flaviu.nistor@gmail.com,m:linux@roeck-us.net,m:javier.carrasco.cruz@gmail.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-doc@vger.kernel.org,m:flaviunistor@gmail.com,m:javiercarrascocruz@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_CC(0.00)[roeck-us.net,gmail.com,kernel.org,lwn.net,linuxfoundation.org,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA3306CBDDE
+X-Rspamd-Queue-Id: 7E29F6CBED0
 
-We are pleased to announce the Call for Proposals (CFP) for another
-edition of  System Monitoring and Observability Microconference, this
-time at the 2026 Linux Plumbers Conference (LPC), taking place in
-Prague, Czechia, from Oct 5-7, 2026.
+On Thu, Jun 25, 2026 at 07:04:22PM +0300, Flaviu Nistor wrote:
+> Add support for an optional label property similar to other hwmon devices.
+> This allows, in case of boards with multiple CHIPCAP2 sensors, to assign
+> distinct names to each instance.
+> 
+> Signed-off-by: Flaviu Nistor <flaviu.nistor@gmail.com>
+> ---
+> Changes in v2:
+> - Implement suggestion from Javier Carrasco as proposed by Krzysztof Kozlowski.
+> - Link to v1: https://lore.kernel.org/all/20260622122200.14245-1-flaviu.nistor@gmail.com/
+> 
+>  .../devicetree/bindings/hwmon/amphenol,chipcap2.yaml        | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-  https://lpc.events/event/20/sessions/262/
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-This microconference provides a valuable forum for key engineering areas
-such as:
+Best regards,
+Krzysztof
 
-   - Kernel Health and Runtime Monitoring
-   - Hardware Integration and Error Detection
-   - Correlation of Issues (crashes, stalls, bugs)
-   - Virtualization Stack Monitoring
-   - Memory Management Monitoring and Observability
-   - Anomaly Detection Algorithms for System Behavior
-   - Automated Analysis, Remediation and post mortem analyzes
-
-The purpose of each talk is to share challenges and discuss potential
-improvements. Sessions will last 20 to 30 minutes and aim to encourage
-brainstorming and open dialogue about ongoing issues rather than
-delivering immediate solutions.
-
-The conference acts as both a knowledge-sharing platform and a strategic
-venue for guiding the future of kernel technologies to better meet the
-demands of large-scale infrastructure.
-
-We invite you to submit your proposals here:
-	https://lpc.events/event/20/abstracts/
-
-Please select track "Linux System Monitoring and Observability MC"
 
