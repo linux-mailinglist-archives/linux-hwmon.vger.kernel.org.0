@@ -1,63 +1,63 @@
-Return-Path: <linux-hwmon+bounces-15366-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15367-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8+70G9wqPmoYAwkAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15366-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 09:31:40 +0200
+	id aBMtDRsrPmonAwkAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15367-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 09:32:43 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C276CAF5F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 09:31:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915276CAF71
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 09:32:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IbWG5EWP;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15366-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15366-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAXlB+6u;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15367-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15367-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B5A93016295
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 07:31:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 678A1301CCCC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2026 07:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0813DCDB5;
-	Fri, 26 Jun 2026 07:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F213D3D6CD9;
+	Fri, 26 Jun 2026 07:32:39 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D3627A92D;
-	Fri, 26 Jun 2026 07:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020BB36EA84;
+	Fri, 26 Jun 2026 07:32:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782459079; cv=none; b=XcFl64ot7IdZ8/lLwXuqq6obkyWLp0RRkQNF4qXCiFQrll0gkN8aeWARGRuOjK86tzImMf5To+vkbdl0UqskIPRfes1707snOrhadsF7bFfktmfNFo5bt7ZREZStjV8NwB6mQ1YJJ+fVE0ATh9ve5RaCfGqYuvikbZT1Kpjnyso=
+	t=1782459159; cv=none; b=A0pZlzQHcgIbNuwvYIf/G8cs9mHIPehirw9WbjHee4ctuRDwS8nNxFNRuKjk+I4f9aFmhJGRTDN2inT96cgzsIq0789QQVA1Kir2jT2TdmJgkXg4T2V+Qxot1pWJShq7uNUe5RbE3NhGq1HMuN1xOfXRd1DAFT+oXue9/CLqjP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782459079; c=relaxed/simple;
-	bh=mnErBJ5dHE8l9Dw6ytdCj3rhFuTY6mwXKTbQnHcwve4=;
+	s=arc-20240116; t=1782459159; c=relaxed/simple;
+	bh=qoMRFuiDo/i+3LmBW2Ygu4dCZt+D4S1oUh7o+estECA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aPo9aYHQwnF88Ji8nxVS4Z0YzaEyZ8wcD/GCFttjz0R2l7wKUwfa+cVb+PO/jxAlypQ9iGsek59lCHmHSSmHuWEfVzdgnhcfH/yujel8j13Iodl2pgzA//OwuP/Jf0uQgs3wsgWvtGupvuoqTPD+CUmdRlJOBl66ge9lcw4rDA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbWG5EWP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC11B1F000E9;
-	Fri, 26 Jun 2026 07:31:15 +0000 (UTC)
+	 Message-Id; b=D7fRH/EUOR8afMZB2TNHGunvTHFkSzUNwAa01qb2G1FfUA3/OjDvSxH1wWEiJ1gWTgrZBemTmFZrWpyQDmvrZQukm22HM4sQxrIWUztdgngzf18CjGlIWzM/9Lhtty/qbgJeeMbBk/coMLGe7Q7TMO9O73hs9MgZQHT1B1Wm8Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAXlB+6u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550551F000E9;
+	Fri, 26 Jun 2026 07:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782459076;
-	bh=mH9fvCrWEBJqgWTIzKI3gt+q3Cc5y259u+mGgxaB3ug=;
+	s=k20260515; t=1782459158;
+	bh=qoMRFuiDo/i+3LmBW2Ygu4dCZt+D4S1oUh7o+estECA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IbWG5EWPR+zLcBFfJoqApSn1JehwRTNwZnOEhiYF/BlpecwaKT1Kxg37K8Kgo5pEt
-	 zcoarRU7kmShP9Wd9OjxPItqkZyHX8Hel9psHCle5BjnhUPBkQEg8IJBgmKzZXbSs/
-	 l1elXv7l62ncLqxnlRXHSeGDQ2X9E0v+yuZA/EFQsKI214PsLvfL9aACo9lyQyvUgE
-	 E5PKXm8Toj2lh5DeXf4UDaQ+YJvIaIcDmHMaK0owQbqFtfWw8M17pzDwDz9sEfgKFV
-	 2xxDSnFqgHF8JvI2mFGPmbUqeJ92zcPOXe2iWQN32TxO4PPDhpElpRb8Ryy0MAGqHd
-	 hScjrMOwT/TIg==
+	b=fAXlB+6uZ8jairGGt1DnJZ6klPq0ddPck5uNDAEWIkTz8e+2TtELAboxAw03M+Wnf
+	 T92oTPzNCp190Vw2O2LvLuse81PAfWRxGWY7OnjvsY1yl5SiZQWHb0rrobVeH7OUYB
+	 OYLSRxHB6klCSK0HjlwlSNa50AXfoVtN44CXtX0SL4vo+4meXh+VwNrWhhAAl+0GjY
+	 bi1zGNL1QTs2uxJQZgp/00OjDqoU1H9UpeQJ09rPOcDvVgIo9ZC+NjgPhhfJyS+6+1
+	 UHU7XBI1+rykYX3dZ+LXZswY8TyZWy6/hfSo8VyIkucs3kvllb3xc+1hgbYmlabzkJ
+	 pk0c7fdaYlqrA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/9] hwmon: adm1275: Support module auto-loading
+Subject: Re: [PATCH v2 6/9] hwmon: adm1275: Support ROHM BD12780
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Matti Vaittinen" <matti.vaittinen@linux.dev>
-Cc: devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <9eca6831f9fe2d781bb88337397c39b10e36f5c6.1782458224.git.mazziesaccount@gmail.com>
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org
+In-Reply-To: <e1e6e6218c08b562311356ef9c57378d32c26b08.1782458224.git.mazziesaccount@gmail.com>
 References: <cover.1782458224.git.mazziesaccount@gmail.com>
- <9eca6831f9fe2d781bb88337397c39b10e36f5c6.1782458224.git.mazziesaccount@gmail.com>
+ <e1e6e6218c08b562311356ef9c57378d32c26b08.1782458224.git.mazziesaccount@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 07:31:15 +0000
-Message-Id: <20260626073115.EC11B1F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 07:32:37 +0000
+Message-Id: <20260626073238.550551F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -70,58 +70,52 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15366-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15367-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,smtp.kernel.org:mid,lists.linux.dev:replyto,vger.kernel.org:from_smtp,sashiko.dev:url];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lists.linux.dev:replyto,vger.kernel.org:from_smtp,smtp.kernel.org:mid];
 	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:matti.vaittinen@linux.dev,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:conor+dt@kernel.org,m:robh@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:matti.vaittinen@linux.dev,m:linux-hwmon@vger.kernel.org,m:devicetree@vger.kernel.org,m:conor+dt@kernel.org,m:robh@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4C276CAF5F
+X-Rspamd-Queue-Id: 915276CAF71
 
 > From: Matti Vaittinen <mazziesaccount@gmail.com>
 >=20
-> Populating the i2c_device_id -table is not enough to make the
-> driver module automatically load when device-tree node for the
-> power-monitor is parsed at boot.
+> ROHM BD12780 and BD12780A are hot-swap controllers. They are largely
+> similar to Analog Devices ADM1278. Besides the ID registers and some
+> added functionality, the BD12780 and BD12780A mark PMON_CONFIG bits
+> [15:14] as reserved. Hence TSFILT setting must be omitted on these ICs.
 >=20
-> Adding the of_device_id tables causes the driver module to be
-> automatically load at boot. Testing has been done with rather old Debian
-> system.
+> The BD12780 has 3 pins usable for configuring the I2C address. The
+> BD12780A lists the ADDR3-pin as "not connect".
 >=20
-> When inspecting the generated module-aliases with the insmod, following
-> entries seem to be the difference:
->=20
-> alias:          of:N*T*Cadi,adm1075C*
-> alias:          of:N*T*Cadi,adm1075
->=20
-> I suspect these are required for the module loading to work.
+> Support ROHM BD12780 and BD12780A controllers.
 >=20
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
@@ -129,6 +123,6 @@ Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1782458224.gi=
-t.mazziesaccount@gmail.com?part=3D4
+t.mazziesaccount@gmail.com?part=3D6
 
 
