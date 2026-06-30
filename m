@@ -1,64 +1,64 @@
-Return-Path: <linux-hwmon+bounces-15463-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15464-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KgySGF4wQ2qFUAoAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15463-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 04:56:30 +0200
+	id UO9iKXIxQ2o+UQoAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15464-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 05:01:06 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C856DFEFA
-	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 04:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08956DFF1C
+	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 05:01:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J38X9EhX;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15463-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15463-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DSliaZgs;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15464-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15464-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC6703007AEB
-	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 02:56:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F054F3007C9C
+	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2026 03:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A60C3CF20C;
-	Tue, 30 Jun 2026 02:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ECF3CF943;
+	Tue, 30 Jun 2026 03:00:39 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BE63CF1E5;
-	Tue, 30 Jun 2026 02:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B821DE2A5;
+	Tue, 30 Jun 2026 03:00:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782788186; cv=none; b=kB0rEK3TQuYr0BT3L1ltgqfqFI+gtFYIrQ/MdAuWOUuDSD6wSyTiG287guegrjiQhISw+4+ELCElOcfuPYDG+aCZA2GFjv1AM1pYFAWq7iHNF1DF7P+CckobWycydxl4iwF8c4uCBciYfnSFPDxDZDyuzoKUCl2IvOgamlUU7zs=
+	t=1782788439; cv=none; b=GQIfMZFrIo+aBU7IYdOSf973konI6kOwk6yHn0+iLs7kIhT0dLi0s2utvp7GQj6pwXKQ6PAt9wvw1wCUBxwqntguibgL4eqVGWobE2c4VO37+bXYqxIhhmyPyecsWWbXpPgllV6y6MEADDROwVVZpE1CZVVYXQ44JGB5FIkbaMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782788186; c=relaxed/simple;
-	bh=1pNulGEhfNt3df3fCA+oRJooPbmhHunkOEDD6pSFgZA=;
+	s=arc-20240116; t=1782788439; c=relaxed/simple;
+	bh=cNs8i2YCAVPGaFE/QqFtsTF8hzs0Jl10yebOArH9V3o=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UZTVsJBVgkwjEErfyczSFWeaG/8P/JGSIS6235PC0zagoWTb8N0RRXBpwvz0h3Jhmvj1tNyJ+7g68JAsWJ5u/M3QqTXTDIK22hu7GCcTUjY735kTewQ08obu0XCVJnVQxWzlAFzY65m2ftFPBFvn23DRR9Sf3o4wwGB6186wYSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J38X9EhX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890631F000E9;
-	Tue, 30 Jun 2026 02:56:20 +0000 (UTC)
+	 Message-Id; b=g02dJqlfzNLQIz7NILmZQ+CJPX/T6g/X/O8nlQtK4VsbKHbyy74vzEuSDF78GBqpU6hElvCBv3HttLsRe0Ma0blWBDBq3zmLYWECzyMV2HDN4t0BLlZ8HiaVogxPC+sEnpP2tK8kkr1+815xbqOsPmV2zg1l3VIh5lTdxs51AC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSliaZgs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4F01F000E9;
+	Tue, 30 Jun 2026 03:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782788180;
-	bh=1pNulGEhfNt3df3fCA+oRJooPbmhHunkOEDD6pSFgZA=;
+	s=k20260515; t=1782788438;
+	bh=5M6sWUFz9TXoMDU+nEWRUHRAzQ6hWVZLqk48pLe15/Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=J38X9EhX0auuj8AGRDy9oAKxerQpBMcUfvbJX3G4D0ngTRgXbX2/qk1daytkBlSV0
-	 DmPG+j2SPC1sR02XfD/x+kCwi1beE1sRKuMptqPRc2ts5+sbveTZRZ683QTBL6nfQx
-	 /AJLYtJNWUfQVr+5n19U4+4Vol5stqVqmDahX1tCsb4UYXwRNvWnA/6tbsWtW9VT2k
-	 Un7WpZM9hqKwh7TP/NQ4u9SHDamWcGwVjFvUtHMP0OLFBxsGmBs/UPnQOErhvJ2kzt
-	 1XKs7SRPLtM9/1W1uzoE41Wod0srBZnA1dYfJVTB9jd1mNxJpOYRLTXjtL/fA6dH/L
-	 33VvEZ9wE5DCQ==
+	b=DSliaZgsKWsnJYIGXW5y3Ve5k8UC8zeIQNHMuMIUyw9Hbzpi3Fft8/etN5ySnW3UA
+	 cQuuToZxU5QH3Arzclu0eFan2INEQ2TaCTE2yUBhkeFbHHWqAGbjepkQvvDjOI7Xzp
+	 9133+bqwIav3jAgmO8ZcR0Hx13HYInPnwc16RS6ohRfW0cCd4cDHAUWkSQnk8fbXh/
+	 0ybWIxpc8dUIGA3wBe56S4IOAXh30d8H8rHZHiZIsm90MQPOemLJxgSNOgYyvqkUl3
+	 QrVf9aWIbsVnXHFF6iZol9QKOBCbpxuy4Kg5nJmC4KrwaNLLqhlyzV6Mltkh+jlJ5N
+	 bp3715HaaprkQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5/6] dt-bindings: hwmon: (pmbus/max20830): add max20830c
- and max20840c support
+Subject: Re: [PATCH 4/6] hwmon: (pmbus/max20830): add VOUT feedback resistor
+ scaling support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Alexis Czezar Torreno" <alexisczezar.torreno@analog.com>
-Cc: linux-hwmon@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260630-dev-max20830c-v1-5-a02786bde470@analog.com>
+Cc: linux-hwmon@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260630-dev-max20830c-v1-4-a02786bde470@analog.com>
 References: <20260630-dev-max20830c-v1-0-a02786bde470@analog.com>
- <20260630-dev-max20830c-v1-5-a02786bde470@analog.com>
+ <20260630-dev-max20830c-v1-4-a02786bde470@analog.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 02:56:20 +0000
-Message-Id: <20260630025620.890631F000E9@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 03:00:37 +0000
+Message-Id: <20260630030038.0D4F01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -75,26 +75,26 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15463-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15464-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,analog.com:email,vger.kernel.org:from_smtp,lists.linux.dev:replyto,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url];
 	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alexisczezar.torreno@analog.com,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:alexisczezar.torreno@analog.com,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
@@ -104,18 +104,108 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28C856DFEFA
+X-Rspamd-Queue-Id: F08956DFF1C
 
-> Add compatible strings for variants of MAX20830 which are MAX20830C
-> and MAX20840C. These devices have the same register functionality with
-> MAX20830 but with a longer IC_DEVICE_ID.
->=20
-> Signed-off-by: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Applying a voltage scaling multiplier directly to the PMBus word d=
+ata for VOUT will result in severe silent truncation by the PMBus core fram=
+ework if the scaled mantissa exceeds 16 bits.
+- [High] Voltage divider scaling is applied only to PMBUS_READ_VOUT, leavin=
+g other VOUT-related PMBus commands and fault limits unscaled and ignoring =
+write operations.
+--
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+commit 690eab506d6910945bf8fa7dc51390239ffa2898
+Author: Alexis Czezar Torreno <alexisczezar.torreno@analog.com>
+
+hwmon: (pmbus/max20830): add VOUT feedback resistor scaling support
+
+Implement support for external voltage divider scaling using the
+adi,vout-rfb1-ohms and adi,vout-rfb2-ohms device tree properties.
+
+> diff --git a/drivers/hwmon/pmbus/max20830.c b/drivers/hwmon/pmbus/max2083=
+0.c
+> index cb3a39d747ede..a3abd24437e8e 100644
+> --- a/drivers/hwmon/pmbus/max20830.c
+> +++ b/drivers/hwmon/pmbus/max20830.c
+
+[ ... ]
+
+> @@ -15,6 +16,35 @@
+> =20
+>  #define MAX20830_IC_DEVICE_ID_LENGTH	9
+> =20
+> +struct max20830_data {
+> +	struct pmbus_driver_info info;
+> +	u32 vout_rfb1;
+> +	u32 vout_rfb2;
+> +};
+> +
+> +static int max20830_read_word_data(struct i2c_client *client, int page,
+> +				   int phase, int reg)
+> +{
+> +	const struct pmbus_driver_info *info =3D pmbus_get_driver_info(client);
+> +	const struct max20830_data *data =3D container_of(info, struct max20830=
+_data, info);
+> +	int ret;
+> +
+> +	switch (reg) {
+> +	case PMBUS_READ_VOUT:
+[Severity: High]
+Does this code apply voltage divider scaling only to PMBUS_READ_VOUT, leavi=
+ng
+other VOUT-related PMBus commands and fault limits unscaled?
+
+If userspace reads limit registers (e.g., in1_max), the switch statement
+misses them and returns raw values.
+
+> +		ret =3D pmbus_read_word_data(client, page, phase, reg);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* Apply voltage divider scaling if resistors are non-zero */
+> +		if (data->vout_rfb1 && data->vout_rfb2)
+> +			ret =3D DIV_ROUND_CLOSEST_ULL((u64)ret * (data->vout_rfb1 +
+> +						    data->vout_rfb2), data->vout_rfb2);
+[Severity: High]
+Can this scaling cause silent truncation?
+
+When userspace reads the output voltage via sysfs, this code multiplies the
+raw 16-bit register value by the resistor ratio. The PMBus core reads this
+scaled word, but in pmbus_reg2data_linear(), it casts the value to a 16-bit
+unsigned integer:
+
+    mantissa =3D (u16)sensor->data;
+
+This will silently truncate any value that exceeds 65535, corrupting the
+voltage telemetry.
+
+> +		return ret;
+> +	default:
+> +		return -ENODATA;
+> +	}
+> +}
+> +
+>  static struct pmbus_driver_info max20830_info =3D {
+>  	.pages =3D 1,
+>  	.format[PSC_VOLTAGE_IN] =3D linear,
+> @@ -25,14 +55,26 @@ static struct pmbus_driver_info max20830_info =3D {
+>  		PMBUS_HAVE_TEMP |
+>  		PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
+>  		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP,
+> +	.read_word_data =3D max20830_read_word_data,
+[Severity: High]
+Should this also provide a write_word_data callback?
+
+Without a write_word_data override, any user writes to voltage limits are
+passed unscaled to the device. The writes go directly to the PMBus core
+without inverse scaling, causing hardware protection limits (over/under
+voltage) to be misconfigured.
+
+>  };
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630-dev-max208=
-30c-v1-0-a02786bde470@analog.com?part=3D5
-
+30c-v1-0-a02786bde470@analog.com?part=3D4
 
