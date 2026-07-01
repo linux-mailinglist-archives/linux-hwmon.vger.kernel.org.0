@@ -1,64 +1,64 @@
-Return-Path: <linux-hwmon+bounces-15533-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15534-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BXksGSzwRGp83goAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15533-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 12:47:08 +0200
+	id 2DFxMYbxRGrd3goAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15534-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 12:52:54 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69966EC586
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 12:47:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104726EC648
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 12:52:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDg3+LI7;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15533-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15533-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+NwqboD;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15534-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15534-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 543ED30174D5
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2026 10:47:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76FE43065BCF
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2026 10:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2E7426D12;
-	Wed,  1 Jul 2026 10:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB24E42DFEB;
+	Wed,  1 Jul 2026 10:51:11 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A43603E9;
-	Wed,  1 Jul 2026 10:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6142264A8;
+	Wed,  1 Jul 2026 10:51:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782902825; cv=none; b=k39OQPV7io+yKg7gduGIFXHXOv7lz88xeMVJl+dvUUBkXsmjWmgFveTYYurWK5RirMpswcX4QGL53S92qOnaEecwd5TtcfBzf4CeKTrIcJKHw2TEF3OPECPFbHnz4J6oJS1TjwbPbq2YXY8L4wCwv7QxwzMuhfgEgYpdKPzwHf8=
+	t=1782903071; cv=none; b=Mk0TZNyLj6+559UoR8lHuvRjhBTrboIgq+Qkbjk2uhfUhHJMdDEG7Att4VSpT83+ex6om2K2SN3QqJfrfwxvBiYGjUk2zQwmc22yC5JXUD66Px1Sj99HD3CZu8T66hZuTlJ4kBScZneoyxnvz3M04qA9BSVe0X6Td4H2rX3LFRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782902825; c=relaxed/simple;
-	bh=3BPpKGMLuWytomcUw1bKBwVMgTyDrzZOPrlnMwyKibI=;
+	s=arc-20240116; t=1782903071; c=relaxed/simple;
+	bh=EIwu/8UqdZN9LdJlrgQritUngrduTk//3yaKnASF6jg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VCZhvCz+6RG6V7NlhpGblcaUm1xSxkG2ZWjxCnKoqfROAgTV0oBIxZhV3fqV5WCuVZvk6tuMdgaott/5TcNTj8XfgwnTm8X9VWM6d8Wlj04S859xQmHuuprZlT38mwf41fEo9SlOd/cWtsjaV5bVDHk/+3U+5SUi/rrppA9p3/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDg3+LI7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CBD1F00A3A;
-	Wed,  1 Jul 2026 10:47:03 +0000 (UTC)
+	 Message-Id; b=PPk0dTe0hOuuvV1JBAn+FkswNTAQ9HTU8pN6KbuDi3QI8wT3l8mAVWAwCakyiFpsvRKV5iHxSD6kawmyiz2IscpqmCNo1wfaCworG1a8ufDjJmT1g7we428vmQtAPgrPvN8dFj3rA+h1bxtTeTBPDks2XITBy8tEwyce/CvtJj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+NwqboD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8595E1F00ADE;
+	Wed,  1 Jul 2026 10:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782902824;
-	bh=01OrCu7K8dvwQygurNGqJke27cki3w45OjUA7Fc8Z2U=;
+	s=k20260515; t=1782903068;
+	bh=2iXR/ImIlInOiMvJB1WEQFV8A/HPkjG7mqIsI1cro04=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CDg3+LI7HMu8FlB8b6KydlWX/a0o0RUIwSqyveigmYXA3+EiFZZX4B9eftwQmqE+/
-	 B0gT1ixcOxyBeaCXg04xPICM2w5NX25STEHjKCA7fhoSunB7R9YNJMZ4hdthXhqCl8
-	 Cycr1AQ8sliS/CC+ZQUItEP61e26OyNbZp0RY/OtKhTlQhUqogTnjAu+mihjZ4JWcK
-	 uIHjs/I9Wke7O88WdvJurYKVgxZ8/WZv4DBqzh3Ddg2LRjPAJWj9XLqZD9fLlnDIKI
-	 ddORkwwAGYnAVHxX+G0xvNcUv34t88pQNIIXMZiG6q6r6H86J8fxFjhTP+AFlsMSo1
-	 GeFXjCmJEeNeA==
+	b=g+NwqboDcpYELy+vf8tOB20t5jWhzGMerYuiOPaUbPF+lhm8bH5zbcoBBGnLPpqNT
+	 DqLUB5pUwmcLC9zyeiYjqOtpsLKkbfS+cwLlozEd9I0UFaksPFNxOf68FUpgH7jFqX
+	 agHyAzmPM5RsxtQk7o42k702nIfUiRrjUDB3senJA94nqm3kb9okxhD5OLSIk9pONo
+	 Q8vtqTUBf/Bt91cXuM+GKCiKsjXFdl1N2ei+FGEqjOD6UBdmuJtZZI1oUhJlhCAdc7
+	 hNWvoXFe12zMmwrRcDmuXgZ77ag9FvhLWUeTFrOa0yuH6XkksI0q4rOEu52dh4Kimw
+	 5Bl6RaqsdMAkA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: x1e78100-t14s: Add thermal
- zones for keyboard skin and charging sensors
+Subject: Re: [PATCH v3 1/2] platform: arm64: lenovo-thinkpad-t14s-ec: Add
+ hwmon support for temperatures
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Daniel Lezcano" <daniel.lezcano@oss.qualcomm.com>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260701103714.22583-3-daniel.lezcano@oss.qualcomm.com>
+Cc: devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260701103714.22583-2-daniel.lezcano@oss.qualcomm.com>
 References: <20260701103714.22583-1-daniel.lezcano@oss.qualcomm.com>
- <20260701103714.22583-3-daniel.lezcano@oss.qualcomm.com>
+ <20260701103714.22583-2-daniel.lezcano@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 10:47:03 +0000
-Message-Id: <20260701104703.D7CBD1F00A3A@smtp.kernel.org>
+Date: Wed, 01 Jul 2026 10:51:07 +0000
+Message-Id: <20260701105108.8595E1F00ADE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15533-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15534-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,smtp.kernel.org:mid,qualcomm.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,lists.linux.dev:replyto];
 	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:daniel.lezcano@oss.qualcomm.com,m:robh@kernel.org,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:daniel.lezcano@oss.qualcomm.com,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:robh@kernel.org,m:conor+dt@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -96,7 +96,7 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -104,68 +104,99 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D69966EC586
+X-Rspamd-Queue-Id: 104726EC648
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The DT thermal zones are completely non-functional because the bac=
-king EC driver does not register its sensors with the thermal framework. Th=
-e driver (`drivers/platform/arm64/lenovo-thinkpad-t14s.c`) registers a hwmo=
-n device using `devm_hwmon_device_register_with_info()` but fails to includ=
-e the `HWMON_C_REGISTER_TZ` attribute under a `hwmon_chip` channel, nor doe=
-s it explicitly call `devm_thermal_of_zone_register()`. The hwmon core requ=
-ires `HWMON_C_REGISTER_TZ` to automatically register thermal zones. Consequ=
-ently, the DT thermal zones remain permanently unbound, and the CPU thermal=
- throttling described in the commit will not execute.
+- [High] t14s_ec_hwmon_read() bypasses the regmap lock, allowing concurrent=
+ I2C commands to the EC without the required 10ms hardware delay.
+- [Low] The driver unconditionally uses hwmon functions but its Kconfig ent=
+ry does not depend on HWMON, leading to linker errors.
 --
 
-commit 7064bd8ea5ff8a561ac7494d4e760b120e4d6d03
+commit 53ea0adbdbb89073fdf3f9621385cdebffccdb5b
 Author: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 
-arm64: dts: qcom: x1e78100-t14s: Add thermal zones for keyboard skin and ch=
-arging sensors
+platform: arm64: lenovo-thinkpad-t14s-ec: Add hwmon support for temperatures
 
-This commit exposes the embedded controller temperature sensors as thermal
-zones in the device tree for the Lenovo ThinkPad T14s. It maps the charging
-thermal zone to CPU cooling devices, allowing the generic thermal framework
-to apply throttling when temperatures exceed the passive threshold.
+This commit exposes the Lenovo ThinkPad T14s EC environmental sensors throu=
+gh
+the hwmon subsystem. It registers a hwmon device to provide access to six EC
+temperature sensors and exports their labels.
 
-> diff --git a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi =
-b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
-> index 5d49df41be02a..a19a363da9ed5 100644
-> --- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
+> diff --git a/drivers/platform/arm64/lenovo-thinkpad-t14s.c b/drivers/plat=
+form/arm64/lenovo-thinkpad-t14s.c
+> index 5590302a5694f..c9917a1d2bd7a 100644
+> --- a/drivers/platform/arm64/lenovo-thinkpad-t14s.c
+> +++ b/drivers/platform/arm64/lenovo-thinkpad-t14s.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/dev_printk.h>
+>  #include <linux/err.h>
+> +#include <linux/hwmon.h>
+
+[Severity: Low]
+The driver now unconditionally uses hwmon functions like
+devm_hwmon_device_register_with_info(), but the Kconfig definition for
+EC_LENOVO_THINKPAD_T14S doesn't appear to depend on HWMON.
+
+Will this cause linker errors if EC_LENOVO_THINKPAD_T14S is built-in while
+HWMON is built as a module or disabled?
 
 [ ... ]
 
-> @@ -1729,3 +1731,67 @@ &usb_mp_qmpphy1 {
+> @@ -555,6 +574,113 @@ static irqreturn_t t14s_ec_irq_handler(int irq, voi=
+d *data)
+>  	return IRQ_HANDLED;
+>  }
 > =20
->  	status =3D "okay";
->  };
+[ ... ]
+> +static int t14s_ec_hwmon_read(struct device *dev, enum hwmon_sensor_type=
+s type,
+> +			      u32 attr, int channel, long *val)
+> +{
+> +	struct t14s_ec *ec =3D dev_get_drvdata(dev);
+> +	unsigned int value;
+> +	int ret;
 > +
-> +&thermal_zones {
-> +	ec-keyboard-thermal {
-> +		polling-delay =3D <5000>;
-> +		polling-delay-passive =3D <1000>;
-> +
-> +		thermal-sensors =3D <&ec 1>;
+> +	switch (type) {
+> +	case hwmon_temp:
+> +		if (attr =3D=3D hwmon_temp_input) {
+> +			ret =3D t14s_ec_read(ec, ec->ec_hwmon.sys_thermx[channel].reg, &value=
+);
 
 [Severity: High]
-Will these thermal zones successfully bind to the embedded controller?
+Does calling t14s_ec_read() directly here bypass the regmap serialization?
 
-Looking at the underlying driver in
-drivers/platform/arm64/lenovo-thinkpad-t14s.c, it registers a hwmon device
-using devm_hwmon_device_register_with_info() but does not appear to include
-the HWMON_C_REGISTER_TZ attribute under a hwmon_chip channel. It also doesn=
-'t
-seem to explicitly call devm_thermal_of_zone_register().
+Multiple subsystems (LEDs, keyboard, etc.) use regmap_write/read which seri=
+alize
+access and respect the 10ms delay between EC I2C commands.
 
-Without the HWMON_C_REGISTER_TZ attribute, the hwmon core will not
-automatically register these thermal zones. Does this mean the DT thermal
-zones remain permanently unbound, preventing the CPU thermal throttling
-described in the commit message from actually executing?
+Since t14s_ec_read() drops the I2C bus lock before sleeping for 10ms:
+
+drivers/platform/arm64/lenovo-thinkpad-t14s.c:t14s_ec_read() {
+    ...
+out:
+    i2c_unlock_bus(client->adapter, I2C_LOCK_SEGMENT);
+    fsleep(10000);
+    return ret;
+}
+
+could a concurrent regmap access acquire the I2C bus lock immediately, issu=
+ing
+a new command to the EC before the hardware-mandated 10ms delay has elapsed?
+
+> +			if (ret)
+> +				return ret;
+> +			*val =3D value * MILLIDEGREE_PER_DEGREE;
+> +
+> +			return 0;
+> +		}
+> +		break;
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701103714.2258=
-3-1-daniel.lezcano@oss.qualcomm.com?part=3D2
+3-1-daniel.lezcano@oss.qualcomm.com?part=3D1
 
