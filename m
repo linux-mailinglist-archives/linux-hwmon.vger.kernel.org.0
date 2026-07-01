@@ -1,131 +1,191 @@
-Return-Path: <linux-hwmon+bounces-15527-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15528-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kfwIMyyQRGrqwwoAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15527-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 05:57:32 +0200
+	id hKu8HADERGon0goAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15528-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 09:38:40 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD196E9969
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 05:57:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD61D6EABB4
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Jul 2026 09:38:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=En1Qet40;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15527-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15527-lists+linux-hwmon=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=h-partners.com header.s=dkim header.b=WdN8FARP;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15528-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15528-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=huawei.com (policy=quarantine);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CEF0F30475A5
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2026 03:57:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55AD13013A71
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2026 07:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078593563F0;
-	Wed,  1 Jul 2026 03:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC89F3BAD9F;
+	Wed,  1 Jul 2026 07:38:34 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBBB36604B;
-	Wed,  1 Jul 2026 03:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0467C3B19B5;
+	Wed,  1 Jul 2026 07:38:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782878171; cv=none; b=oXNAeiNm66QvJfwupl6FuAHW2O+A1V9brPL/82kZW0a35xI1SvPWnyc2wt0IynUMEi7rlmHmsBvYZtVVX2iOMFT3kZobkPZm4y6eiidp7bPqTAXtkhn2qAxeh1JxnnGsSpXhVjECoTWg57KBvgzhdcGD8+ZSK1PZVdKZ5Bo3sdU=
+	t=1782891514; cv=none; b=mngYa8mT+NF1GZd5xJGV7Quk+9a9CUI9hjVrfk/IUrjzH6TLTk9EmyM1737u1dYhk9xz+6nOsOYeX8pxnmMsQ9CqEMruF2GAQ8ioaE/B4pA1kLiw7RSxggCXzBdqOjsruOKR7MskoXgkxATd2UgPfJHwTTlbMSzTNyIHPgVXiXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782878171; c=relaxed/simple;
-	bh=V42AFfF45yW7Jm7jlo/qFOfzYwrYr3Gz33RednS3Il0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=P7cWEBLGWpbNF7BR/RlVxpec/9zrt+BPGOnp7YXTwvZwVEuA6H/AMVP+Sq2n1Z5dwuVaFsuDOnrSFfDBAbvfZTyrhu7Bu/r4s5aIX3GZRCJc6TOHDECxM3+dM7lpR8v1roa/o8iLFCuqPYgmaPEVvkI7Eida7QUgUd18UALV/Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=En1Qet40; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388941F000E9;
-	Wed,  1 Jul 2026 03:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782878167;
-	bh=V42AFfF45yW7Jm7jlo/qFOfzYwrYr3Gz33RednS3Il0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=En1Qet40doNOOqEFLxyMsNua1dtr3129A/21xhuq/V5smNix47YnQNP/ChJECtKhv
-	 y+GZLNz86v1mgIpVbNd6M3kWPrTztBmvldiysmRiDrySDb+U9AiKPcW2eCv9Z9adds
-	 Gtdd9DfeB7X3mq1DiHW5iCynfgMyqIgM7jQwfrmje8XpV3Q3AG3O2Dtuzwds39XJ9h
-	 YkWtKMt0N6ZACX86Jv2cfvpVR1aRDVMxXnvpVf0h2GO0bh/rBQS/Y2aSEKn7Hxl8AZ
-	 pL6gh6k+XK7wgyyaVLebmjwf3LmhTuI3MBikA9yKLuCC+Jk1UDIGZrN1l5enjnqDfR
-	 rcgsCMzaeV1wA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/7] mfd: nct6694: Move module type macros to shared
- header
-Reply-To: sashiko-reviews@lists.linux.dev
-To: a0282524688@gmail.com
-Cc: "Vincent Mailhol" <mailhol@kernel.org>, "Oliver Hartkopp" <socketcan@hartkopp.net>, linux-rtc@vger.kernel.org, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>, linux-hwmon@vger.kernel.org, "Marc
- Kleine-Budde" <mkl@pengutronix.de>, linux-watchdog@vger.kernel.org, "Oleksij
- Rempel" <o.rempel@pengutronix.de>, linux-can@vger.kernel.org
-In-Reply-To: <20260701035025.3082927-2-a0282524688@gmail.com>
-References: <20260701035025.3082927-1-a0282524688@gmail.com>
- <20260701035025.3082927-2-a0282524688@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 03:56:06 +0000
-Message-Id: <20260701035607.388941F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1782891514; c=relaxed/simple;
+	bh=vpCwxCc/jh1ELbp5VpXjSmjU7t0A+pMZjyEMapeeu4o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=q8T2fj64VFZ3rRGLS7sFkI2nvPRoy7s1NZVcCR3PUc/OsOAa3HPbH7S3id4vD3BG0wwUbUa51NViRoonu7afEELqth3on7UXQL7w45z+MqVtHKYSECF9vpbJH0zeabRnePGwXxdb3PtFTobQBCC7JizRJ/2jUEbHiwH88zX6X3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=WdN8FARP; arc=none smtp.client-ip=113.46.200.216
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vRTdiQsC6/7X1boag6afRTp9D+BMwbbk1RY2lrBsgQQ=;
+	b=WdN8FARPus7NegMBnOH/ZOlWmjRtqVfhC8xGKq2zklobjzBIk0PlqDjy9lvytSvOX3LGTm2mT
+	YRLTR74NbHEqokLRlYZ6hbGH5tIA/6qFKiqgRcfJtCvmX0qWGVuXzeOYYGo4XFt7/eCsVYmx74Q
+	ig6E+ypsg5/m0BrCyXvCC/Q=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gqs8q6yqlz1T4gr;
+	Wed,  1 Jul 2026 15:29:31 +0800 (CST)
+Received: from kwepemo100005.china.huawei.com (unknown [7.202.195.212])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9C49340561;
+	Wed,  1 Jul 2026 15:38:22 +0800 (CST)
+Received: from [10.67.121.59] (10.67.121.59) by kwepemo100005.china.huawei.com
+ (7.202.195.212) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 1 Jul
+ 2026 15:38:21 +0800
+Message-ID: <6e5e36e0-c470-469e-bb16-a5faaf055463@huawei.com>
+Date: Wed, 1 Jul 2026 15:38:21 +0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] ACPI/PCC: Preserve platform-populated PCC signatures
+To: Sudeep Holla <sudeep.holla@kernel.org>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, Guenter
+ Roeck <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>, Andi Shyti
+	<andi.shyti@kernel.org>, <linux-i2c@vger.kernel.org>, MyungJoo Ham
+	<myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>, <linux-pm@vger.kernel.org>,
+	<lihuisong@huawei.com>
+References: <20260627-acpi_pcc_signature-v1-0-c1b7268d4fdc@kernel.org>
+ <10fb88e6-02f8-46b8-9665-db94a4035c5d@huawei.com>
+ <20260630-loyal-gray-polecat-a68c0d@sudeepholla>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20260630-loyal-gray-polecat-a68c0d@sudeepholla>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo100005.china.huawei.com (7.202.195.212)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[h-partners.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-15527-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:a0282524688@gmail.com,m:mailhol@kernel.org,m:socketcan@hartkopp.net,m:linux-rtc@vger.kernel.org,m:alexandre.belloni@bootlin.com,m:linux-hwmon@vger.kernel.org,m:mkl@pengutronix.de,m:linux-watchdog@vger.kernel.org,m:o.rempel@pengutronix.de,m:linux-can@vger.kernel.org,s:lists@lfdr.de];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15528-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:sudeep.holla@kernel.org,m:linux-acpi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:rafael@kernel.org,m:jassisinghbrar@gmail.com,m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,m:andi.shyti@kernel.org,m:linux-i2c@vger.kernel.org,m:myungjoo.ham@samsung.com,m:kyungmin.park@samsung.com,m:cw00.choi@samsung.com,m:linux-pm@vger.kernel.org,m:lihuisong@huawei.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[lihuisong@huawei.com,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,roeck-us.net,samsung.com,huawei.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[h-partners.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lihuisong@huawei.com,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,lists.linux.dev:replyto,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,smtp.kernel.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,h-partners.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5AD196E9969
+X-Rspamd-Queue-Id: CD61D6EABB4
 
-> From: Ming Yu <a0282524688@gmail.com>
->=20
-> Move NCT6694_XXX_MOD macro definitions from individual sub-device
-> drivers into the shared header include/linux/mfd/nct6694.h.
->=20
-> This is a prerequisite for supporting multiple transport interfaces
-> (USB, HIF) without duplicating these definitions.
->=20
-> No functional change.
->=20
-> Signed-off-by: Ming Yu <a0282524688@gmail.com>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+On 6/30/2026 6:49 PM, Sudeep Holla wrote:
+> On Tue, Jun 30, 2026 at 05:25:20PM +0800, lihuisong (C) wrote:
+>> Hi Sudeep,
+>>
+>> On 6/28/2026 12:37 AM, Sudeep Holla wrote:
+>>> ACPI PCC shared memory layouts reserve the first dword for the PCC
+>>> signature. ACPI specification defines the signature as 0x50434300 ORed
+>>> with the PCC subspace ID, and ACPI 6.6 clarify that the signature is
+>>> populated by the platform and verified by OSPM.
+>>>
+>>> This series centralizes PCC shared memory signature validation in the PCC
+>>> mailbox controller and stops PCC users from rewriting the signature before
+>>> each command. Clients that previously copied complete local PCC headers
+>>> now update only the mutable command/status/flags/length/payload fields.
+>> I am concerned that this may affect the functionality of drivers on some
+>> existed platforms.
+> One other option I was thinking is to not issue error but just log the error
+> message and let the client driver add that additional check if required.
+The patch 1/6 is not good to our platform.
+Yeah, suggest to use gentle approach to do this if we have to clarify 
+this signature.
+After all, all client drivers work well before.
+>> This largely depends on the implementation of the platform firmware.
+>>
+> Sure. However I always expected it to be taken care by the platform, v6.6
+> just adds that clarification explicitly. It was never clear that the sender
+> or the OSPM needs to write that signature, so I disagree that it is platform
+> firmware dependent entirely. The clarification wouldn't have got added if
+> there was any disagreement on that fact.
+The reasons I say this largely depends on the firmware are as follows:
+1> The previous ACPI spec did not clearly require that the platform 
+firmware needs to fill in this signature first.
+      The client driver working on these platform doesn't work anymore 
+if use the way in patch 1/6.
+2> We are not sure if some firmware verify this signature or clear this 
+signature field in shared memory.
+>
+>> I think it's good for the signature to be filled in by the command initiator
+>> and then verified by the recipient, as this is how this field can serve its
+>> purpose.
+>> Otherwise, I really don't see what use it has.
+> Please get the spec updated accordingly, we can just change in the kernel
+> based on what we think is the best way to use it. It needs to be clearly
+> specified, otherwise it may cause issue for non-Linux OSVs.
+Agree.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701035025.3082=
-927-1-a0282524688@gmail.com?part=3D1
+Yeah, I found spec v6.5 just said how to compute it and didn't specify 
+how to use it for platform and OSPM.
+I saw the update of v6.6 for the signature field in "Generic 
+Communications Channel Shared Memory Region" and "Extended PCC Subspace 
+Shared Memory Region".
+like: "The signature is populated by the platform and is verified by OSPM."
+But please note v6.6 didn't say above words in "Reduced PCC Subspace 
+Shared Memory Region".
 
+I don't know why v6.6 specify like that.
+After all. all PCC application parties (client drivers) in Linux have 
+already filled this field.
+
+According to my understanding of normal signature in communication,
+it is generally filled by the initiator (sender) and verified by the 
+responder (receiver).
+In this way, the data is valid, and the signature is meaningful.
+
+If it is only initialized by firmware, and OSPM verifies it, its 
+lifecycle ends there.
+I don't think this signature has much significance.
+
+The signature field is just in shared memory and may be cleared due to 
+some other exception.
+Some similar case also need to be considered.
+How to make it work better and more resilient may also be something we 
+need to consider.
+>
 
