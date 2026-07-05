@@ -1,191 +1,121 @@
-Return-Path: <linux-hwmon+bounces-15567-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15568-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YSpRNAVBSmp2AAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15567-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sun, 05 Jul 2026 13:33:25 +0200
+	id FJ3UAYpBSmqoAAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15568-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sun, 05 Jul 2026 13:35:38 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44170709D27
-	for <lists+linux-hwmon@lfdr.de>; Sun, 05 Jul 2026 13:33:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BF5709D39
+	for <lists+linux-hwmon@lfdr.de>; Sun, 05 Jul 2026 13:35:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SpzKUKJr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15567-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15567-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFd6+pGj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15568-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15568-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8CDB301588D
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jul 2026 11:33:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3341B3005998
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jul 2026 11:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619213783A1;
-	Sun,  5 Jul 2026 11:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB5037882A;
+	Sun,  5 Jul 2026 11:35:35 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A561C283C82
-	for <linux-hwmon@vger.kernel.org>; Sun,  5 Jul 2026 11:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73F9433E74
+	for <linux-hwmon@vger.kernel.org>; Sun,  5 Jul 2026 11:35:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783251190; cv=none; b=kWSbiOmp8lSNHlxURqvvxGd2kCzo6v/2nvNGK6LyMaKeQlVTOsXm3aQB08NE9kj8L1BHPJHqRorY/Z+/2OT8HSuN/L8eHUYzaDhX0DLLAxtNXMOEkf34FVqj+umIE2stcfq3QlPmWgrhfvlfkbVwGjcG9UwpwZMB+4IKCAhgndo=
+	t=1783251334; cv=none; b=ju/4NnWLJgSE6FmoAxP2zzicSuviM8Fk5dz/CCQ/h2Clx8TRpSaU8lkGqztzP/zAIQ+VQa2/PPwiQZgyhDGny0JQ3EpMARJXvpoE4t3ckajCvUki4Jf6uE7+EA/8deX8QhBgIlN/MwiEUozN+eQnLJunxSaplVlWf0EmDFVqfaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783251190; c=relaxed/simple;
-	bh=8P0QNjJlcHI6HgxOlg6IUhN5+Kup9IuekanC4zCHlFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MmKF32q+vjzpD4wWFel3EM5bnWvmOUlGLHA60Vx40MiLTAhRUvk35uyWsnH8mw9e7EQWmg0wb+aJf5pVBkbWN0WyIWAeaM/XpCUw7bzsOXeSCKBlZ8OjeDYOHxug2oSr2fl2wzxtCVxpxL8d5ElOOdVMkFUPH5i6y5BMYa5wnfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SpzKUKJr; arc=none smtp.client-ip=209.85.221.52
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso1201022f8f.2
-        for <linux-hwmon@vger.kernel.org>; Sun, 05 Jul 2026 04:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783251186; x=1783855986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1GKZD8suZHUX72iEyA8RIZIB5/2RWsYR7LLY9AUUTX8=;
-        b=SpzKUKJruAOg2GVpiB237sKO4JuTh1iRi/Lye8ltFtX2rQtgHKXsOZsOb82EdIHAYH
-         yDgc4vlDhP9gF/xodzQoBlwCIh5TqODVskp9GaOgl50/h2bsajvTBXvZcPJmLTiLxdW3
-         Pn4m1Rx/dNuSZbk5esj/5XMi1B0MNToMNEF7TzQAc7qlYfSJQxhM8nBfO9lnFP+ZTezm
-         5KtpoHv7loVAbbEGx8JGlLnb4PZcwPuW90BkPXHZdcsMRFVabwCLMRY0H/6xcUHu6ER6
-         jWLZpt0dfv89fqukFjvOzsNUqCJsEzFNCxgMWxChhdAuLU8Lxr9yoifxR9gIw7aewG2X
-         k4ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783251186; x=1783855986;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1GKZD8suZHUX72iEyA8RIZIB5/2RWsYR7LLY9AUUTX8=;
-        b=oCUVVMSkyCquN4O3uYxAKfXovKfyKivwcHCfukd8xJ0W/KhPow0Cn5X8dGL4fQVdgv
-         T6QsCzEWDiukFXBhRRn6M0XtvxL1Q5fxxyX52V9QZss3Wpo3vvx7Pvs1fXm6AFSBxS1g
-         3/vgHyF9mxPa2RVawnR1uzx+OvPOHAtBqDBN89XDofYR+5jN6U+RR0o4mQIKTTmcJITd
-         eV/luGpSHxscbXinwNxvsPL1B/ijWTOvl1I3bb60rZgbvS9qT1tXsDDaOam9CoDEqewc
-         FAuc9pvzpBtokwll9f0brzmgLPhhHD8609MfN+qEgTTZMsDFK0/YbK3bvhtiCpJodkCQ
-         Ea+g==
-X-Forwarded-Encrypted: i=1; AHgh+RoVNhLlMt/ZcQdxut0uLBwS4Oh0HR+sPo64IZvr3jSIPuSIZNhkWNZppqcizu6BpTcGYICXkffyvKH8rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqmL7HvydVwNM5OVyAL6fULkILBk8RCQryCZBANfVFPeRAtHhY
-	FO0ZoMFGmrWiWD3M5kIno5VD7aj72tljkD+lPqr8GEgc3KCcxeLcTEl9HJpyPale
-X-Gm-Gg: AfdE7clAXylg6PMHoz95XYq6nuM9yMmYd2Gu7k0LwfkljaC4pjO8TrBADlmqz8DmO0N
-	TFnS5Qf3o/szLp4BbisqOlMiVS76gqk/piW41NUgbdYXZ9YU4M22h+5J1TXUgnWfFl9afGBLXNq
-	i9XEZh6+DuX2QUl9RjBoT2VfyaqDDyMaEv82URNCAIgY4mJxkn6Rd3Xs9ttnsY89+WV9mjGfxNp
-	5DPq5lD6tLB/Y3WzHZV6kzUW0zivA4+sT8cmeErelG+nt/oYREz5oe+EKNmru7MgnUBw1gFxFQF
-	YIGCfS9DYI8Hwspl16r2j+HCFhi4RfOB8pMCNeZD/qbVrxjhkEaMJ16NW33OJ7ln+KtC6Hrz4In
-	48qtwnNi34K9Y/2FYD35gx9eGLWV4A0TnsTlF9lIondw1ObMC/IOBePP1aMOR8mTzozY82gtlQr
-	PlFEgjD3twv3fY1koumH4glcikmwMKfhc=
-X-Received: by 2002:adf:e391:0:b0:475:f0c2:5b07 with SMTP id ffacd0b85a97d-47aad8304d0mr5378708f8f.61.1783251185783;
-        Sun, 05 Jul 2026 04:33:05 -0700 (PDT)
-Received: from puma.museclub.art ([2a00:6020:b326:d300:d19:a765:d8d7:bedc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d7801sm15860984f8f.16.2026.07.05.04.33.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 04:33:05 -0700 (PDT)
-From: Eugene Shalygin <eugene.shalygin@gmail.com>
-To: eugene.shalygin@gmail.com
-Cc: =?UTF-8?q?Miska=20H=C3=A4m=C3=A4l=C3=A4inen?= <miska.hamalainen@hotmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING),
-	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] hwmon: (asus-ec-sensors) add ROG CROSSHAIR X870E HERO
-Date: Sun,  5 Jul 2026 13:32:36 +0200
-Message-ID: <20260705113246.812500-1-eugene.shalygin@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783251334; c=relaxed/simple;
+	bh=tlfx+LxxWE9L3L1Sb5l9nMEgoujDiWrBEDn0dYyJe+M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Yyjb4cydpSj50/6Y3NplLcjuvUUnoEvJhTXlH7RBD24+dhxdehWpe3I2p5VeVUlhXo4NB+rwfRaRQd7vUPSfP8/mIly+zPf+qLPc8Kk2lXle4AtRvEmCz2IyCPipmKtg4qqLYaZsd77uZGAlv4hXMg8VXdH3/L5G/hAbVlHNAaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFd6+pGj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328D41F000E9;
+	Sun,  5 Jul 2026 11:35:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783251333;
+	bh=tlfx+LxxWE9L3L1Sb5l9nMEgoujDiWrBEDn0dYyJe+M=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hFd6+pGjKxPAYTFHU4oaILTwn2M06jGWCpAKSjCuFK0Udt7/Jnt1wwbAyv6f+3pCE
+	 nMZi/ZxLSIP/a4GGZBTKdbKNIGto86muMVfMv1NINa2OOL0QPeKN95VUGsnMt5EXSq
+	 LTK/U8LU1Ra8QNJodhiVuFhWgv8tfh8VqNfseFm+iUmsBSeileWWQsoce8CsQaxSxj
+	 KwnWN04+V2FuIyj5tHgg8xBGDvBsu3WWcBF21/x9FX9wb6HtYD+fblWmcBkj1sbPB3
+	 t3wsSdoZ0Wvh9x17/iCJiS/+x0rlHeqi7c/muroONFIKpgvwyrKP2q4gk+E2M9Tmmn
+	 g6pr4b+KLlOtg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] hwmon: (asus-ec-sensors) add ROG Maximus Z790 Hero
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Eugene Shalygin" <eugene.shalygin@gmail.com>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260705113125.812045-1-eugene.shalygin@gmail.com>
+References: <20260705113125.812045-1-eugene.shalygin@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 05 Jul 2026 11:35:32 +0000
+Message-Id: <20260705113533.328D41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15567-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:eugene.shalygin@gmail.com,m:miska.hamalainen@hotmail.com,m:linux@roeck-us.net,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux-hwmon@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:eugeneshalygin@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[eugeneshalygin@gmail.com,linux-hwmon@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[hotmail.com,roeck-us.net,lwn.net,linuxfoundation.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-15568-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:eugene.shalygin@gmail.com,m:linux-hwmon@vger.kernel.org,m:eugeneshalygin@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[eugeneshalygin@gmail.com,linux-hwmon@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FROM_NO_DN(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid,florianschut.nl:email,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44170709D27
+X-Rspamd-Queue-Id: 96BF5709D39
 
-From: Miska Hämäläinen <miska.hamalainen@hotmail.com>
+> From: Florian Schut <mail@florianschut.nl>
+>=20
+> Add support for ROG Maximus Z790 Hero.
+>=20
+> Signed-off-by: Florian Schut <mail@florianschut.nl>
+> Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
 
-Add support for ROG CROSSHAIR X870E HERO
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Signed-off-by: Miska Hämäläinen <miska.hamalainen@hotmail.com>
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
----
- Documentation/hwmon/asus_ec_sensors.rst |  1 +
- drivers/hwmon/asus-ec-sensors.c         | 10 ++++++++++
- 2 files changed, 11 insertions(+)
-
-diff --git a/Documentation/hwmon/asus_ec_sensors.rst b/Documentation/hwmon/asus_ec_sensors.rst
-index ccf43fd1fa9f..84c9160efdd2 100644
---- a/Documentation/hwmon/asus_ec_sensors.rst
-+++ b/Documentation/hwmon/asus_ec_sensors.rst
-@@ -25,6 +25,7 @@ Supported boards:
-  * ROG CROSSHAIR X670E EXTREME
-  * ROG CROSSHAIR X670E HERO
-  * ROG CROSSHAIR X670E GENE
-+ * ROG CROSSHAIR X870E HERO
-  * ROG MAXIMUS X HERO
-  * ROG MAXIMUS XI HERO
-  * ROG MAXIMUS XI HERO (WI-FI)
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index 4ec2028f7dfe..381c399963e8 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -487,6 +487,14 @@ static const struct ec_board_info board_info_crosshair_x670e_hero = {
- 	.family = family_amd_600_series,
- };
- 
-+static const struct ec_board_info board_info_crosshair_x870e_hero = {
-+	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
-+		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
-+		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT,
-+	.mutex_path = ASUS_HW_ACCESS_MUTEX_SB_PCI0_SBRG_SIO1_MUT0,
-+	.family = family_amd_800_series,
-+};
-+
- static const struct ec_board_info board_info_maximus_vi_hero = {
- 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
- 		SENSOR_TEMP_T_SENSOR |
-@@ -891,6 +899,8 @@ static const struct dmi_system_id dmi_table[] = {
- 					&board_info_crosshair_x670e_gene),
- 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR X670E HERO",
- 					&board_info_crosshair_x670e_hero),
-+	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR X870E HERO",
-+					&board_info_crosshair_x870e_hero),
- 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG MAXIMUS XI HERO",
- 					&board_info_maximus_xi_hero),
- 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG MAXIMUS XI HERO (WI-FI)",
--- 
-2.55.0
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260705113125.8120=
+45-1-eugene.shalygin@gmail.com?part=3D1
 
 
