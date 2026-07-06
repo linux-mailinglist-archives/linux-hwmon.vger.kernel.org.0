@@ -1,111 +1,125 @@
-Return-Path: <linux-hwmon+bounces-15589-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15590-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AqxZOvGCS2q5SgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15589-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 06 Jul 2026 12:26:57 +0200
+	id bHDIE1J+S2pASQEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15590-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 06 Jul 2026 12:07:14 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4705C70F26C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 06 Jul 2026 12:26:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371F170EE66
+	for <lists+linux-hwmon@lfdr.de>; Mon, 06 Jul 2026 12:07:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15589-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15589-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ii1kStdt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15590-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15590-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A6E7338C676
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jul 2026 09:47:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0FF25302312E
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jul 2026 10:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA854DBD6D;
-	Mon,  6 Jul 2026 09:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDFA48C402;
+	Mon,  6 Jul 2026 09:48:02 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A4041F7FA;
-	Mon,  6 Jul 2026 09:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC24C6F04
+	for <linux-hwmon@vger.kernel.org>; Mon,  6 Jul 2026 09:47:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330413; cv=none; b=gik/+rLgkDIaqCEah2oT+Ongh+m2nPLzYwXZCYIKL4XMiXRevg2H4ZJctD4nb1mKGkYXJVxYSi6wOeMGxvhNI/5jZvIEFs9TUB8PzeQcD2YX0+Bv8GDtZ9T4fnbEsGxtv+UK0xdBklGSMbZj4MBKPb1uQ33xNe2nEQauLnHBGIk=
+	t=1783331282; cv=none; b=RVZarlKA4vJPU60U4vCfttZcYAvTB+bee4Go6/Zn+Ywe5TszAA/QUjk1mKTYiw10WeD7NwgJ9K1Z9rhipb8sk4n8D7lXdEIGLOspWUjJ2g7iV7wW8fKWIbgSQXEEam5bLoIBpb6Q9ounzptzH/iL8WuB5SizgyUKPC6YMkbKIqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330413; c=relaxed/simple;
-	bh=AfjYp01r7+/4xRv5MAA3uBnFXvyCZX5nlG6UeqKQ0u4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OaujVFf5n9OZj8q2NcjBbz2vhiEG0JwtytP2JK+ySHvm0V1FAg7WwqsnI7CTS55vMdvc45jJI+yt6bcjJr3eRUECP4LbDRQb6dZp2/ZK2BIl8UxY/1tXlQNkc42EKJVQw6D4Xm/sAjabikAHFaCZq9RvB+ER2vepi48+DZfUHR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-01 (Coremail) with SMTP id qwCowADXb8hedktq+IbxBA--.34865S2;
-	Mon, 06 Jul 2026 17:33:18 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Sanman Pradhan <psanman@juniper.net>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: occ: validate poll response sensor blocks
-Date: Mon,  6 Jul 2026 17:33:17 +0800
-Message-ID: <20260706093317.80867-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1783331282; c=relaxed/simple;
+	bh=Q5iIDhpM0V0eQef3U8yc4V3A0hhhrJmwxo3fLZPAsL0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bvoQxVa6Ct7t/9ZPiKlwFeEbaG9g5CWzD/PnFvyLLiRh1EKTwRD69XKi5CgwhztUbYSSFJeLNpgOcpuyN/26LXjeVdoBITEHTa68fCtpq4WSwnBbogtt3fY0alhUmK4gEuOHPgYdWZioYjkxHUrT8kk8VM1Dk9ys4oUpMVDQzlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ii1kStdt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22A81F000E9;
+	Mon,  6 Jul 2026 09:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783331279;
+	bh=J3PQoM1Yid6CBpFoT/KhKMYHbST3r9Ud8d/vBJBIfIo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ii1kStdtvRr5uAeoK16P8Gxv3lRtola/uZafE5dftzkVEhTJ6PcmzuJ8a6SA1yOlb
+	 LV8j59o1zq+nfnq8KAEqSguW14J72Kk5C07J5UeeQ5XiveJNGiM3IOMw47P8DfKOWn
+	 H++T3jP+ifs37G3CsKjhN0+kHijgb+lWLREjvtzjx8jL54Z6r0ofHEKqIiFEazPJYY
+	 rlrD7l+MYOR9wKnzN+g3p3I6QH9comyB8bg+Z70w9Xw0aDuNqhG/PGB+OxzOw7bltY
+	 3toEdbJ1vwaYTPwd/Rjrc4T+IGUoDm8ZbkxEAVNtTJd5zYX91L9EZlZ9SXG7hQFZEF
+	 2f2wGBaBxJnWQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] hwmon: occ: validate poll response sensor blocks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pengpeng Hou" <pengpeng@iscas.ac.cn>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260706093317.80867-1-pengpeng@iscas.ac.cn>
+References: <20260706093317.80867-1-pengpeng@iscas.ac.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Jul 2026 09:47:57 +0000
+Message-Id: <20260706094758.A22A81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADXb8hedktq+IbxBA--.34865S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWF1xtw18Jr1DKr1kCr43trb_yoW5KrW7p3
-	WUGay5KF17Gr1fXws7Zrn0vrWYyan5Ga47KFZxW3s5AF98WrykW3WIkry09w1UtF9xGrn7
-	Xw1ktFWDCa1DJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j
-	6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUnG
-	QDUUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15589-lists,linux-hwmon=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[pengpeng@iscas.ac.cn,linux-hwmon@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:pengpeng@iscas.ac.cn,m:psanman@juniper.net,m:arnd@arndb.de,m:runyu.xiao@seu.edu.cn,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15590-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:pengpeng@iscas.ac.cn,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:from_mime,iscas.ac.cn:email,iscas.ac.cn:mid,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.linux.dev:replyto,vger.kernel.org:from_smtp,iscas.ac.cn:email,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4705C70F26C
+X-Rspamd-Queue-Id: 371F170EE66
+
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] Unvalidated `sensor_length` from hardware allows arbitrary out-of-=
+bounds memory reads via sysfs attributes.
+- [High] Repeatedly toggling the OCC active state via sysfs causes an unbou=
+nded memory leak, leading to potential OOM.
+- [High] AB-BA deadlock between kernfs active reference and driver mutex du=
+ring OCC deactivation.
+--
+
+commit 5011dae8782f4b544aacd0d5b80a4b2e7ed11706
+Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
+
+hwmon: occ: validate poll response sensor blocks
 
 The OCC poll response parser walks a counted list of sensor data blocks.
 It used the static response buffer size as the parse boundary, but the
@@ -113,97 +127,139 @@ transport only guarantees the bytes declared by the current response
 length. A malformed or truncated response can therefore make the parser
 read a block header or block payload beyond the current response data.
 
-Use the response data_length as the parent boundary for the poll payload.
-Reject responses that cannot contain the fixed poll header, prove that
-each sensor block header is present before reading its item fields, and
-then prove that the complete block fits before advancing to the next
-block.
+> diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+> index 42cc6068bb08b..b2e59a1cb73ff 100644
+> --- a/drivers/hwmon/occ/common.c
+> +++ b/drivers/hwmon/occ/common.c
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- drivers/hwmon/occ/common.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+[ ... ]
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index e18e80e832fd..fa92ae6ec4f0 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -1052,9 +1052,10 @@ static int occ_setup_sensor_attrs(struct occ *occ)
- }
- 
- /* only need to do this once at startup, as OCC won't change sensors on us */
--static void occ_parse_poll_response(struct occ *occ)
-+static int occ_parse_poll_response(struct occ *occ)
+> @@ -1057,21 +1058,34 @@ static void occ_parse_poll_response(struct occ *o=
+cc)
+>  	struct occ_poll_response_header *header =3D &poll->header;
+>  	struct occ_sensor_data_block *block =3D &poll->block;
+> =20
+> +	data_length =3D get_unaligned_be16(&resp->data_length);
+> +	if (data_length < sizeof(*header) || data_length > OCC_RESP_DATA_BYTES)=
  {
- 	unsigned int i, old_offset, offset = 0, size = 0;
-+	u16 data_length;
- 	struct occ_sensor *sensor;
- 	struct occ_sensors *sensors = &occ->sensors;
- 	struct occ_response *resp = &occ->resp;
-@@ -1063,21 +1064,34 @@ static void occ_parse_poll_response(struct occ *occ)
- 	struct occ_poll_response_header *header = &poll->header;
- 	struct occ_sensor_data_block *block = &poll->block;
- 
-+	data_length = get_unaligned_be16(&resp->data_length);
-+	if (data_length < sizeof(*header) || data_length > OCC_RESP_DATA_BYTES) {
-+		dev_warn(occ->bus_dev, "invalid OCC poll response length %u\n",
-+			 data_length);
-+		return -EMSGSIZE;
-+	}
-+
- 	dev_info(occ->bus_dev, "OCC found, code level: %.16s\n",
- 		 header->occ_code_level);
- 
- 	for (i = 0; i < header->num_sensor_data_blocks; ++i) {
- 		block = (struct occ_sensor_data_block *)((u8 *)block + offset);
-+		if (size + sizeof(*header) + sizeof(block->header) >
-+		    data_length) {
-+			dev_warn(occ->bus_dev, "truncated OCC sensor block header\n");
-+			return -EMSGSIZE;
-+		}
-+
- 		old_offset = offset;
- 		offset = (block->header.num_sensors *
- 			  block->header.sensor_length) + sizeof(block->header);
--		size += offset;
- 
- 		/* validate all the length/size fields */
--		if ((size + sizeof(*header)) >= OCC_RESP_DATA_BYTES) {
--			dev_warn(occ->bus_dev, "exceeded response buffer\n");
--			return;
-+		if (size + sizeof(*header) + offset > data_length) {
-+			dev_warn(occ->bus_dev, "exceeded OCC poll response length\n");
-+			return -EMSGSIZE;
- 		}
-+		size += offset;
- 
- 		dev_dbg(occ->bus_dev, " %04x..%04x: %.4s (%d sensors)\n",
- 			old_offset, offset - 1, block->header.eye_catcher,
-@@ -1107,6 +1121,8 @@ static void occ_parse_poll_response(struct occ *occ)
- 
- 	dev_dbg(occ->bus_dev, "Max resp size: %u+%zd=%zd\n", size,
- 		sizeof(*header), size + sizeof(*header));
-+
-+	return 0;
- }
- 
- int occ_active(struct occ *occ, bool active)
-@@ -1138,10 +1154,12 @@ int occ_active(struct occ *occ, bool active)
- 			goto unlock;
- 		}
- 
--		occ->active = true;
- 		occ->next_update = jiffies + OCC_UPDATE_FREQUENCY;
--		occ_parse_poll_response(occ);
-+		rc = occ_parse_poll_response(occ);
-+		if (rc)
-+			goto unlock;
- 
-+		occ->active = true;
- 		rc = occ_setup_sensor_attrs(occ);
- 		if (rc) {
- 			dev_err(occ->bus_dev,
--- 
-2.43.0
+> +		dev_warn(occ->bus_dev, "invalid OCC poll response length %u\n",
+> +			 data_length);
+> +		return -EMSGSIZE;
+> +	}
+> +
+>  	dev_info(occ->bus_dev, "OCC found, code level: %.16s\n",
+>  		 header->occ_code_level);
+> =20
+>  	for (i =3D 0; i < header->num_sensor_data_blocks; ++i) {
+>  		block =3D (struct occ_sensor_data_block *)((u8 *)block + offset);
+> +		if (size + sizeof(*header) + sizeof(block->header) >
+> +		    data_length) {
+> +			dev_warn(occ->bus_dev, "truncated OCC sensor block header\n");
+> +			return -EMSGSIZE;
+> +		}
+> +
+>  		old_offset =3D offset;
+>  		offset =3D (block->header.num_sensors *
+>  			  block->header.sensor_length) + sizeof(block->header);
 
+[Severity: High]
+This isn't a bug introduced by this patch, but does this calculation allow =
+an
+out-of-bounds read later?
+
+If a faulty or malicious OCC device sends a poll response with a large
+num_sensors and a small sensor_length (e.g., 1 byte), it passes the bounds
+check below because the total calculated block size is small.
+
+However, the driver's sysfs show functions (like occ_show_temp_2()) index
+into the buffer using the fixed C structure size:
+
+occ_show_temp_2()
+    ...
+    temp =3D ((struct temp_sensor_2 *)sensors->temp.data) + sattr->index;
+
+This pointer arithmetic could index far beyond the validated block boundary
+and the bounds of the OCC response buffer, leaking adjacent kernel memory to
+userspace.
+
+Should we validate that sensor_length matches or exceeds the expected
+structure size for the given sensor version?
+
+> -		size +=3D offset;
+> =20
+>  		/* validate all the length/size fields */
+> -		if ((size + sizeof(*header)) >=3D OCC_RESP_DATA_BYTES) {
+> -			dev_warn(occ->bus_dev, "exceeded response buffer\n");
+> -			return;
+> +		if (size + sizeof(*header) + offset > data_length) {
+> +			dev_warn(occ->bus_dev, "exceeded OCC poll response length\n");
+> +			return -EMSGSIZE;
+>  		}
+> +		size +=3D offset;
+> =20
+>  		dev_dbg(occ->bus_dev, " %04x..%04x: %.4s (%d sensors)\n",
+>  			old_offset, offset - 1, block->header.eye_catcher,
+
+[ ... ]
+
+> @@ -1127,10 +1143,12 @@ int occ_active(struct occ *occ, bool active)
+>  			goto unlock;
+>  		}
+> =20
+> -		occ->active =3D true;
+>  		occ->next_update =3D jiffies + OCC_UPDATE_FREQUENCY;
+> -		occ_parse_poll_response(occ);
+> +		rc =3D occ_parse_poll_response(occ);
+> +		if (rc)
+> +			goto unlock;
+> =20
+> +		occ->active =3D true;
+>  		rc =3D occ_setup_sensor_attrs(occ);
+
+[Severity: High]
+This is a pre-existing issue, but does repeatedly toggling the OCC active
+state via sysfs cause an unbounded memory leak?
+
+When transitioning to active, occ_setup_sensor_attrs() uses devm_kcalloc()
+to allocate arrays for occ->attrs and occ->group.attrs tied to the parent b=
+us
+device.
+
+When transitioning to inactive, occ_active() calls hwmon_device_unregister(=
+),
+but the devm_ allocated memory is not freed because the parent bus device is
+never removed.
+
+Repeatedly writing '0' and '1' to the occ_active sysfs file could continual=
+ly
+allocate new arrays without freeing the old ones, exhausting system memory.
+
+[Severity: High]
+This is also a pre-existing issue, but is there an AB-BA deadlock between t=
+he
+kernfs active reference and the driver mutex during OCC deactivation?
+
+When deactivating the OCC, occ_active() acquires occ->lock and calls
+hwmon_device_unregister(), which blocks in kernfs_remove() waiting for all
+active references on the hwmon sysfs files to be released.
+
+Concurrently, if userspace is reading a hwmon sysfs file, the sysfs core
+holds the hwmon kernfs active reference and invokes the show function
+(e.g., occ_show_temp_1()).
+
+The show function calls occ_update_response(), which blocks trying to
+acquire occ->lock.
+
+This creates a deadlock where the unregister thread holds occ->lock and wai=
+ts
+for the hwmon active reference, while the sysfs reader holds the hwmon acti=
+ve
+reference and waits for occ->lock.
+
+>  		if (rc) {
+>  			dev_err(occ->bus_dev,
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706093317.8086=
+7-1-pengpeng@iscas.ac.cn?part=3D1
 
