@@ -1,99 +1,100 @@
-Return-Path: <linux-hwmon+bounces-15638-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15641-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7FJjEmpTTWqkyQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15638-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 07 Jul 2026 21:28:42 +0200
+	id WSiPJrZTTWqsyQEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15641-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 07 Jul 2026 21:29:58 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D583971F358
-	for <lists+linux-hwmon@lfdr.de>; Tue, 07 Jul 2026 21:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BEA71F379
+	for <lists+linux-hwmon@lfdr.de>; Tue, 07 Jul 2026 21:29:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=V8o96PGj;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=GvgoOik2;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=aWLEYor4;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ayvj4HNZ;
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15638-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15638-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15641-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15641-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 580ED30CC255
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jul 2026 19:22:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 955043101893
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jul 2026 19:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5D73822A5;
-	Tue,  7 Jul 2026 19:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0AC3A1687;
+	Tue,  7 Jul 2026 19:22:41 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E235375F67
-	for <linux-hwmon@vger.kernel.org>; Tue,  7 Jul 2026 19:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8336397B1B
+	for <linux-hwmon@vger.kernel.org>; Tue,  7 Jul 2026 19:22:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783452155; cv=none; b=C0P4tSxiAVD024eHGgU4KlKnMD0t9CGqvFdYo8qBy2/lmYr+FgZfbDY3xF63OTNJVKsnRhY/iUZKOphErPooGOPx72TEhchJapo9pTSkoTHXbmyN6YLRSuPED8px2NFTaIrSGAJWTDEi6YczY9vx50fkkOMYeOUdzFkSNkXNmEI=
+	t=1783452161; cv=none; b=XZvPM0+gQjulrVTEo+iHExbPxEj+QWAE7VSEJ7rSB3f0CK6HGSbgb2GtSVbE/I5KUpm4kNuYLKxwB8qRzdbNF0GTZMeBtywhTx91zhWYJicm0Bf8d4nFX8c2B5FthrWxClXgQ+EzGfF10rbGb/svg/tE0nLMF3crCACWikaiJJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783452155; c=relaxed/simple;
-	bh=+Rcs9tqTLxY6uz2CPrBVs8k8aFNAm68QFL8TI+SEKms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JA42sAD5xIQVjO46ondwXyp8z6OvvnTxZUTTm13rGrwa7ckSe6KfBXSnnizhqDRQOqDmy0uqfkK5TS98zfD7f0gMnoDjO2qVTU5H1lPylfoYugcWvcGwjoA5tY8Uoy80kDSo6NXuWOdIfZuUndMuGGRsrfmv8/T14nLnFLu8U6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=V8o96PGj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GvgoOik2; arc=none smtp.client-ip=205.220.168.131
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 667J5SvC370235
-	for <linux-hwmon@vger.kernel.org>; Tue, 7 Jul 2026 19:22:33 GMT
+	s=arc-20240116; t=1783452161; c=relaxed/simple;
+	bh=1Fs8N6cwVTIWmqFAeyUCV1zMsM4ASCH5uF4rAKhciGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CIX9oKYOV9CugOrk4mdJexamzpkKHEm0J8FUJcmrtWh4EWbZUazLYybYKm6OemmRri8vcLpgvVnqfHbd4ZqPuQLr62l6ULC2TehQ1ZVOEHSo2B2i+EfTvsQ7EyPBvd/uzuB0tuF3mZsLKcBG3TY2vhQdwx+YtvBvEY9+nGv27xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aWLEYor4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ayvj4HNZ; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 667J5Ysu504910
+	for <linux-hwmon@vger.kernel.org>; Tue, 7 Jul 2026 19:22:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=Mt/L0C8c6aeHx2BoFJgmqf
-	geH7twNz10xR7G3mGjzkM=; b=V8o96PGjmOHMv/kdEpPU+p0n2EmDXPCOhZT8fJ
-	r3g65l8/TlVmyoGX4eNfiflPXPAZEN+z2s+Yk3MgFk1DdJiM7EKbHPbonchNS+nH
-	/FWDfoKmOAEMzEgyLdrmEJvHTK6o2+L4YdlWA6Wrd3iDCgKUUIeCYE9XgISN4Nvt
-	3bU91WWaV2NzoYr/JfNPRr2hJaDpza7RgS/f2VUdzPNRKl0YBBdvBcnr467vd7Bu
-	ffxBxQi04aP8xD9P0BWHVlq9D5MSnKRhypTVw5q0rovIlDhPE/PmoaNJEX9JHAHl
-	BJErLrzHHsKBq+s/Ad3kWTDl9EKMMEZSqHs8/Wp6MZ8tPiBw==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f8vun3310-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=l75MTQkX1SP
+	NVbC3FrGgp64H9ib1BWH42DZHDWg2If8=; b=aWLEYor4HwInbMYms63/SrUsl7J
+	evpOBhxgeGOmRLJ2H2oyR51YocdgARUxI0SEpYspZbM2xBOBnOu5EGB5O/+YMQz9
+	tMiXTz4DWsd6k0VSoycA6Z7RKEWOvMgf7sIvUcgFpcJLjMFTGaapXCH2mKxDW1y0
+	4JVTyHXJRThnA2gieFSKRVcpmMDP03+9Irgen17Bd38kNeyHalFufDXitw8ORvVg
+	N2MDnD2cgLByI3eOuyfEXsm5FRRul2VihM5TdbODfBl7bGYzl9ApjydQyyTDti9P
+	IMZhN4xnMW8ZzCYygJqr8221DmilU3UVqLmpzUM/13vEZ1Gbh3zlXsWqVqA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f8vdjb8eh-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-hwmon@vger.kernel.org>; Tue, 07 Jul 2026 19:22:33 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51a8c689b5fso47764331cf.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 07 Jul 2026 12:22:33 -0700 (PDT)
+	for <linux-hwmon@vger.kernel.org>; Tue, 07 Jul 2026 19:22:38 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c1d137a68so105338671cf.3
+        for <linux-hwmon@vger.kernel.org>; Tue, 07 Jul 2026 12:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783452152; x=1784056952; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mt/L0C8c6aeHx2BoFJgmqfgeH7twNz10xR7G3mGjzkM=;
-        b=GvgoOik2hYpK4jE8zfnE2vF1XDOvAJc03NhPEX7VW5nzfDwpp2ZXb0fbnoisuruSKE
-         455bSESEqRX8jzQI/1iYCzSyzg32iy31yi/UqVeYYIbMCFhABtbDIko4Vv/3sfZ3PxKk
-         pPgOfOG9+r1sYw1YOGHLhd24+AmjVxV6JRg+rarzNBn+8u5rsGkSOueD8Xu4yGnOLMCw
-         2p6Y+Y7hyd55wWHQBFXKJ0d5F34gLR6o6lDU03wl3ebovlskSmQJZ2/5Ynws7Rcvn0Pz
-         gIcSrLXjTXeUTHzF9QW65bZFDOHxTK0gm6sv4j48h54oqE3oodt7AgBlQcnz897w64VJ
-         jD1g==
+        d=oss.qualcomm.com; s=google; t=1783452158; x=1784056958; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l75MTQkX1SPNVbC3FrGgp64H9ib1BWH42DZHDWg2If8=;
+        b=ayvj4HNZxZSMp5s3w1aPP6I5zvfGv81bUtq1lH9lDKMR1siOaj9TJt30R275g5oBwd
+         sw95KENczLEjudrhBJCeT4OlnP5KCxET3bJNws2uSRlXlb8woP1jbEgPLM/014fOvyNx
+         kDOOyB4/1zCqipbChKHcrDCCrWFfu+l9uhitCt7qQ1DjyRTzRtQeoEY69umrJpxI64A0
+         5sw0uquDMfllwVNYczui94C/lXrbcrYvu4qYmWt4lkijBojvIXk/cWVpUpo4y3+vUchO
+         jhCu+UxKDzs0cANvK3eMmVuh3q4fbHvqQIhseYoJLWrFmQqTVjDAiIyShi7vFZy58qWl
+         20DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783452152; x=1784056952;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mt/L0C8c6aeHx2BoFJgmqfgeH7twNz10xR7G3mGjzkM=;
-        b=KJaChRNzbaolqMG8G8iZqK/5vlBVupFgK8Cj2Eo1nyaHPae7Mgm2HS6ssK1TZeZYpc
-         ssNwJ3R68zISUH9fn2QDzokPoUfCBn333AbQCwnXXHgceOs4jjti0Ej2eiYwl2AROJfP
-         zRndYGDmi8ZOkdrUVyNkkdpRqsFJETIClVV6U2GDVnyzdmn8GLYTjNHrv9RvpEsSoith
-         Ir4ylyM2JqKJfTTqNwSfFomCQy11/ru2IZWtpZrKhGYyeyyaNtT/CiBjuFQ8mUoxbZKs
-         xtcjk8f5F/Dwdi4fvFHXsHnkCYzMF5vBBsEa40a1vtBJKdbnLgek13ylz6Bsl9KLaTNe
-         k1zg==
-X-Forwarded-Encrypted: i=1; AHgh+Rob53sDoWOcErF9wB0B7bMBOamlcqpkQRdsDq6JJurcBwRaAAgS335xwOCkWVbVIDGTtAgKYuwVJBlXbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcIi0R8hzzbKkaKXh3Oow23/BbO9SjeUsJQF3LBs7mh9FJM6mr
-	phNDMcpJL6VpOt7wJ+8pE84YQ7mKKAdVIr3Vjf8g59mVKLltEPZcmM8MafeWsi6+EqKwSoZK/wp
-	1uON+wejfcgUI6P3yMT7QI49tLiALb1DRYT2572apRMzNss4NUh2yiOMEz85p2bVPow==
-X-Gm-Gg: AfdE7clh9navEgIUwMT7q82QH8FcSjhJd33vbemGevXpJaNS8BZ10JZxShyu5e8HTzh
-	dzAXXMXAxC4cjGaa8YwzOfa/xZYowLRtoCDTSrK44zVXjkeEqvw+eyR7a05z8vn9x2hJpBKhXOu
-	uYcdX9F8MHjAa1N5eQEeJ5bQ11Tv9jXYD58x03f6jmUeZEsVLXDOte0jgh7OFPPNr59CmCmjtWy
-	FV+CzRlsgs206qTyu7uPP6PgdfxjtXP0K3qLtW6eN8rouZzTCVdlSyM4FedHV5B7BRk8DmqgaS2
-	MCXDQ7P/patoRh9RI2J4oIn8gaJud3+cfxSfDuAbWa5Tw4I0XseqTyTLNv5slj0AoICREMjQKaA
-	lunlfOgPwDVMNMR47cfUILkDBzQnpaSH28MkIepadLew=
-X-Received: by 2002:a05:622a:60c:b0:51a:8d31:9a06 with SMTP id d75a77b69052e-51c74800786mr68202801cf.16.1783452152104;
+        d=1e100.net; s=20251104; t=1783452158; x=1784056958;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l75MTQkX1SPNVbC3FrGgp64H9ib1BWH42DZHDWg2If8=;
+        b=V+cJtMxg7SxIUazAp4bg95VugSo3pHlbOUPcXIS6GAQYNsJleIzGfZoSw/55NdA1KV
+         wyhksP8qpDLAy6y3qg4x0HjZxqBGN+0UZiksjKiqNPwg5MfXcHxS3m8kpnbk3CRMeatr
+         E6uFtBL9UNf32rlFl0+6hFWJIU/ZiZQ+a7RNEUiPS8yz6qmdi2ZMkcGX8nj+6ql/Umbd
+         JNCGgnyS5h+UI+4tQxBb6mxIMOXXyIWpIEC0wuq3/G5E2KFG8LPGHT4qCtP9yg/MTvZL
+         66tMGesfEOguhLvaxqyKGA9JfnhL4HWoZch6GRKvNLsaV23cDhe8sFZ/J5wP2jx2kvi5
+         eEyQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrBVoX0lHZWlqmQTP2MOGSSPP1EPCJ2aHlPwrevuNPeAsSyhGVO6Y1wDsc4t71X2TjpY+0JrR1oV6ZyFQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2AsTqHhPu9v0MOZd2Y5q0MhBqRTRi9EhPxVRnHk7rRJAbsmXI
+	JWl1/0HplKbJ34anBp9Xe7VjdG/DsODmvmehQKJdC+A45Kx4B3S6dHEsuZOpZnp63U4znHTEy6Z
+	MxUIh9G2S8KGPzFyNs793lWcWwzWGy8KoteMI7vLAh9b42edIqTsMnbM6ucnfL6RxGw==
+X-Gm-Gg: AfdE7clU0spK/UixHBuLiu9jg4q+sGUwemvxTRzp936RW7HMP58Ql0IDhv3gjngVcOk
+	+eTGawh7WjhKM8AieHvW0dEotaiThH/68gyVLy4hIfQGIMZwviwzkDvAVao8tgE1gKc+PHLprQh
+	SWWF2AFimMTAE1AyeGoAH9BXqYILNiOaWLquiQNivIjT4cprWk4mzE8wx6/qJJ6yVluhsAZE8Jv
+	k4bOxtzZa7YteY3bmsDf4pWPph0bpeh7HoJqOjwtX+oeu528LxHSNMNQVP+790qC46hMY7Sba8t
+	tpn/hohfEmYSgXRxMIhKFDKx68uu380iVw1n0CAx+6qdsPXTXCp4Q99K3WmuzN0XFietX+jrEkp
+	BP6yJFGUT9oncZeTUkMDaCrhbDZ8nm+saYMKUTRveuOc=
+X-Received: by 2002:a05:622a:252:b0:51a:8c9a:8fad with SMTP id d75a77b69052e-51c748af94dmr72269021cf.62.1783452158053;
+        Tue, 07 Jul 2026 12:22:38 -0700 (PDT)
+X-Received: by 2002:a05:622a:252:b0:51a:8c9a:8fad with SMTP id d75a77b69052e-51c748af94dmr72264601cf.62.1783452152846;
         Tue, 07 Jul 2026 12:22:32 -0700 (PDT)
-X-Received: by 2002:a05:622a:60c:b0:51a:8d31:9a06 with SMTP id d75a77b69052e-51c74800786mr68202241cf.16.1783452151242;
-        Tue, 07 Jul 2026 12:22:31 -0700 (PDT)
 Received: from juillet.box.freepro.com ([2a05:6e02:1041:c10:8029:bbc1:63:ed84])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f3677asm70025515e9.4.2026.07.07.12.22.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f3677asm70025515e9.4.2026.07.07.12.22.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 12:22:30 -0700 (PDT)
+        Tue, 07 Jul 2026 12:22:32 -0700 (PDT)
 From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 To: sre@kernel.org, hansg@kernel.org, ilpo.jarvinen@linux.intel.com,
         linux@roeck-us.net, andersson@kernel.org, konradybcio@kernel.org,
@@ -103,155 +104,115 @@ Cc: bryan.odonoghue@linaro.org, platform-driver-x86@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         neil.armstrong@linaro.org, gaurav.kohli@oss.qualcomm.com,
         manaf.pallikunhi@oss.qualcomm.com, priyansh.jain@oss.qualcomm.com
-Subject: [PATCH v6 0/3] Lenovo ThinkPad T14s EC thermal monitoring and thermal zone integration
-Date: Tue,  7 Jul 2026 21:22:25 +0200
-Message-ID: <20260707192228.14647-1-daniel.lezcano@oss.qualcomm.com>
+Subject: [PATCH v6 1/3] dt-bindings: embedded-controller: Add Lenovo ThinkPad T14s thermal sensor provider support
+Date: Tue,  7 Jul 2026 21:22:26 +0200
+Message-ID: <20260707192228.14647-2-daniel.lezcano@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260707192228.14647-1-daniel.lezcano@oss.qualcomm.com>
+References: <20260707192228.14647-1-daniel.lezcano@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDE4OSBTYWx0ZWRfX2Il2vBFVpzzT
- goabiTdiXPMNztua4gFYyQtc5rZg5dQIQX/VWKsRILREU/7Z7QURlIQra7ZjguVYo5qosSQ9ShO
- R/2lHLQ2pTDLvUZPXBopDId0ajxygwI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDE4OSBTYWx0ZWRfX4VvFQA+BIrXT
- QWrQOqNc7Dxu8mNnsU8Qz4L5Pwdv2fyu6kDwaJbgVwryqbAo4yRWngtOI3UKYRIFLu34XcFedmS
- b6/XM/rW6iiWfjduCtG9MttHdZyteMJzQqgH3WyuzJLfdhwWg24Cmw+XLsRszJfRaGVcRFO/9om
- jvhhJ5U+o1c3GU+VLLgXlaTNJ0GcPNTLsjT4iknUUkAgDUBBnd32lHJPlGCPKZBRicML7Bi4kbv
- /d3fpoyMyOq3D7PbJYd06eb5BKqunvS254xH4j/438HMdveofjsZSMrDxThUAQbrIJLcfEhK91J
- cRTU3yBZFylrY4u3PBWqYUZF/sFtvJEn1EwRvnYGoFxrI1o3DTU+qHbygFsQkwq/Htgxn6a7REr
- Gq8mm+GRzEsGz4Nw5OvSa8xFVFMpE4To2N0eZAxplzGiQnksK9wefyCgH0a/Hmjy3xBzULLur8W
- zbc13MJbpXIKJ12sGcQ==
-X-Proofpoint-GUID: VGUYm5w3skx0nAeUAlk6L-n9gcUQNI0B
-X-Authority-Analysis: v=2.4 cv=N+IZ0W9B c=1 sm=1 tr=0 ts=6a4d51f9 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=Jz99LMs1rTwwAPREzXgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-ORIG-GUID: VGUYm5w3skx0nAeUAlk6L-n9gcUQNI0B
+X-Authority-Analysis: v=2.4 cv=R7cz39RX c=1 sm=1 tr=0 ts=6a4d51fe cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=RAioF0-LDSMA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=3WHJM1ZQz_JShphwDgj5:22 a=EUspDBNiAAAA:8 a=s6oxFZdllmZqp78XS98A:9
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-GUID: bmemShtClo6RmeGDEysMTC20-tOMu2tm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDE4OSBTYWx0ZWRfX9Xt2UZjCnS1X
+ Lh1ZCxBYrCD2IXvB5le+X2rBO7QV0R6Rkvvavy6W7iCIYKqyiy51g4rZNVsDfNrchHTBLAy/PzO
+ ZGCZdd/Dl23TpI0htxODA94nmwqjqoMdW28+cbm7lBFjn7k2tFxn8kW8SR1rT62nHOunbp5dFb3
+ IxbWhtJiqYe+i1StN1v18uGYzWqgyLL5MaUsNTYF42QU31Rz7vzRqZ50rNWLdnrofrwx9jycPmA
+ Is/Z3dTgirUd8Hl4t5p7WIp1toYBP1ALo3PWjy6ibjn3SzNdZhNj4spBPIYj5iNM6q06oeyx21h
+ +cJsfFyJvrZL/AuBozwH1VH8tppHIIOA3sV+cdYN5gp8R5hm++Q5281Gcl4wXLc6oKuCve2/G3w
+ u/J5hZxtoqpYPflgjCsxZ3Qb+emrzNraH7O/IQRLgibRg1GBVCX85MYVf/KRhZ3a+sW05PahJpI
+ JlrLSXYm3WEWT5W7F9w==
+X-Proofpoint-ORIG-GUID: bmemShtClo6RmeGDEysMTC20-tOMu2tm
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDE4OSBTYWx0ZWRfXymzeQK25iFbP
+ qxzGCr/XRsxkyyubvaDmWbi0m/VQiR/ie4iOXAwaKeL2qSA4DHiEzYxm5aisMwub7lTnaxGCN99
+ 8Lve5qTgBXiOSn8vY2rC+aNzom+M0V8=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-07_05,2026-07-06_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 priorityscore=1501 clxscore=1015 adultscore=0
- bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 phishscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607070189
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15638-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	FORGED_SENDER(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-15641-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:sre@kernel.org,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:linux@roeck-us.net,m:andersson@kernel.org,m:konradybcio@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:bryan.odonoghue@linaro.org,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:devicetree@vger.kernel.org,m:neil.armstrong@linaro.org,m:gaurav.kohli@oss.qualcomm.com,m:manaf.pallikunhi@oss.qualcomm.com,m:priyansh.jain@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
+	FORGED_SENDER(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oss.qualcomm.com:from_mime,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D583971F358
+X-Rspamd-Queue-Id: 02BEA71F379
 
-Hi,
+Document the Lenovo ThinkPad T14s Embedded Controller as a thermal
+sensor provider by adding the '#thermal-sensor-cells' property.
 
-This series extends the Lenovo ThinkPad T14s embedded controller driver
-with environmental monitoring capabilities and integrates the exposed
-sensors into the Linux thermal framework.
+This allows the EC temperature sensors to be referenced from thermal
+zones in the device tree.
 
-The EC provides access to several platform temperature sensors
-covering the SoC, keyboard area, bottom cover, charging circuitry, QTM
-module and SSD. These sensors are currently used by the firmware for
-thermal management but are not exposed to Linux.
-
-The first patch adds hwmon support for the EC temperature sensors.
-
-The second patch exposes the EC as a thermal sensor provider in the
-device tree and defines thermal zones for the keyboard skin
-temperature and the charging circuitry temperature. This allows the
-generic thermal framework to react to EC-reported temperatures and
-apply standard Linux thermal mitigation policies.
-
-As the EC protocol is not fully decoded, the passive trip points
-get/set actions are missing, so it is not possible to program a
-threshold and receive an interrupt when crossed the way up or
-down. Consequently, the thermal zone related to the charging circuitry
-is polled every two seconds until we can set the trip points in the
-EC.
-
-This series fixes critical thermal issues happening on this platform
-where a kernel compilation, or heavy workloads, lead to a system
-reboot.
-
-Tested on a Lenovo ThinkPad T14s Gen 6 (Snapdragon X Elite).
-
-Please make sure scmi-cpufreq.ko is loaded before testing
-
-Thanks,
-
-Daniel
-
+Signed-off-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 ---
- Changelog:
-	v6:
-	 - Added Reviewed-by tag (Dmitry Baryshkov)
-	 - Removed required property for #thermal-sensor-cells (Krzysztof Kozlowski)
-	v5:
-	 - Added Reviewed-by tag (Ilpo Järvinen)
-	 - Added the '#thermal-sensor-cells' property DT binding (Sashiko)
-	v4:
- 	 - Added the missing HWMON_C_REGISTER_TZ attribute (Sashiko)
-	 - Fixed dependency with HWMON (Sashiko)
-	 - Added Tested-by tag (Neil Armstrong)
-	v3:
-	 - Removed event based because trip point are not yet well supported
-	 - Added an empty line after variable declaration (Ilpo Järvinen)
-	 - Used MILLIDEGREE_PER_DEGREE from units.h (Ilpo Järvinen)
-	 - Made switch consistent (Ilpo Järvinen)
-	v2:
-	 - Fixed patch 1 subject prefix
-	 - Removed the fan information part
-	 - Added HWMON_T_ALARM
-	 - Fixed DT change description to reflect what it does really
+ .../bindings/embedded-controller/lenovo,thinkpad-t14s-ec.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Daniel Lezcano (3):
-  dt-bindings: embedded-controller: Add Lenovo ThinkPad T14s thermal
-    sensor provider support
-  platform: arm64: lenovo-thinkpad-t14s-ec: Add hwmon support for
-    temperatures
-  arm64: dts: qcom: x1e78100-t14s: Add thermal zones for keyboard skin
-    and charging sensors
-
- .../lenovo,thinkpad-t14s-ec.yaml              |   4 +
- .../qcom/x1e78100-lenovo-thinkpad-t14s.dtsi   |  67 ++++++++-
- drivers/platform/arm64/Kconfig                |   1 +
- drivers/platform/arm64/lenovo-thinkpad-t14s.c | 131 ++++++++++++++++++
- 4 files changed, 202 insertions(+), 1 deletion(-)
-
+diff --git a/Documentation/devicetree/bindings/embedded-controller/lenovo,thinkpad-t14s-ec.yaml b/Documentation/devicetree/bindings/embedded-controller/lenovo,thinkpad-t14s-ec.yaml
+index c87ccb5b3086..f677966b52a8 100644
+--- a/Documentation/devicetree/bindings/embedded-controller/lenovo,thinkpad-t14s-ec.yaml
++++ b/Documentation/devicetree/bindings/embedded-controller/lenovo,thinkpad-t14s-ec.yaml
+@@ -26,6 +26,9 @@ properties:
+ 
+   wakeup-source: true
+ 
++  "#thermal-sensor-cells":
++    const: 1
++
+ required:
+   - compatible
+   - reg
+@@ -45,6 +48,7 @@ examples:
+             reg = <0x28>;
+             interrupts-extended = <&tlmm 66 IRQ_TYPE_LEVEL_LOW>;
+             wakeup-source;
++            #thermal-sensor-cells = <1>;
+         };
+     };
+ ...
 -- 
 2.53.0
 
