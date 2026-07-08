@@ -1,64 +1,64 @@
-Return-Path: <linux-hwmon+bounces-15651-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15652-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MaGBEzixTWol9AEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15651-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 04:08:56 +0200
+	id Z9KjM26xTWot9AEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15652-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 04:09:50 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6409720FC7
-	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 04:08:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B64F720FD0
+	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 04:09:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VYutfxZa;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Duvty5UA;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15651-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15651-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15652-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15652-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 348233011066
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2026 02:08:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3A0C301C152
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2026 02:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32733B42FE;
-	Wed,  8 Jul 2026 02:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A61D3B47D0;
+	Wed,  8 Jul 2026 02:09:48 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24133B27FA
-	for <linux-hwmon@vger.kernel.org>; Wed,  8 Jul 2026 02:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581AFCA4E
+	for <linux-hwmon@vger.kernel.org>; Wed,  8 Jul 2026 02:09:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783476532; cv=none; b=FJ5vc6xYceDVNJ0Wi+6Tr3v+8thxdCismscgdMhHP3+tPhzycw3QLIK03oyOo1nZ76YTwU499zTsmFN5cO7WyzpYxa/D4rVD1yPwDyyoYk+H5BDWnFrNKAkTvXn8oOF/1IJ1eaH0WLzTmxS+MTqWOPFkUX/34ykSIHDltdVTYgU=
+	t=1783476588; cv=none; b=kJYMijdNL9/j8l9zSzMnaEmugLHKFQ5MBO9NXqkPBrrIucsFgmc0zx2VogZiLojSyM0gmuf8aD3wnHQ5Jpj1k+EpOP7PuAuMeTI0yTAr1XgDrbBQB+IbURF754s2/RySN044SX8BywKPJP9LzBOXV4Ec7iwcYPAz30yXewVEJIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783476532; c=relaxed/simple;
-	bh=M0pDzK1zb5LT3g5ZQOm9Qu0tPCCz3cBSY6XGzSt8rvw=;
+	s=arc-20240116; t=1783476588; c=relaxed/simple;
+	bh=ojwGtf5CEPU+gNL2JxQ5rY0iXP+sbwgJxeDjf5+bTXk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bl+tEHD2QJ0SMBU0aR1skYd5aBlKGilKcNs/wLddt4/1Ncm5B/gTr08317innpioGHvyJQd5flB4LVSP9T2JC7A1gQ4OczPjIbcOeiOPxpH0wfsGoPGLRgaOM85LjlBbz+S9ddYCWc235KdQPYuV9jR5Wle6WmT5qsg6FNato2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYutfxZa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A2D1F000E9;
-	Wed,  8 Jul 2026 02:08:51 +0000 (UTC)
+	 Message-Id; b=ZZ6fg6GDkNfJtI1p19aUbKAQ4zn1OhL6by0VEpgZqQcsF0+5A2gIRl9FH6rudZchZ/ludEpZSJpvTE2bHm8TLGryATUVdq2uU5HN0opYyVtnliISS98vTtVMTZ2iejEr4V4WstPV6FCfMJDzdvmNljzNeDelt0OZBystsAG4NxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Duvty5UA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4F71F000E9;
+	Wed,  8 Jul 2026 02:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783476531;
-	bh=gJhtGxyABXXdaJpi2n7o5jIcz5icE3FQrLN3p8jnoJE=;
+	s=k20260515; t=1783476587;
+	bh=Eix/omIoLVg4j8J6X50HEu1ZhAfhiboNOeMULXeVtFs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VYutfxZaDInns/AOXPOG+9kQ65uXmfXvu1PFqvj+jZenr4x3Rugux1hzzHcgGbn69
-	 WTXaVn4XtbJ35KW5bKUFGGeTNY8Ph77n+v+HrTYOtB3w5CtQNG6zjpeqd4sV17HDXD
-	 lZConMNDcMmUIDev04BT+HVVE/HNTaxRPLSwa5ZqoC1UKlTGSxJYiVhsg+7MThBL3Z
-	 3llWaxdooURkdEYHDEnA1nwraTEaqApdG+/mVQobcFpjNhLZLiZGLj8Z7z8FPH6yJ+
-	 pbz54EQXisUwpTNbQi6+3xHuzxKxPGfZq9VGSEHxW+YnnalR9cpSXf1hMTbAZExmSL
-	 YJ79syztpSY8A==
+	b=Duvty5UAMHj8ubU7wpHETGl8xAI2/I9Bgl8gQrV3yNK6j0Lrf8GwRNZuRoQKDfjAn
+	 UHiy4FMnfcopPRL8jS1KHeWAPh/MFF1MIddNkPVF13j6HUd6NH1g6fSpjcCTAcgW3j
+	 u2PIukVUS4LZAzajquhxbrjtHNafkG+7atOg/jnqxbz9y01UhSC1g2JjSICgmJWFxb
+	 yPQtck21Q8s6vleIrUqgwbrarHw8Y6uxBwcxOM56qkagsCUX8xKdW31xtx0te1zRUZ
+	 Hnxs2Atm7uxt2fNQ6BMm48EsMfC47H6/SCyhK+DhYBdUlHL3oF45ZITZ5VjYHUIds9
+	 3bG//nD/cDxhA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] hwmon: (gigabyte_waterforce) Stop device IO before
- calling hid_hw_stop
+Subject: Re: [PATCH 1/4] hwmon: (corsair-cpro) Stop device IO before calling
+ hid_hw_stop
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guenter Roeck" <linux@roeck-us.net>
 Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260708015806.213790-3-linux@roeck-us.net>
+In-Reply-To: <20260708015806.213790-2-linux@roeck-us.net>
 References: <20260708015806.213790-1-linux@roeck-us.net>
- <20260708015806.213790-3-linux@roeck-us.net>
+ <20260708015806.213790-2-linux@roeck-us.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 02:08:50 +0000
-Message-Id: <20260708020851.58A2D1F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 02:09:46 +0000
+Message-Id: <20260708020947.1A4F71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -71,14 +71,14 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15651-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15652-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -87,8 +87,8 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	ALIAS_RESOLVED(0.00)[];
@@ -98,124 +98,139 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lists.linux.dev:replyto,smtp.kernel.org:mid,roeck-us.net:email,sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.linux.dev:replyto,roeck-us.net:email,smtp.kernel.org:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6409720FC7
+X-Rspamd-Queue-Id: 2B64F720FD0
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
 New issues:
-- [Medium] Unconditional invocation of `hid_device_io_stop()` in the probe =
-error path triggers spurious kernel warnings on early failures and inverts =
-the teardown order.
+- [Low] The patch introduces a spurious kernel warning in the probe error p=
+ath when `hid_hw_open()` fails by unconditionally calling `hid_device_io_st=
+op()`.
 
 Pre-existing issues:
-- [High] Missing bounds check on the `size` parameter in `waterforce_raw_ev=
-ent()` allows out-of-bounds memory reads.
-- [High] Potential deadlock due to using `spin_lock_bh()` in process contex=
-t while the same lock is acquired in hardware interrupt context.
-- [High] Data race and unprotected multi-variable access between `waterforc=
-e_raw_event()` and `waterforce_read()`.
+- [High] The driver leaks a debugfs directory on probe failure, creating a =
+Use-After-Free vulnerability.
+- [High] A timeout during a USB command causes the driver to consume stale =
+delayed responses for subsequent commands, permanently desynchronizing the =
+protocol.
 --
 
---- Patch [2]: [PATCH 2/4] hwmon: (gigabyte_waterforce) Stop device IO befo=
-re calling hid_hw_stop ---
-commit 5f26e64b65cc1e460573670ab5b05e083da3d241
+--- Patch [1]: [PATCH 1/4] hwmon: (corsair-cpro) Stop device IO before call=
+ing hid_hw_stop ---
+commit 0cdcb75d39b8efee212d1a27b0eb0c56aaafb5e9
 Author: Guenter Roeck <linux@roeck-us.net>
 
-hwmon: (gigabyte_waterforce) Stop device IO before calling hid_hw_stop
+hwmon: (corsair-cpro) Stop device IO before calling hid_hw_stop
 
-This commit fixes a use-after-free vulnerability by calling
-hid_device_io_stop() before hid_hw_stop() in the probe error path.
+Calling hid_hw_stop() does not stop the device IO. This results in a race
+condition between hid_input_report() and driver probe failure. This commit
+calls hid_device_io_stop() before hid_hw_stop() to fix the issue.
 
-> diff --git a/drivers/hwmon/gigabyte_waterforce.c b/drivers/hwmon/gigabyte=
-_waterforce.c
-> --- a/drivers/hwmon/gigabyte_waterforce.c
-> +++ b/drivers/hwmon/gigabyte_waterforce.c
-> @@ -381,6 +381,7 @@ static int waterforce_probe(struct hid_device *hdev, =
-const struct hid_device_id
->  fail_and_close:
+> diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+> --- a/drivers/hwmon/corsair-cpro.c
+> +++ b/drivers/hwmon/corsair-cpro.c
+[ ... ]
+> @@ -646,6 +646,7 @@ static int ccp_probe(struct hid_device *hdev, const s=
+truct hid_device_id *id)
+>  out_hw_close:
 >  	hid_hw_close(hdev);
->  fail_and_stop:
+>  out_hw_stop:
 > +	hid_device_io_stop(hdev);
-[Severity: Medium]
-Will this unconditionally calling hid_device_io_stop() here trigger spurious
-warnings on early failures?
 
-If an early failure occurs, such as hid_hw_open() failing, the code jumps to
-fail_and_stop. At this point, hid_device_io_start() has not been called, so
-hdev->io_started is false, causing hid_device_io_stop() to emit a spurious
-warning.
+[Severity: Low]
+Will this cause a spurious kernel warning if hid_hw_open() fails?=20
 
-Also, for later failures that jump to fail_and_close, does this result in
-an inverted teardown order by calling hid_hw_close() before
-hid_device_io_stop()?
+If hid_hw_open() fails earlier in ccp_probe(), the code jumps directly to=20
+the out_hw_stop label:
+
+ccp_probe() {
+    ...
+    ret =3D hid_hw_open(hdev);
+    if (ret)
+        goto out_hw_stop;
+    ...
+    hid_device_io_start(hdev);
+    ...
+}
+
+Since hid_device_io_start() hasn't been called yet, hdev->io_started will=20
+be false. Calling hid_device_io_stop() here will trigger the dev_warn()=20
+"io already stopped" from the HID core. Could we conditionally check if IO=
+=20
+was started, or introduce a new error label to avoid this?
 
 >  	hid_hw_stop(hdev);
 >  	return ret;
 >  }
 
 [Severity: High]
-This is a pre-existing issue, but does waterforce_raw_event() lack a bounds
-check on the size parameter?
+This isn't a bug introduced by this patch, but does the driver leak a=20
+debugfs directory if hwmon registration fails?
 
-In waterforce_raw_event():
+If hwmon_device_register_with_info() fails in ccp_probe(), the code jumps=20
+to out_hw_close:
 
-    if (data[0] =3D=3D get_firmware_ver_cmd[0] && ...
+ccp_probe() {
+    ...
+    ccp_debugfs_init(ccp);
 
-and later:
+    ccp->hwmon_dev =3D hwmon_device_register_with_info(&hdev->dev, ...);
+    if (IS_ERR(ccp->hwmon_dev)) {
+        ret =3D PTR_ERR(ccp->hwmon_dev);
+        goto out_hw_close;
+    }
+    ...
+}
 
-    priv->temp_input[0] =3D data[WATERFORCE_TEMP_SENSOR] * 1000;
-
-If a malicious or malfunctioning HID device sends a short report, could
-accessing data at WATERFORCE_TEMP_SENSOR result in an out-of-bounds memory
-read?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a potential deadlock
-between process context and hardware interrupt context?
-
-waterforce_get_status() runs in process context and uses spin_lock_bh():
-
-    spin_lock_bh(&priv->status_report_request_lock);
-
-while waterforce_raw_event() can execute in hardirq context and acquires
-the same lock:
-
-    spin_lock(&priv->status_report_request_lock);
-
-If waterforce_raw_event() is triggered by an interrupt on the same CPU
-while waterforce_get_status() is holding the lock, will the interrupt
-handler attempt to acquire the lock and spin forever?
+Because ccp is allocated with devm_kzalloc(), devres will free it when the=
+=20
+probe fails. However, without a call to debugfs_remove_recursive(), the=20
+debugfs files remain. If userspace later reads a leaked file like=20
+firmware_version, firmware_show() will dereference the freed ccp pointer.
 
 [Severity: High]
-This is a pre-existing issue, but does this code have a data race between
-the interrupt handler and the sysfs read function?
+This is also a pre-existing issue, but does a timeout in send_usb_cmd()=20
+cause permanent protocol desynchronization?
 
-waterforce_raw_event() executes asynchronously and updates sensor values
-without a lock protecting the data arrays:
+If wait_for_completion_timeout() times out, send_usb_cmd() returns=20
+-ETIMEDOUT without marking the completion as done:
 
-    priv->speed_input[0] =3D get_unaligned_le16(data + WATERFORCE_FAN_SPEED=
-);
-    priv->speed_input[1] =3D get_unaligned_le16(data + WATERFORCE_PUMP_SPEE=
-D);
+send_usb_cmd() {
+    ...
+    t =3D wait_for_completion_timeout(&ccp->wait_input_report, ...);
+    if (!t)
+        return -ETIMEDOUT;
+    ...
+}
 
-waterforce_read() is called from sysfs and reads these fields locklessly
-after releasing the status mutex:
+If the delayed hardware response arrives later, after a subsequent command=
+=20
+has called reinit_completion(), the interrupt handler will accept the stale=
+=20
+response:
 
-    switch (type) {
-    case hwmon_temp:
-        *val =3D priv->temp_input[channel];
+ccp_raw_event() {
+    ...
+    if (!completion_done(&ccp->wait_input_report)) {
+        memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
+        ...
+        complete_all(&ccp->wait_input_report);
+    }
+    ...
+}
 
-Can this result in torn reads and bogus sysfs values if the interrupt
-handler overwrites the fields concurrently?
+This causes the new command to consume the stale response, leaving its own=
+=20
+response pending for the next command, permanently shifting the responses.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260708015806.2137=
-90-1-linux@roeck-us.net?part=3D2
+90-1-linux@roeck-us.net?part=3D1
 
