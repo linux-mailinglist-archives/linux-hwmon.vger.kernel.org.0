@@ -1,85 +1,56 @@
-Return-Path: <linux-hwmon+bounces-15669-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15670-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ts9wDrcXTmoeDAIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15669-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 11:26:15 +0200
+	id 1TNBI8guTmouEwIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15670-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 13:04:40 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC50E723B09
-	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 11:26:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B6C724A26
+	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Jul 2026 13:04:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k+bNX10K;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15669-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15669-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ibwz4bf6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15670-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15670-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E326C31016B1
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2026 09:19:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03C673028F5B
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2026 10:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA6A41735F;
-	Wed,  8 Jul 2026 09:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6423D34B6;
+	Wed,  8 Jul 2026 10:50:45 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120A3416CF5
-	for <linux-hwmon@vger.kernel.org>; Wed,  8 Jul 2026 09:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8742E8E6;
+	Wed,  8 Jul 2026 10:50:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502335; cv=none; b=OUXyYUQ4lUVAORMZXa0hN+IMDenIEL+Ie+firr2L1+JVJ9Pa/L6QSgdptPGbxczaJFAK52+ehNo5ug457Bv04cr3XR7pRQawwJ6ThyRnfsb3ZbkKrTgu1X3BHQjGlnWwiZ3e3VavkLdqVnRdgNY8hO5YRr4Y1tdic98TET/9XEc=
+	t=1783507843; cv=none; b=L2V11kW1W2EfSQ6db4AQdE+esA078DLW40VC2tCFbxQCbncCRegLq0SZQzefavC69XNO+vvDbjrdmic2ozSzN4h8qnnXwdgJDIQD3VJ1wQFU9kQdqa9QcA6iWSQiCmXZC3kHyME9u5mW22VjtsWM98VHuijMCajX8+WupQv8NBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502335; c=relaxed/simple;
-	bh=eDH2tYdoi0b0ofvijaNMD2HtX1hICdbEb+w0OEWQndg=;
+	s=arc-20240116; t=1783507843; c=relaxed/simple;
+	bh=d032drDqky5KzDhvKMflWjg9LG7OfLWmPzgJ+fvrOpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/PFIq3xkQPkVzB5gHLRYaqYyS39/Ydhf9wI6+u/osLfoYSkaiS/ULKB6JxKBCyVY4CG3kwYS5fnzU5GMdvlsrqzucaM64ZiPo35vQRURVNPWpZBQjuPjCgE1zK2nnISBZWWdnCHjnGbKI2nSDKjZsVoD4rUJOIbGY7oEZQ0cdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+bNX10K; arc=none smtp.client-ip=209.85.128.47
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493b7612475so3266005e9.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 08 Jul 2026 02:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783502332; x=1784107132; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hgts3cXxi3OIQen+lK5BRu5vo0eVsiVEbfqLXX+In5o=;
-        b=k+bNX10KjZ/1dgKXum247MaFfweyajH+w9g3kTaBKJ3xL4ZYaApM86CMGuUa8RSYx9
-         AuNpbtIhdVfnESR1O8cGUxlcxYxgXqbie/YXsMyVdNwk207dtUy2GGelMizr+e98Uvt8
-         QUmXIF3ChFqDbS/bf1OxXpRqsjQZABWARZmN6EzEYCS1XTFHZS9Ck6zd/oUhliyS3kPH
-         fWRrtBXcWK2HIJ322ZKk8oJrY8+lKaUW5hobvg17qDs/bGZErEo+PcJXlB7XYLncWl/1
-         kDnLVaXTDweMTlIQTUb6/69sAjO9ZEfjh3K5fV5FDxjPJ804AmqWhzLZRf5uhaK1Df9k
-         xorg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783502332; x=1784107132;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hgts3cXxi3OIQen+lK5BRu5vo0eVsiVEbfqLXX+In5o=;
-        b=Et02Fi36bA0oK3+TJXAaWtbWvLs7bISIwfa/0C4p72j9LW4GDm03xk5uahpJdLHG0m
-         H9F1WWNz1d/TSkhcZCkLzT8PrgVmedXxX0c8yBIzyEi5tmx5TgvIwUoQMpokZwU8PTej
-         0l9a+eGnfdHM4R4jcq7OKlOgRyqmMJd3JgzN8WI/64vKw3/kf8kdtHXPchbQ5RUJUv0a
-         yTgD93QqybEzQqhO7ytMT3nq4KOkM3c3x9+R3k+25XODHspG/ZtZgWFXmq+1Bk8zE71y
-         iwAkHWvGYmojQPiB0Lutgriv/QG6/Qs94vuYfA0RBra1NiNVLosHVcZux+/DvzhucGIF
-         vaYw==
-X-Forwarded-Encrypted: i=1; AHgh+RpboXXZ9BVa1zKNyAIFLkU2yeCmcNXM8aKjipoW2/HxVQTjR8EVGjQrN86s2GWpNMLOgnYSSTBlkm/k/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0SjLExChL6bWhjSF1Zw3CUsf8135Mk3UNCjHMV6r7pFKaExfE
-	ca0Hh72RfDEWUUovKTFx3I+shxyPfn/d3s8bDT/qIAm/1XPlO7jVFx0k
-X-Gm-Gg: AfdE7cnVh+fN7XQu9P4SJSQYkcuGn/7jSl3AxTn2ydVCXjHVI+Q347EneM8jVa8ay0S
-	4CC6Oq2AkTcOIbr1ChhHtNnE73JEUQQfw/11mEToj2K1pn68CFGOci/XSv+upeuuaIG6+CdVCr3
-	1jRV3vtyPEPwXh+IoHLcfS4PWuZwv5n10kqgo7k8hD9Zx1LV40ZlnIFmuD01MMgmowd77LsVzox
-	cdmMRbaxn7mkmPOlBfTdlg0ms53sW+t/xKWECF55MKL5ED0cWqzCK2mstvjxMNdOwDj0uzhXW51
-	sxAK0/mujyRh/GuxTgkD/jkA1yzjZx0ysgLLSuUQEsjA10zGM9KXy8Cr16LfR2zfcJA1AJidQRO
-	Qrgne2xlVIEm8dv+OihWji2AbZ5tTuM5XKjfttTL8RY1BfBGJ0jt6W+PLQL44XpcAzKr1aGHF0U
-	+8QZXC
-X-Received: by 2002:a05:600c:8b54:b0:493:bc4a:9547 with SMTP id 5b1f17b1804b1-493e68815bemr16151505e9.39.1783502332232;
-        Wed, 08 Jul 2026 02:18:52 -0700 (PDT)
-Received: from nsa ([148.63.225.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f40912sm118117685e9.4.2026.07.08.02.18.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 02:18:51 -0700 (PDT)
-Date: Wed, 8 Jul 2026 10:19:56 +0100
-From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Fred Chen <fredchen.openbmc@gmail.com>, Rob Herring <robh@kernel.org>, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=KO6b0aXiLuxtOWm0kjqyWxQc5cGoph4hmHDDVOKFZVKrV6anD/80e8UIPLNah9Ac2u1x4S/xM2lCrwYfm+tBs+QjMx3hbJV9P0NlflsevFxm9amuOAb87Ap68S9+ivNNA95KJId1hdcANuDe8wwTiQc3juFzeB0MpAucalwZZMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ibwz4bf6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622321F00A3A;
+	Wed,  8 Jul 2026 10:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783507828;
+	bh=d032drDqky5KzDhvKMflWjg9LG7OfLWmPzgJ+fvrOpE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ibwz4bf6ZWdc2y3Uii8snfheqYLAQLkbL1qe9WkXw20toarMn87Z3LCNseS5ZXqn1
+	 HOqq7eD8NTuCvbyDupIX9ZNM7IiIWIQjrj8pte9uTVS9yRFSLjCysvBN5BGbKGDJ1W
+	 Wqb/cUU57RUHCS8qxdhx36hkU1iCb/ZY+DWZW6FiGmdhsajoKbVKPwjN2tdXV9zloE
+	 iEAhLXY3EehifNDFYFBsUM1iqdzmLL6pG88CDLqL3Nqqf4FbL0ipI5aFjq8IE3l5Oi
+	 EBMZSBOX90SG3TE4PLUlzPUL/ocIZiF8xGSn6Rrg5ruo8r5isMN4G7RDoCAkC9qiHx
+	 ONJ8qjwzsulKg==
+Date: Wed, 8 Jul 2026 12:50:25 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, 
+	Fred Chen <fredchen.openbmc@gmail.com>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Wensheng Wang <wenswang@yeah.net>, Frank Li <Frank.Li@nxp.com>, 
@@ -94,10 +65,11 @@ Cc: Fred Chen <fredchen.openbmc@gmail.com>, Rob Herring <robh@kernel.org>,
 	linux-doc@vger.kernel.org
 Subject: Re: [PATCH 2/2] hwmon: (pmbus) Add driver for Analog Devices
  MAX20912 and MAX20916
-Message-ID: <ak4QO9uhKOt68dl1@nsa>
+Message-ID: <20260708-true-carp-of-champagne-a0dcca@quoll>
 References: <20260707122701.751878-1-fredchen.openbmc@gmail.com>
  <20260707122701.751878-3-fredchen.openbmc@gmail.com>
  <f9e32dd1-7c2c-4055-83fa-94683777e30b@roeck-us.net>
+ <ak4QO9uhKOt68dl1@nsa>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -106,99 +78,102 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f9e32dd1-7c2c-4055-83fa-94683777e30b@roeck-us.net>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ak4QO9uhKOt68dl1@nsa>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-15669-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[nonamenuno@gmail.com,linux-hwmon@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:fredchen.openbmc@gmail.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:Jonathan.Cameron@huawei.com,m:wenswang@yeah.net,m:Frank.Li@nxp.com,m:chiang.brian@inventec.com,m:chou.cosmo@gmail.com,m:dixitparmar19@gmail.com,m:eajames@linux.ibm.com,m:apokusinski01@gmail.com,m:thorsten.blum@linux.dev,m:ashish.yadav@infineon.com,m:alexisczezar.torreno@analog.com,m:arif.syed@hpe.com,m:tomtsai764@gmail.com,m:abdurrahman@nexthop.ai,m:kimseer.paller@analog.com,m:u8813345@gmail.com,m:Yuxi.Wang@monolithicpower.com,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-doc@vger.kernel.org,m:fredchenopenbmc@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,m:choucosmo@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[28];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:noname.nuno@gmail.com,m:linux@roeck-us.net,m:fredchen.openbmc@gmail.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:Jonathan.Cameron@huawei.com,m:wenswang@yeah.net,m:Frank.Li@nxp.com,m:chiang.brian@inventec.com,m:chou.cosmo@gmail.com,m:dixitparmar19@gmail.com,m:eajames@linux.ibm.com,m:apokusinski01@gmail.com,m:thorsten.blum@linux.dev,m:ashish.yadav@infineon.com,m:alexisczezar.torreno@analog.com,m:arif.syed@hpe.com,m:tomtsai764@gmail.com,m:abdurrahman@nexthop.ai,m:kimseer.paller@analog.com,m:u8813345@gmail.com,m:Yuxi.Wang@monolithicpower.com,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-doc@vger.kernel.org,m:nonamenuno@gmail.com,m:fredchenopenbmc@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,m:choucosmo@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-15670-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lwn.net,linuxfoundation.org,huawei.com,yeah.net,nxp.com,inventec.com,linux.ibm.com,linux.dev,infineon.com,analog.com,hpe.com,nexthop.ai,monolithicpower.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nonamenuno@gmail.com,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[roeck-us.net,gmail.com,kernel.org,lwn.net,linuxfoundation.org,huawei.com,yeah.net,nxp.com,inventec.com,linux.ibm.com,linux.dev,infineon.com,analog.com,hpe.com,nexthop.ai,monolithicpower.com,vger.kernel.org];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,quoll:mid,analog.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AC50E723B09
+X-Rspamd-Queue-Id: 20B6C724A26
 
-On Tue, Jul 07, 2026 at 06:52:48AM -0700, Guenter Roeck wrote:
-> On 7/7/26 05:26, Fred Chen wrote:
-> > Add support for the Analog Devices MAX20912 and MAX20916 dual-output
-> > multiphase voltage regulators with PMBus interfaces.
-> > 
-> > Signed-off-by: Fred Chen <fredchen.openbmc@gmail.com>
-> 
-> Please provide evidence that those chips actually exist.
-> Internet search comes up blank. I'll need confirmation
-> from someone at Analog.
+On Wed, Jul 08, 2026 at 10:19:56AM +0100, Nuno S=C3=A1 wrote:
+> On Tue, Jul 07, 2026 at 06:52:48AM -0700, Guenter Roeck wrote:
+> > On 7/7/26 05:26, Fred Chen wrote:
+> > > Add support for the Analog Devices MAX20912 and MAX20916 dual-output
+> > > multiphase voltage regulators with PMBus interfaces.
+> > >=20
+> > > Signed-off-by: Fred Chen <fredchen.openbmc@gmail.com>
+> >=20
+> > Please provide evidence that those chips actually exist.
+> > Internet search comes up blank. I'll need confirmation
+> > from someone at Analog.
+>=20
+> Hi Guenter,
+>=20
+> Well, in fact I'm in the middle of preparing a series that adds support
+> for:
+>=20
+> "max20826"
+> "max20855b"
+> "max20908"
+> "max20912"
+> "max20916"
+>=20
+> All the above parts have the datasheet under NDA. But before we had a
+> one page "datasheet" in analog.com but I guess that is gone! For context
+> I mainly did the base (core) driver for max20826 and then Alexis added
+> the other ones.
+>=20
+> Not sure how to proceed... I can wait and then work on top of what Fred
+> has but this patch is very minimal when compared with what we have.
+> Like:
+>=20
+> * No regulator support;
+> * No direct mode. The chip has two ways to access registers (paging and
+> * direct mode).
+> * No way to count how many phases we have or if RAIL_B (func[1]) is being=
+ used at
+> all.
+>=20
+>=20
+> Some other things more intriguing is that these chips, as far as I'm
+> aware (at least for max20826), always have bit 2 set in ON_OFF_CONFIG so
+> a gpio vout. Also we needed some special handling to read phase current
+> which I'm not seeing in the driver. So I would like to understand how
+> the chip was tested?
+>=20
+> Anyways, if Fred is ok with it I can just finish what I'm doing and send
+> the patches. It would make sense to have something more complete on
+> submission but I don't want to just "steal" the work already done.
 
-Hi Guenter,
+Binding should be in such case posted complete, so probably not a
+trivial device.
 
-Well, in fact I'm in the middle of preparing a series that adds support
-for:
+Best regards,
+Krzysztof
 
-"max20826"
-"max20855b"
-"max20908"
-"max20912"
-"max20916"
-
-All the above parts have the datasheet under NDA. But before we had a
-one page "datasheet" in analog.com but I guess that is gone! For context
-I mainly did the base (core) driver for max20826 and then Alexis added
-the other ones.
-
-Not sure how to proceed... I can wait and then work on top of what Fred
-has but this patch is very minimal when compared with what we have.
-Like:
-
-* No regulator support;
-* No direct mode. The chip has two ways to access registers (paging and
-* direct mode).
-* No way to count how many phases we have or if RAIL_B (func[1]) is being used at
-all.
-
-
-Some other things more intriguing is that these chips, as far as I'm
-aware (at least for max20826), always have bit 2 set in ON_OFF_CONFIG so
-a gpio vout. Also we needed some special handling to read phase current
-which I'm not seeing in the driver. So I would like to understand how
-the chip was tested?
-
-Anyways, if Fred is ok with it I can just finish what I'm doing and send
-the patches. It would make sense to have something more complete on
-submission but I don't want to just "steal" the work already done.
-
-- Nuno Sá
-
-> 
-> Thanks,
-> Guenter
-> 
 
