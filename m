@@ -1,240 +1,198 @@
-Return-Path: <linux-hwmon+bounces-15692-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15694-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aQ12OgikT2oxlgIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15692-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 15:37:12 +0200
+	id j1sYJrOqT2qZmQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15694-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 16:05:39 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3339A731A4B
-	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 15:37:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04966731F63
+	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 16:05:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GYvcDDYl;
-	dkim=pass header.d=redhat.com header.s=google header.b=okDmZJZC;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15692-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15692-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dm9D2KYj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15694-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15694-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2ECBB302A660
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2026 13:28:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9173331EFFC4
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2026 13:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBE428C037;
-	Thu,  9 Jul 2026 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50639372EE4;
+	Thu,  9 Jul 2026 13:46:05 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8047E27B34E
-	for <linux-hwmon@vger.kernel.org>; Thu,  9 Jul 2026 13:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C936CE03;
+	Thu,  9 Jul 2026 13:46:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783603721; cv=none; b=b52rJxBk87X8EC3060RNFgJGuNdYhT7bDZ/6s4NcfBX2lljzB9DAHci1+GYCaWeNLHX22fmJjuNiU6lPYuvhWWbGREWxC58jvcycaX0vZw/Fcg090lX+EWu83zjRejGgKFfgfpRmV5LR0JgEew1RdO8i+6jO8rBXzJo5boe6p8E=
+	t=1783604765; cv=none; b=NaKQDPIANcRQIttNss7T1QEtoKGsMEEI8yPnFDfFGnKCA4e105+EnsSCsftJhKdS2uL9IlYfOJMPn30gGoPpVHT1jNfUHGJKtuRyh+mycsgybVLfmr07iEa3OiiJIB+UqsUGCuX3/GTj0F9MVto/uc1657VLSU3+a377V4eOpKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783603721; c=relaxed/simple;
-	bh=X3LJtoIF2cz78g7fd2JzTBDARU25iOSmEdSyogFuUdU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9vDc5PIWqqy29Y8/egQzj0/Re8cR9U1bCv6Qn2Ras8juwtbGWuqy6BDhwnVkZ8/7UbqKQd5cIF9gfO8Mce7tKAmLj2W67l/c8R3wthpvKm+2xUZ7V8g41QTz4CgnHM7whE+wnS8J8G7thQu1i9HUM1IfodIxjOkbX28Op1/6zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GYvcDDYl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=okDmZJZC; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783603718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0io07SKI9Zq4iIODgABtJrQ9iS+xBoIqqRbw2Q3fX6U=;
-	b=GYvcDDYlHJOkLP67Ka8TxBloIvsChLLBIOPB5hF2f3ZLtOhH2J7o9UIoXnxIUSYxEJiO1k
-	1KbSFaZSJ6R2DE8C5On4ytMzkGb+BPh32C+ZidmUHv681uczi9AtaAQsAJroJG3oirc2mQ
-	jcqytS17iwHRhQap5lWQIaFBDe995CI=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-gLGLbc4iP3-kDZxOrH6UtQ-1; Thu, 09 Jul 2026 09:28:36 -0400
-X-MC-Unique: gLGLbc4iP3-kDZxOrH6UtQ-1
-X-Mimecast-MFC-AGG-ID: gLGLbc4iP3-kDZxOrH6UtQ_1783603716
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7f582244e9eso33219357b3.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 09 Jul 2026 06:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783603716; x=1784208516; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=0io07SKI9Zq4iIODgABtJrQ9iS+xBoIqqRbw2Q3fX6U=;
-        b=okDmZJZCbV/HqschLJkt9nqeFZTJ3hCuDQ6lL7v6HyukNUKy4ll6eeT6IqpneiKoQq
-         1U8x/sOFC6wGouSTIUlhYBuM0UoesvGpAM0e/XOJ4CUP4T6NGIG2R6lewaV+n+C32RHr
-         ueJ5XPC5U4Pa88OIsTVcA6mnwV4kslh/1Mq8AmWljToAHEV05AI5bBOS8/uj2OpMdiBz
-         lm8M+1KUGTOXJEmuFOnOSnfZkWH0W1pQ2Nk/8coSNycDaIM5cOe77WZJs+kXjKP+BFYA
-         hBp8rZcYSFHF3l+pr1q/MjtnUjKZ+Rn0U3y+gGpLwAtYWpb/ZHBNVfskdBzy21tjCFOK
-         peWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783603716; x=1784208516;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0io07SKI9Zq4iIODgABtJrQ9iS+xBoIqqRbw2Q3fX6U=;
-        b=WrHaCiRnvDd9RZM8TeaKO7ou8iMowJyCwy/2ccUyhRBl2/O1njwijzLQtmTaM0f1AU
-         SvyrQZ/76zYIOtAJTAsKLSMIZTx9vgILoryfK8G7PEMxN2axP70wuLEVI5pMWH9n/QbH
-         1qV/rfusWqsuqSvUvHwpL1xwmg4NH08s8wNDAqRCDNTg7yArPJpqi4N6+lTzV50PGDDS
-         FzUvmDtvnAbz2fp9V0fTi8NGMSwcNKuCvXrzP7EuYjgDuhSWcDxhCQa8h8ahClbxOlRk
-         Xy6owh8VpcobQYOc6LOX99bIuFPVvdV0cBZHXmetQVrNTRYgkUcRUP5EwFGLL+a09PHY
-         hVqg==
-X-Forwarded-Encrypted: i=1; AHgh+Roz8n7jiw8vfzZkdYDReNG6rp8Jit7u7b7AeFgCOdEi3y7kE+XfPsSDlsP09ConhqGt0Apzb3as/tw6GQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYRDiqZrsF7DdXENVs7fdEn783WIHi3Yro50rA2nF+e/rUV2an
-	xacpDi8krmHLeFS/ZLpbTy6IDIS56gXqfneCLmdzlRKwM9h1r8uKD/v1ZRUbcgfiThZ6ze1eqNm
-	uMeLah5ZKRD0QHMB3EnTLXgZs14ZKYjwJGT62oT+EGY95FBfg2nzXhac5EnJtrm3k
-X-Gm-Gg: AfdE7cmA/NZO2FIjXb4ZwdRJ6yGynlpSTj6q612ErlyKN3WmMDLVYzBO4GlkX0fXrLI
-	A7XSSPEfveVcOEHylIkmwfzM0iE6QYJTis4Pi06aBNY/Ta0vwjP00FeF1MBUZKSRmWukqK+AF+i
-	oynRf70sCg60VFT8Z6Wu9eMchKHV511aw1Fog566p00J6DlMg9t49DSCCNMPR//6ibCMZbi41DV
-	dfqUSOlpiZrCaswXgF06Yz4ABAv7NBJCR0dslhf/nMXdnfY2cW0/VXJCKOEWsq12DeNAa+ym4y/
-	0rKS+17x9XjR+E+gidPLwA8D/DmOIaBvBMc+47dl7v9sTbhxPVPSutQ3OUrLCUVwcYSCQJy3AXh
-	MfJUndgAKwCe8OuaLfrPksilxLzRX9dMURx4BcngCvWJVpg==
-X-Received: by 2002:a05:690e:d48:b0:666:39a8:fb82 with SMTP id 956f58d0204a3-6679f02acb3mr4957899d50.14.1783603715986;
-        Thu, 09 Jul 2026 06:28:35 -0700 (PDT)
-X-Received: by 2002:a05:690e:d48:b0:666:39a8:fb82 with SMTP id 956f58d0204a3-6679f02acb3mr4957877d50.14.1783603715498;
-        Thu, 09 Jul 2026 06:28:35 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66787a49befsm4150627d50.16.2026.07.09.06.28.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 06:28:34 -0700 (PDT)
-Date: Thu, 9 Jul 2026 09:28:18 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jyoti Bhayana <jbhayana@google.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
- loading
-Message-ID: <ak-h8oPcL69fCUg2@redhat.com>
-References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
- <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
- <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
- <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
+	s=arc-20240116; t=1783604765; c=relaxed/simple;
+	bh=cNnxRlxbVdvh+77Yo4JQ+xQypHjlnl1Eic9pJOfQ4Sc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=j4pX6Fy1u9ePh6Rn72zhsuWw4DMXc2qUARIFT+hZlj0Ar2mDdsZmiF0XZvCBTLQKxByrHjhMHmjSRcrW43Tk5gIkxAw3TtKEcP37fIraTVDPQVuTBGe+eRByQ0ut/YGZ9P0sTZuz1pYn2YTC4Mn/nsKMI3ecCs/pf9LA27V0NeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dm9D2KYj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696A71F000E9;
+	Thu,  9 Jul 2026 13:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783604762;
+	bh=xyzTtYhYIcJKZLRc5OUAo+s25nPWKfYJkM72Ao+GPAE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Dm9D2KYjXn+q5ycv/arHYE3+MKgFZ+RTqjKRjYdDuBtXgMkbiiiIYFUtSwtP42MdT
+	 PhnBxowpHEtrPI5J68n0C9WELkXDk5QF9K3xdwJFcDY1FtqQXMeQZMBrjKJCLWhzDL
+	 TknhpXuVNG9ZUsqBXShYeklniybAN0svrJXnt28BbjiOkfPWRfQO2Gw7dn97ZJZ2bC
+	 9/WYsgfsTvwj4FX337UsvWQeOMnRXdRcpsQkh+YIdsD1FBYZhlAJNGu2Gai0jPXj23
+	 IbcGXr/gALOiJela+/IckhrTKUp6BlOWMeJxLdTKO6sIneaP9GMFbZHBlwusitqf+A
+	 ybf52Kq48KoSA==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] firmware: scmi: Make SCMI arch independent
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Michal Simek" <michal.simek@amd.com>
+Cc: imx@lists.linux.dev, linux-hwmon@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
+References: <d7f7e8c9589d937b60e43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Jul 2026 13:46:01 +0000
+Message-Id: <20260709134602.696A71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dae4deba-7e5f-434e-80ae-89033bdeb793@oss.qualcomm.com>
-User-Agent: Mutt/2.3.2 (2026-04-26)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	TAGGED_FROM(0.00)[bounces-15692-lists,linux-hwmon=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes.goede@oss.qualcomm.com,m:sudeep.holla@kernel.org,m:bjorn.andersson@oss.qualcomm.com,m:cristian.marussi@arm.com,m:nathan@kernel.org,m:nsc@kernel.org,m:mturquette@baylibre.com,m:arm-scmi@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:sboyd@kernel.org,m:rafael@kernel.org,m:viresh.kumar@linaro.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux@roeck-us.net,m:jbhayana@google.com,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:dmitry.torokhov@gmail.com,m:ulfh@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:p.zabel@pengutronix.de,m:alexandre.belloni@bootlin.com,m:linux-clk@vger.kernel.org,m:linux-pm@vger.kernel.org,m:imx@lists.linux.dev,m:linux-hwmon@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-input@vger.kernel.org,m:linux-rtc@vger.kernel.org,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de
- ];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[bmasney@redhat.com,linux-hwmon@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,arm.com,baylibre.com,vger.kernel.org,lists.infradead.org,linaro.org,nxp.com,pengutronix.de,gmail.com,roeck-us.net,google.com,analog.com,bootlin.com,lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15694-lists,linux-hwmon=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:michal.simek@amd.com,m:imx@lists.linux.dev,m:linux-hwmon@vger.kernel.org,m:Frank.Li@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,sashiko.dev:url,lists.linux.dev:replyto,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3339A731A4B
+X-Rspamd-Queue-Id: 04966731F63
 
-Hi Hans,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The patch fails to fully remove the 'ARM SCMI' prefix from modul=
+e descriptions, Kconfig help texts, and comments, contradicting the commit =
+message.
+--
 
-On Thu, Jul 09, 2026 at 03:22:29PM +0200, Hans de Goede wrote:
-> On 9-Jul-26 12:10, Sudeep Holla wrote:
-> > On Thu, Jun 18, 2026 at 10:31:12PM +0200, Hans de Goede wrote:
-> >> On 18-Jun-26 17:56, Bjorn Andersson wrote:
-> >>> SCMI drivers such as the Arm SCMI CPUfreq driver are allowed to built as
-> >>> modules, but they are then not automatically loaded. Rework the SCMI
-> >>> device table alias support to make modpost consume the information from
-> >>> MODULE_DEVICE_TABLE(scmi, ...) and allow drivers to be loaded based on
-> >>> this information, if known. Also add a protocol-based alias to also
-> >>> trigger driver loading when only the SCMI protocol id is known.
-> >>>
-> >>> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> >>
-> >> So I just gave this a test spin and unfortunately it does not work.
-> >>
-> >> The problem with Fedora's kernel-config / setup is that the
-> >> request_module() from patch 2/2 runs from the initramfs, but
-> >> the scmi_cpufreq module is only available in the rootfs.
-> >>
-> >> It does work if I explictly add the scmi_cpufreq module to
-> >> the initramfs, then it does get autoloaded.
-> >>
-> >> We really need some place to put a uevent sysfs attr which then
-> >> gets replayed when udev is restarted from the rootfs and then
-> >> re-reads all the uevent files as part of its coldplug
-> >> enumeration.
-> >>
-> > 
-> > I don't have much knowledge on uevent to provide any suggestions/help.
-> > But isn't this a generic requirement ? I mean you could have modules
-> > install on the rootfs and not all of them are packed in initramfs ?
-> > Just wondering if that works for other modules, we can examine how
-> > do they work and what are we missing ?
-> 
-> scmi is special because the actual devices under /sys/bus/scmi/devices
-> only get created when the module with the driver is loaded because
-> of some funtion/id mapping requiring info from the driver.
-> 
-> Patch 2/2 tries to work around this by loading all scmi drivers matching
-> the scmi protocol which is known at bus enumeration time, but this only
-> works if the actual scmi driver is in the initramfs because this done
-> through directly calling modprobe() from the kernel which does not
-> get "replayed" when switching to the real rootfs.
+--- Patch [1]: [RFC PATCH] firmware: scmi: Make SCMI arch independent ---
+commit 60ea398dd3e0168551de4ef6f284874ff73c9025
+Author: Michal Simek <michal.simek@amd.com>
 
-Should the SCMI drivers be added to the dracut module here?
+firmware: scmi: Make SCMI arch independent
 
-https://github.com/dracut-ng/dracut/blob/main/modules.d/70kernel-modules/module-setup.sh#L73
+This commit aims to make SCMI architecture-independent by removing ARM/ARM64
+Kconfig dependencies and dropping the "ARM" prefix from descriptions, file
+names, and documentation.
 
-A few years ago we had to add the interconnect drivers to the list for
-Fedora.
+>     That's why get rid of ARM prefix and description from documentation, =
+file
+>     names, folder names, MODULE description, module names, Kconfig and
+>     comments.
+>     But keep origin Kconfig symbols not to break existing users.
+>    =20
+>     Hwmon, pinctrl, powercap, regulator, reset, clk and cpufreq scmi driv=
+ers
+>     already miss arm prefix that's why synchronize all of them to be with=
+out
+>     arm prefix.
 
-Brian
+[Severity: Medium]
+Did we miss a few files and strings during this synchronization?
 
+For example, drivers/hwmon/scmi-hwmon.c was omitted from the patch and still
+contains:
+MODULE_DESCRIPTION("ARM SCMI HWMON interface driver");
+
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/bus.c (100%)
+
+[Severity: Medium]
+Do we also need to update the MODULE_DESCRIPTION in this file?
+
+It currently retains: MODULE_DESCRIPTION("ARM SCMI protocol bus");
+
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/driver.c (100%)
+
+[Severity: Medium]
+Does this file also still need its description updated?
+
+It currently retains: MODULE_DESCRIPTION("ARM SCMI protocol driver");
+
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/scmi_power_control.c (100%)
+
+[Severity: Medium]
+Does this file also need an update?
+
+It currently retains: MODULE_DESCRIPTION("ARM SCMI SystemPower Control driv=
+er");
+
+> diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
+> index 03c4c796d9931..d3eda4a70978d 100644
+> --- a/drivers/powercap/Kconfig
+> +++ b/drivers/powercap/Kconfig
+> @@ -61,7 +61,7 @@ config IDLE_INJECT
+>  	  on a per CPU basis.
+> =20
+>  config ARM_SCMI_POWERCAP
+> -	tristate "ARM SCMI Powercap driver"
+> +	tristate "SCMI Powercap driver"
+>  	depends on ARM_SCMI_PROTOCOL
+>  	help
+>  	  This enables support for the ARM Powercap based on ARM SCMI
+
+[Severity: Medium]
+Should the help text here also be updated?=20
+
+It currently still references "ARM Powercap based on ARM SCMI".
+
+>  rename drivers/firmware/{arm_scmi =3D> scmi}/transports/Kconfig (100%)
+
+[Severity: Medium]
+Does the help text in this renamed Kconfig still need updating to match the
+commit message?
+
+Looking at ARM_SCMI_TRANSPORT_MAILBOX, the help text still mentions:
+"If you want the ARM SCMI PROTOCOL stack to include support for a"
+
+This also appears to be missed in the SMC, OPTEE, and VIRTIO blocks.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/d7f7e8c9589d937b60e=
+43168845ab4fda15037a3.1783603600.git.michal.simek@amd.com?part=3D1
 
