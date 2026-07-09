@@ -1,262 +1,172 @@
-Return-Path: <linux-hwmon+bounces-15689-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15690-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T4y0E9NoT2rogAIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15689-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 11:24:35 +0200
+	id +9ryCRx4T2othQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15690-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 12:29:48 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C593172EEAB
-	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 11:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6B772F99A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Jul 2026 12:29:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F67OrrsY;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F03vhvIw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15689-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15689-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15690-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15690-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84E59306E737
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2026 09:15:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89788393214A
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2026 10:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9B43E0C4D;
-	Thu,  9 Jul 2026 09:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5484C40B6FB;
+	Thu,  9 Jul 2026 10:10:21 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76593FE364
-	for <linux-hwmon@vger.kernel.org>; Thu,  9 Jul 2026 09:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0EA40B38F;
+	Thu,  9 Jul 2026 10:10:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588504; cv=none; b=pVK1NK1WnsGzsGM4G4lN2z/HPu9M86vdJxYP0IScXjX72DSV+8zgqEgBHcgKwUPmGZ86/lrWvuMfx7LRTQ3xYs6V8L0qasGDDTOcJDmxiDSwVkqtWt/qgheAILP0E90of4244FZwS8W9nG5ONCgvMLrzkTQcaf/a7J++KwD9EBg=
+	t=1783591821; cv=none; b=pd5lRw1LnOwpW5ZFo9s8h3N6sSHhSTmqXvmfyZjkqhfrfMfTUxC77FGQjLcZyWE8cY9ZFsGIr7UnxAtfKoZTgVpOj68/J5K7EQgpgET3KpAWFUR3Ib36v+KuvJCvy95nK5IeCoaohFQY5Psl0AQG88bBAER9Vswf2s5tsXtUwc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588504; c=relaxed/simple;
-	bh=PpKC5B12U7uALTbWJ8U7rrdB51VVcbsLnCBxvU+LJFg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bcI0McV91SEwOcEc24bNnfV+YqPz/t20JrjQp1TDrxieuZ1Z9RJg8p5nZBfUk6c8fKX7wpItVzQSImyydEr/kk+ze1KQRPi4TgW/Y7/dHCYJZiw8MDJdljEerg98js+gaCC9bFWFlRQK5a7k5mxwo2RkcXSTNov49GUinE8qETQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F67OrrsY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB2A1F000E9;
-	Thu,  9 Jul 2026 09:15:02 +0000 (UTC)
+	s=arc-20240116; t=1783591821; c=relaxed/simple;
+	bh=fRNeER7LnUmcwoquzvpNn39F7hoZUAISetj6EkZZm2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZAglQaMDywneEb1thEshAVduxVhdTQAdza10AKSLHiCwHo//34ycBrSULpSST9TXkIaxsJI25G1amlNVvCSXhbQaTsbXrQ+iKaJjZl3wExj1ioZNlTwnV7EsOw8TczW1fWk7H5eHj+XIfWjv0wqxCY1W7gB2KXQgiQxjz1pheWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F03vhvIw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8C61F00A3D;
+	Thu,  9 Jul 2026 10:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783588502;
-	bh=5QEbEUiGZ0ARNp9A4NlvSaxpn56OLbl2NICRUwhu9YI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F67OrrsYcsdCJVtJB23liqHB5LQ2H8iwqVMhONpoIpaFsSeVDS64N1Q5juwB9IDlk
-	 Ji85Klp26ZUaJqN9mz1den0WqQVAGqToWonwzjlFzayH9RqNWxIM8XLgDPlM6n8nFK
-	 i5lPU/s6yqkFaNGE7NXUvMBkOdkbMg5PN59pLNPXLB56S012GC8WVbdvCaWq8k5//W
-	 B6/io7vNZuibJ9P28Or7WN5t4eUpx5IEfu2kM/nZHZMyP7wOZd4TD6x66rAO7tLlbt
-	 LRcKyWUURag1mNPOxtWRaGp2TTETiJ5+Dah7TxGnWsCmJT/GoR2al6obzz3dpTtK0f
-	 M1X0nPMD6cMAg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] hwmon: add Altera SoC FPGA hardware monitoring
- driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: tze.yee.ng@altera.com
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260709090153.21675-3-tze.yee.ng@altera.com>
-References: <20260709090153.21675-1-tze.yee.ng@altera.com>
- <20260709090153.21675-3-tze.yee.ng@altera.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 09:15:01 +0000
-Message-Id: <20260709091502.2EB2A1F000E9@smtp.kernel.org>
+	s=k20260515; t=1783591819;
+	bh=oWFW04FqDfkqF6FQ5XuyyPvQ7Y46Kanl78+AV4Ugsl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F03vhvIwmj4StkRYQPee7Mpo8rhhvPDYa1ZUqMf2+g/CIeGCVIfCN0xnG5MJNYpgT
+	 G/xk+YiSmjsIpQ2a+ZCD1F7xW6UWIvVaIlA6EZhjtHM2GrgY2ZJp+KTKbZzmfeMY3V
+	 YI9cy3UqYXyMdyhNZ1zM949+ZSyI5yjfsP0DsW4R6T1oCjhBIM50nriVks3E2TiNTH
+	 S9m1h8vO+qxxJ7t4pzTYadBUln5t8vaGIXxmcrGaq5iBn0yQiXfbw6yHSMCKDUSEG8
+	 sAdltXpvBqJuHdUtm+PegrAGj97SvlIeTEKN0AltXJqRF1FwfLCw0B+XrWz/skAojF
+	 Ifn+6OI6uNVwQ==
+Date: Thu, 9 Jul 2026 11:10:12 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] firmware: arm_scmi: Ensure automatic module
+ loading
+Message-ID: <20260709-spicy-fiery-squid-6eec1d@sudeepholla>
+References: <20260618-scmi-modalias-v2-0-8c7547c1be21@oss.qualcomm.com>
+ <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8c2a4ae3-95cc-489a-a7a4-90a3ee2597e9@oss.qualcomm.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MISSING_MIME_VERSION(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-15689-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:tze.yee.ng@altera.com,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[38];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes.goede@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:sudeep.holla@kernel.org,m:cristian.marussi@arm.com,m:nathan@kernel.org,m:nsc@kernel.org,m:mturquette@baylibre.com,m:arm-scmi@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:sboyd@kernel.org,m:bmasney@redhat.com,m:rafael@kernel.org,m:viresh.kumar@linaro.org,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux@roeck-us.net,m:jbhayana@google.com,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:dmitry.torokhov@gmail.com,m:ulfh@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:p.zabel@pengutronix.de,m:alexandre.belloni@bootlin.com,m:linux-clk@vger.kernel.org,m:linux-pm@vger.kernel.org,m:imx@lists.linux.dev,m:linux-hwmon@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-input@vger.kernel.org,m:linux-rtc@vger.kernel.org,m:dmitrytorokhov@gmai
+ l.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15690-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER(0.00)[sudeep.holla@kernel.org,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,arm.com,baylibre.com,vger.kernel.org,lists.infradead.org,redhat.com,linaro.org,nxp.com,pengutronix.de,gmail.com,roeck-us.net,google.com,analog.com,bootlin.com,lists.linux.dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lists.linux.dev:replyto,altera.com:email,smtp.kernel.org:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sudeepholla:mid,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C593172EEAB
+X-Rspamd-Queue-Id: 9C6B772F99A
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The asynchronous read path times out prematurely and frees the SMC=
- transaction ID while the Secure Device Manager (SDM) may still be processi=
-ng the request, causing ID reuse and state confusion.
-- [Medium] Missing MODULE_ALIAS prevents automatic module loading.
-- [Medium] Voltage readings lack SDM error code validation, leading to mass=
-ive bogus voltage values being exported to userspace upon sensor error.
---
+On Thu, Jun 18, 2026 at 10:31:12PM +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 18-Jun-26 17:56, Bjorn Andersson wrote:
+> > SCMI drivers such as the Arm SCMI CPUfreq driver are allowed to built as
+> > modules, but they are then not automatically loaded. Rework the SCMI
+> > device table alias support to make modpost consume the information from
+> > MODULE_DEVICE_TABLE(scmi, ...) and allow drivers to be loaded based on
+> > this information, if known. Also add a protocol-based alias to also
+> > trigger driver loading when only the SCMI protocol id is known.
+> > 
+> > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> 
+> So I just gave this a test spin and unfortunately it does not work.
+> 
+> The problem with Fedora's kernel-config / setup is that the
+> request_module() from patch 2/2 runs from the initramfs, but
+> the scmi_cpufreq module is only available in the rootfs.
+> 
+> It does work if I explictly add the scmi_cpufreq module to
+> the initramfs, then it does get autoloaded.
+> 
+> We really need some place to put a uevent sysfs attr which then
+> gets replayed when udev is restarted from the rootfs and then
+> re-reads all the uevent files as part of its coldplug
+> enumeration.
+> 
 
---- Patch [2]: [PATCH v4 2/2] hwmon: add Altera SoC FPGA hardware monitorin=
-g driver ---
-commit 356596525564df534eb70c8e10fde9c433f2dafd
-Author: Tze Yee Ng <tze.yee.ng@altera.com>
-Subject: hwmon: add Altera SoC FPGA hardware monitoring driver
+I don't have much knowledge on uevent to provide any suggestions/help.
+But isn't this a generic requirement ? I mean you could have modules
+install on the rootfs and not all of them are packed in initramfs ?
+Just wondering if that works for other modules, we can examine how
+do they work and what are we missing ?
 
-Adds a hardware monitor driver for Altera SoC FPGA devices using the
-Stratix 10 service layer. Sensor channels are selected based on the
-service layer compatible string.
-
-> diff --git a/drivers/hwmon/socfpga-hwmon.c b/drivers/hwmon/socfpga-hwmon.c
-> new file mode 100644
-> index 0000000000000..1cd3a06fec42b
-> --- /dev/null
-> +++ b/drivers/hwmon/socfpga-hwmon.c
-
-[ ... ]
-
-> +static int socfpga_hwmon_async_read(struct device *dev,
-> +				    enum hwmon_sensor_types type,
-> +				    struct stratix10_svc_client_msg *msg)
-> +{
-> +	struct socfpga_hwmon_priv *priv =3D dev_get_drvdata(dev);
-> +	struct stratix10_svc_cb_data data =3D {};
-> +	void *handle =3D NULL;
-> +	int status, index, ret;
-
-[ ... ]
-
-> +	ret =3D -ETIMEDOUT;
-> +	for (index =3D 0; index < HWMON_ASYNC_MSG_RETRY; index++) {
-> +		status =3D stratix10_svc_async_poll(priv->chan, handle, &data);
-
-[Severity: High]
-The synchronous path uses a 2000ms timeout, but this loop times out after j=
-ust
-3 iterations (with a 1ms sleep), allowing only ~3ms. Is this polling durati=
-on
-sufficient for the worst-case response time from the Secure Device Manager
-(SDM)?
-
-> +		if (status =3D=3D -EAGAIN) {
-> +			dev_dbg(dev, "Async message is still in progress\n");
-> +		} else if (status < 0) {
-> +			dev_alert(dev, "Failed to poll async message: %d\n", status);
-> +			ret =3D -ETIMEDOUT;
-> +		} else if (status =3D=3D 0) {
-> +			ret =3D 0;
-> +			break;
-> +		}
-> +		msleep(HWMON_RETRY_SLEEP_MS);
-> +	}
-> +
-> +	if (ret) {
-> +		dev_err(dev, "Failed to get async response\n");
-> +		goto done;
-> +	}
-> +
-> +	if (data.status) {
-> +		dev_err(dev, "%s returned 0x%x from SDM\n", __func__,
-> +			data.status);
-> +		ret =3D -EFAULT;
-> +		goto done;
-> +	}
-> +
-> +	if (type =3D=3D hwmon_temp)
-> +		priv->temperature =3D (u32)*(unsigned long *)data.kaddr1;
-> +	else
-> +		priv->voltage =3D (u32)*(unsigned long *)data.kaddr1;
-> +
-> +	ret =3D 0;
-> +
-> +done:
-> +	stratix10_svc_async_done(priv->chan, handle);
-
-[Severity: High]
-If the async read times out, calling stratix10_svc_async_done() frees the
-transaction ID immediately.=20
-
-Can this cause the ID to be reused for a new request while the SDM is still
-processing the original delayed request, violating the SMC protocol and
-potentially causing corrupted data to be returned?
-
-> +	return ret;
-> +}
-
-[ ... ]
-
-> +static int socfpga_hwmon_read(struct device *dev, enum hwmon_sensor_type=
-s type,
-> +			      u32 attr, int chan, long *val)
-> +{
-> +	struct socfpga_hwmon_priv *priv =3D dev_get_drvdata(dev);
-> +	struct stratix10_svc_client_msg msg =3D {0};
-> +	int ret;
-
-[ ... ]
-
-> +	if (type =3D=3D hwmon_temp)
-> +		ret =3D socfpga_hwmon_parse_temp(val, priv->temperature);
-> +	else
-> +		/* Convert Q16 volts to millivolts for hwmon. */
-> +		*val =3D (long)priv->voltage * SOCFPGA_HWMON_VOLT_MV_SCALE /
-> +			SOCFPGA_HWMON_VOLT_FRAC_DIV;
-
-[Severity: Medium]
-The temperature reading path explicitly validates against generic SDM error
-codes (like ETEMP_INACTIVE or 0x80000000U).=20
-
-Since voltage readings lack this check, will a sensor error code here be
-blindly converted and exported as a massive bogus voltage value to userspace
-instead of returning a proper Linux error code?
-
-> +	return ret;
-> +}
-
-[ ... ]
-
-> +static struct platform_driver socfpga_hwmon_driver =3D {
-> +	.probe =3D socfpga_hwmon_probe,
-> +	.driver =3D {
-> +		.name =3D "socfpga-hwmon",
-> +	},
-> +};
-
-[Severity: Medium]
-Since this driver binds to a platform device dynamically registered by the
-service layer (and lacks an id_table or of_match_table), is a MODULE_ALIAS
-declaration (like MODULE_ALIAS("platform:socfpga-hwmon")) needed here so th=
-at
-udev can automatically load the module when the device is registered?
-
-> +module_platform_driver(socfpga_hwmon_driver);
-> +
-> +MODULE_AUTHOR("Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.c=
-om>");
-> +MODULE_AUTHOR("Tze Yee Ng <tze.yee.ng@altera.com>");
-> +MODULE_DESCRIPTION("Altera SoC FPGA hardware monitoring driver");
-> +MODULE_LICENSE("GPL");
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709090153.2167=
-5-1-tze.yee.ng@altera.com?part=3D2
+-- 
+Regards,
+Sudeep
 
