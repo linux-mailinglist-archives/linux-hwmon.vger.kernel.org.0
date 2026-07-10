@@ -1,64 +1,63 @@
-Return-Path: <linux-hwmon+bounces-15752-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15754-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bP5pLLTVUGoy6AIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15752-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:21:24 +0200
+	id Ib0JG9rVUGo56AIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15754-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:22:02 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A54073A2C8
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:21:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB4173A2E1
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:22:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=3Jl2bysL;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=EFkAPcjr;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15752-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15752-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15754-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15754-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3DB3030636F7
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 11:18:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1D0E73069247
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 11:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D00D420E62;
-	Fri, 10 Jul 2026 11:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDB0421A02;
+	Fri, 10 Jul 2026 11:17:39 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011048.outbound.protection.outlook.com [52.101.52.48])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013042.outbound.protection.outlook.com [40.93.196.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C71420E7A;
-	Fri, 10 Jul 2026 11:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4459421880;
+	Fri, 10 Jul 2026 11:17:37 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783682254; cv=fail; b=pMvmkjURg5TD50e0xuMOSvgw2gPHECLkI4WlIhzvIAMzlUvCW+G5qh8xGkUz40vRJ1fNss0085U7xVmCESvbhV44V2wOyS9K1Z3qQJlFG2d3Xqgn/uTkn3GY3EzISB1p0OGx1mDZscavyjqQmP9dWAzZrsC3eejlgdy3Bh5m5Bs=
+	t=1783682259; cv=fail; b=n0SxoOD1MJCzqYp9tzh5INGRQgF+3xo02IVfijc5EIiu2tYquYKU+DauIbvLUKMrYv7vHzUsK35p6uiTfukO7jO97dY34UiN1wTw/5Px20bck+2OCEalnmEh1aISDndq0tJ+y655PKv7Iv6JXedhbU5u1IfF16VpBe5QZ+vh8zA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783682254; c=relaxed/simple;
-	bh=c4QFBwjEnmJeDKQpEiW1oJExS6sCfuijxaFHg2lvtQU=;
+	s=arc-20240116; t=1783682259; c=relaxed/simple;
+	bh=0kyJS3Q1QEamSYuIzRThkCCQ1eUGxphhwu1kPTq6Vcc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c6HINcD+OkfaPsYAvACFPU11mdIVEhXi0OJ2SmYDJF3GngojPgOiVqjlEoUBPjN3hOFMitk5HosmUq6nC7knAk42Nx8A9hsbmHG6rfa12K+fZLXwqAQ+wfbAnyzqBTHCO1jVf53LWJfpoqcMEXnI20wreWuOkaMQ5PceVOQcBYs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3Jl2bysL; arc=fail smtp.client-ip=52.101.52.48
+	 MIME-Version:Content-Type; b=clZVpA99AsGrL3dRQG2ltdVmS5AyerF0VPzHQB0rOtdkSsLeXVDfgHdXVEGispZaEP09Tah9wM/vyz720pHv9gm6IIgw4uFqoqhAYkzymWyWRKKMs/RvE2PbendPykSobYZ71apSaKXU0kCcoa/TOEaEb5zdTXSMrTt+bFcDcL8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EFkAPcjr; arc=fail smtp.client-ip=40.93.196.42
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v6ljjgziSj1+tgCkY6OM01CSZJBVPN4jXvtj/cOTf4LASe9xeENCOsAEuS1DGvXe6KSzniItw9VE3GP20mg8I+1ZffJnxn8hCeRYrWzul9A9tCLGTaaC3tuwPIGkduOwhZTyZNYYasm0h0m630FTrWLPNgRge8l4x7TU4MKHWcaipELlDEU1MHB6d96VhzngHxd1Zbh5RQBP2T7FdWBsBY3z4ylEsdvPyMAwZMEn1wEwkKtYiI1pIatR7JSg/ug1jeqlI89Jcjclc8IjyHtXTUfGYSdw+MiU/fj7jTqjkij9fw6SY65iYyRvCUxgdKzD5RPPJFq84jYcQmWJwHTlkg==
+ b=DKsR91uDzll/RLmxnSABZkgoD/BVGhDOq/xdF3vY73gixEmcNcGnsJo57QQ3x/P8rEPb/M1VKzTHYiZuBongPHzDC1JIo9sL+zy2LYahzY3rJ3qg4/M/ieXEeNNtPlRA5QFgH8yNSGq1Vai6wyeZX782JQOYc64PRNyyM8805YuTReAXAhh8lZkaapBwUui/VwGtFR8oHbFKoG9iD7+QlwuiUj9R3eZeENcO1sbnOdJoOsas4lyZVdZX7OztWsLB/PR5FxD+vG8SC1HZiQQhr52fvyBwtoHU7vEaVb/5Y8NjUnTBdba6gPkw1T1mmycOGjOch2dHZiNrxeCbD8bPyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Eevdo2Ptuu/uhLIoNpxvK56VU/P0xZa4xV+RQpFpTVs=;
- b=VxiZPJpovk04O/V6SlhcsfjQvYWVN+/a82Pk2H/VXUhWe3zPTdxs9QCUCRrOKGqjlc73FmOMnA4Mk8ctdHuEv4/nyEZlae1fiwNHkSWVMAt/HlKbXIoHTUdkGJ2gwk/m/lHNvXdDD8oMOQNBeKX7OnEnQNSrQY14IIRugxiOZgFKAZt9GAXVqmN2EKrLw3G5GtzC3zddDi/ljxjThEDYU7B0DF05F9YgxUdrlivmxiNW54s9o1sSgxwOUo2cAcId0P/VItLH7SECsATTXoK62UmEZ5d/PZCiHeNT/5mC3BVbIYcFb5enHuGv24HiqAAIYJMo0e+aCWefwqwb35GtVA==
+ bh=lfWSRqOOG5anG2Vj+vlckP7EdFl851Rb5a003JOHNgo=;
+ b=rfB1QQL9wWoAKCJskQuoBZtxS4WYECikNcSfDATpKGmaokA6Pr1QO7VC9/w2AZ2681irru3C1bR+1WY4ix9XcmPnSn9eYWnzmADGcCVMrngspJs+29B9K1GECVcy53B/Pb000pmZB1W38ftPFk82VbpNYgl0f5PWfnrM8vpXFsB//G4+wtEHS7mH10IAhEPVEWMooQKyFjhba4um68jwoj/g24iXXngi6EemNIKrLmF/V/UwMNSuDI5QfJhjQEg6V1jpfw16Kw5DToeA5hAIekmIbYW+luQ5wB5J8iX90WrgEIrmjINADnlWfDDDBKVXh9Mr+GHbeTAjj9PN7qMIlw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Eevdo2Ptuu/uhLIoNpxvK56VU/P0xZa4xV+RQpFpTVs=;
- b=3Jl2bysLhYhawUmTGeuZ0my4pOc/D3MSLNr2z7lDXHJpx9LMQBIbrMGYU8AGYFzO8Tv7XeTitGiADek9I0WVKHOIwyz/RgnF2KDd6ebboiWBQd4sfXiKABUZ6qc33Mh478MoPZs9+gqxoSyVToLKrIuiNPVfT8sZTcRLT7v3agM=
-Received: from DS7PR03CA0136.namprd03.prod.outlook.com (2603:10b6:5:3b4::21)
- by IA0PR12MB8350.namprd12.prod.outlook.com (2603:10b6:208:40d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
- 2026 11:17:26 +0000
-Received: from DS1PEPF00017098.namprd05.prod.outlook.com
- (2603:10b6:5:3b4:cafe::8c) by DS7PR03CA0136.outlook.office365.com
- (2603:10b6:5:3b4::21) with Microsoft SMTP Server (version=TLS1_3,
+ bh=lfWSRqOOG5anG2Vj+vlckP7EdFl851Rb5a003JOHNgo=;
+ b=EFkAPcjrhMrwaIZm25KmeXY1pGBjUn3heeOtDt8F4xOykzTmO52/hTaC6EMkIoIgSPr1oI73uQfRyVMgfC2ZiZugDrx6S90XUJbsB3FH9RHfJiEKprBaVYTDl7h6H9nWXuE5rQtlrn6Of1c1rkUPl7zWA++I3iS1DABj8vqAIcY=
+Received: from DS7PR03CA0094.namprd03.prod.outlook.com (2603:10b6:5:3b7::9) by
+ SA1PR12MB8857.namprd12.prod.outlook.com (2603:10b6:806:38d::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.15; Fri, 10 Jul 2026 11:17:28 +0000
+Received: from DS1PEPF00017097.namprd05.prod.outlook.com
+ (2603:10b6:5:3b7:cafe::1c) by DS7PR03CA0094.outlook.office365.com
+ (2603:10b6:5:3b7::9) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.13 via Frontend Transport; Fri,
- 10 Jul 2026 11:17:25 +0000
+ 10 Jul 2026 11:17:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -66,13 +65,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
+ DS1PEPF00017097.mail.protection.outlook.com (10.167.18.101) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Fri, 10 Jul 2026 11:17:25 +0000
+ 15.21.181.6 via Frontend Transport; Fri, 10 Jul 2026 11:17:28 +0000
 Received: from dcsm-trdripper1.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 10 Jul
- 2026 06:17:19 -0500
+ 2026 06:17:23 -0500
 From: Akshay Gupta <Akshay.Gupta@amd.com>
 To: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-hwmon@vger.kernel.org>
@@ -80,9 +79,9 @@ CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <linux@roeck-us.net>,
 	<arnd@arndb.de>, <gregkh@linuxfoundation.org>,
 	<NaveenKrishna.Chatradhi@amd.com>, <Anand.Umarji@amd.com>,
 	<Akshay.Gupta@amd.com>, <Prathima.Lk@amd.com>
-Subject: [PATCH v4 5/8] misc: amd-sbi: Add support for SB-TSI over I3C
-Date: Fri, 10 Jul 2026 16:46:39 +0530
-Message-ID: <20260710111642.850022-6-Akshay.Gupta@amd.com>
+Subject: [PATCH v4 6/8] misc: amd-sbi: Add SBTSI ioctl register transfer interface
+Date: Fri, 10 Jul 2026 16:46:40 +0530
+Message-ID: <20260710111642.850022-7-Akshay.Gupta@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260710111642.850022-1-Akshay.Gupta@amd.com>
 References: <20260710111642.850022-1-Akshay.Gupta@amd.com>
@@ -98,30 +97,30 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|IA0PR12MB8350:EE_
-X-MS-Office365-Filtering-Correlation-Id: 922cbdf7-5ce9-424c-9e59-08dede74d230
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017097:EE_|SA1PR12MB8857:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d64cbbe-64a7-47b2-5a35-08dede74d3ca
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|82310400026|36860700016|6133799003|3023799007|22082099003|18002099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|11063799006|3023799007|56012099006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	GWqHcvAMvZJcDDYe6TiYM55RX+AYBAYTGcAOH4o+02Alj0aFotkVUfIJhCiZBBrPSNYC0/hKYmue7cfiyHxtFJNP0ONVGPGWbGDhnCg0TEBnP2TFE/C7k9+EO6ljOqSFy31lTBDm5vUjY4wAAk1c2l6mzAoG4tgrFoqm0O4acwYvcNEESPupH1e2oE7BzG7l8qnphx4H/Lsy16hoK3RHve0AMQhLC2x24XEZ0Y3TQFdYvhm2H+LDnEF6NSxXWoUwuxiIk+SnBZUMovMk30qXdFEzj6uOK88h/Mi0Y6j3qtAiryWfwTZQHN1rzZJWbAQl3WA1haRkgmNxiV6GrRIbZzhe2TnRtpeujllSabpgJ12BXvSzpu8sPybo3HYLwwuKXto34kKFJc2w2SgSuP/4wPXQsmx5ST5/RSoyg+pZz2GwIziWn4+w573S/ub8iEwi7OsqftdREnR9j6d9+jwzSmxX4fVCLC84YTwJvhrKkwMIMJ6z9/VB4xHCEnGDiBGLYDHnu11Ty0BJ/wzSiP6lcG/3BTJypaZ3HlB9hT4oLwuDxkg4Z6oLDYmm+YUhHPqoScNid9kqL6DCIby+moGwgJiVkUR0dUTLgBZjKZhVIluPOA/3OZf4IlMPGVi61tAxoHbxhLAhR/tG3SoP/jhxAB60a3X8oa/t2JKypJWH0wMfHsHShZFBaGn26aZ1z8tCmdyRZjk64yq/Knqs0VizgQ==
+	QoDsqJWZBCEt8Prd8JDpA657gK/mOcMJuwNgfU3M310ic5HtT/VPnqnHkbxRmQM2fHNYW9O0HoUh4RUIYXtsbLxvmJOwgc8eFUp5o5LSfGpZqp/MLb0r64RtbPY0KltncXiEItidExPVy00rwMYnNxc9pI8OD9MzrJmJfFkgWWSlOVFpxTkyV1+3IKiO/+7JlViURlR+/VUE1sSFh2NmgbM41VzvH3jFBfMQkPYguDPpEERz7M0qygv9l3BZPgZplivBJboq8mjR8oQIPaJZ5XPL4JNHxIan16Dwqkl7R71P7bIbFKtjI7eAIoQI6o/DWYd1nxHmzoB/hK1oKVdtj4dnnn/nq7BKJsv1NuBWxQ3Zng/JcqJNf1PEK5oc61rQ82d+YWs6JE84rA4G6uYt5mQsFnVIaK3sz/h62m+JtcVQpdxFqhrnUVYDQs8PuqTwrmG3f1iuENLn8PU3wQEevxmTBH7f2qdjCxErJ8K8/cpy1uTgDbwhtVu2xulahQ9VRu8uw95fa9rBr/NJ+z76Fbl12S3j0HVkMoIF9BG2wkpQkRQiCwT/4qzPSqje6zyQ1LcQHZXUzxdosDj0rDceNz6a/YRHfh4YaeEGZ6SRYyTgMCAwTDShiDYiinvfGGX/KZlGzR6fshWn54UcY2L1nN4FFeRZ7qUV2ic//AsyFXia7Nm8np8A8QjhOPwab2V57OIivtakJXF6pjPgDsSNpQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(82310400026)(36860700016)(6133799003)(3023799007)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(11063799006)(3023799007)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	lm+SdjVoPoEEx/wIqGUwzOX2u1Ldf4pm5rkYJugh5q2Nd6l8gaZh0Rfl0B6qJFSbMcxEfIIhI3svnjtP5v3sfF84MuPmCCkv0Dou7CpJDU/mwGe/93JtP/VrkEuQqT8N2YyaXYVbKUp2e5Pnw93eq2uYIKzz8qWbVuwBURBmEZmwFa4CAu0wRn5edmE1i1P31IcaHW6+efmFaz6mBAVQdEGe/iut4JY3hDNB9po2XBNGDz5+rKT4YiKGUuPaNkViCPNUz2RT8muk+apt2TzhPL4P8BmxXn+kPwvbJ6JMt4NW+8TD69OOB5XFugv7K8JVyISv0R2/eufw2kB2RLoioT8al2c0Dh2o2NsQPT9aW4aqgCeNyCN3a05z8guBMwesK0sevIQFmtyvo0i16LPd0aDGx43C9/lcTyhEAdRPDm+twWUaQvE+aNvbFKYtoHGh
+	l3nSwFJSSIkrNTWU4yn9o3BhBF4+Orqcbi6i6IfcgDPkoeSYejobJsgrCiOx4dXSnc+woLk2d0nyCXMXyxxo7cSd37HPSTO26ZexwD4SIBH5mILqQPRHnlKnCcQHuR7mqJB0m9okwA3E/IhgRzNmGYcqIDXZQXij88buCSqtheAWvw0cyQIzNHkJozEv6CTugQK39Y35UNSM2sXps96pHPd+YGKMABkD1XqNcXevKKU11PxdgSuHHvKTO1w2dQe780uYD1NGda5/OQa0DKScKSedB+64DEklespO2h3JhQic5Jh5O3R58mxvU+TmJui3gkt+4Jns5dLmlTjRX5WhDfK4xud5uf6x4W2vioetgWu2RzRHt56TNpbweTI2krQTjmcaw14D1OEuoGr8rqFodXpWxcZd/+gEMnjtVw/LH2VIUXHfmn4w34D5N2xEAwYb
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 11:17:25.6376
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 11:17:28.3233
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 922cbdf7-5ce9-424c-9e59-08dede74d230
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d64cbbe-64a7-47b2-5a35-08dede74d3ca
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017098.namprd05.prod.outlook.com
+	DS1PEPF00017097.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8350
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8857
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [1.34 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
@@ -129,7 +128,7 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -138,10 +137,10 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:linux@roeck-us.net,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:NaveenKrishna.Chatradhi@amd.com,m:Anand.Umarji@amd.com,m:Akshay.Gupta@amd.com,m:Prathima.Lk@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[Akshay.Gupta@amd.com,linux-hwmon@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-15752-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15754-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -150,306 +149,385 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,amd.com:from_mime,amd.com:email,amd.com:mid,amd.com:dkim];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:from_mime,amd.com:email,amd.com:mid,amd.com:dkim,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,devinfo.pid:url];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4A54073A2C8
+X-Rspamd-Queue-Id: EBB4173A2E1
 
 From: Prathima <Prathima.Lk@amd.com>
 
-AMD SB-TSI temperature sensors can be accessed over both
-I2C and I3C buses depending on the platform configuration.
-Extend the SB-TSI driver to support both I2C and I3C bus interfaces
-by selecting the appropriate transport based on the probed bus type.
-The driver maintains backward compatibility with existing I2C
-deployments while enabling support for systems using the I3C bus.
-Register both I2C and I3C drivers using module_i3c_i2c_driver() and
-update the Kconfig dependency from I2C to I3C_OR_I2C.
+Implement IOCTL interface for SB-TSI driver to enable userspace access
+to TSI register read/write operations through the AMD Advanced Platform
+Management Link (APML) protocol.
+Add an ioctl command (SBTSI_IOCTL_REG_XFER_CMD) that accepts a register
+address, data byte, and direction flag.
+The mutex is taken on the ioctl path here; the hwmon path is placed
+under the same lock in the next patch, which completes serialization between
+the hwmon and ioctl paths.
 
 Reviewed-by: Akshay Gupta <Akshay.Gupta@amd.com>
 Signed-off-by: Prathima <Prathima.Lk@amd.com>
 ---
 Changes since v3:
-- Resolved the issue with DMA cache alignment.
-- Added a comment regarding the assigned address in a multi-socket system.
-- Update comment for "struct sbtsi_data" element 
+- Implement a check on the read flag.
+- Introduce a mutex lock on "detached" in the sbtsi_misc_unregister() function.
+- Relocate the "detached" check to sbtsi_xfer_ioctl to prevent a time-of-check
+  to time-of-use race condition if the device is unbound during this ioctl operation.
+- Use devm_add_action_or_reset() in place of devm_add_action(), as in event of probe abort,
+  it can leave the misc device registered
 
 Changes since v2:
-- Fix DMA mapping issue to prevent memory corruption or kernel panics
-when CONFIG_VMAP_STACK is enabled
-- Use i3c_device_get_info() to populate i3c_device_info structure fields
-- Remove unused header file inclusion from "include/linux/misc/tsi.h"
-
+- Address feedback to hide mutex with common guard function
+- Separate out mutex patch in hwmon file to next patch, 7/8
+- Use file operation, open/release and kref to prevent use-after-free
+  if the device is unbound in IOCTL
+- Add check for msg.pad
+ 
 Changes since v1:
-- Changes in accordance with usage of auxiliary device
+- Use of devm_mutex_init in place of mutex_init
+- Use of guard_mutex in place of mutex_lock()/mutex_unlock()
+- Use of devm_add_action_or_reset() for clean removal
 
- drivers/misc/amd-sbi/Kconfig    |  4 +-
- drivers/misc/amd-sbi/tsi-core.c | 55 +++++++++++++++++++++++++++-
- drivers/misc/amd-sbi/tsi-core.h | 26 +++++++++++++
- drivers/misc/amd-sbi/tsi.c      | 65 +++++++++++++++++++++++++++++++--
- include/linux/misc/tsi.h        | 11 +++++-
- 5 files changed, 152 insertions(+), 9 deletions(-)
- create mode 100644 drivers/misc/amd-sbi/tsi-core.h
+ drivers/misc/amd-sbi/tsi-core.c | 126 +++++++++++++++++++++++++++++++-
+ drivers/misc/amd-sbi/tsi-core.h |   3 +
+ drivers/misc/amd-sbi/tsi.c      |  38 +++++++++-
+ include/linux/misc/tsi.h        |  16 ++++
+ include/uapi/misc/amd-apml.h    |  23 ++++++
+ 5 files changed, 202 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/misc/amd-sbi/Kconfig b/drivers/misc/amd-sbi/Kconfig
-index 512251690e0e..1a96b71f8506 100644
---- a/drivers/misc/amd-sbi/Kconfig
-+++ b/drivers/misc/amd-sbi/Kconfig
-@@ -23,13 +23,13 @@ config AMD_SBRMI_HWMON
- 
- config AMD_SBTSI
- 	tristate "AMD side band TSI support"
--	depends on I2C
-+	depends on I3C_OR_I2C
- 	depends on ARM || ARM64 || COMPILE_TEST
- 	select AUXILIARY_BUS
- 	help
- 	  Enables support for the AMD SB-TSI (Side Band Temperature Sensor
- 	  Interface) driver, which provides access to emulated CPU temperature
--	  sensors on AMD SoCs via an I2C connected BMC device.
-+	  sensors on AMD SoCs via an I2C/I3C connected BMC device.
- 
- 	  This driver can also be built as a module. If so, the module will
- 	  be called sbtsi.
 diff --git a/drivers/misc/amd-sbi/tsi-core.c b/drivers/misc/amd-sbi/tsi-core.c
-index 6ef1831515bb..1c6f37f26d94 100644
+index 1c6f37f26d94..5c178702c67a 100644
 --- a/drivers/misc/amd-sbi/tsi-core.c
 +++ b/drivers/misc/amd-sbi/tsi-core.c
-@@ -7,7 +7,12 @@
+@@ -6,7 +6,11 @@
+  * Copyright (C) 2026 Advanced Micro Devices, Inc.
   */
  
++#include <linux/fs.h>
++#include <linux/ioctl.h>
  #include <linux/module.h>
--#include <linux/misc/tsi.h>
-+#include "tsi-core.h"
-+
-+static inline struct sbtsi_i3c_priv *to_sbtsi_i3c_priv(struct sbtsi_data *data)
-+{
-+	return container_of(data, struct sbtsi_i3c_priv, data);
-+}
++#include <linux/uaccess.h>
++#include <uapi/misc/amd-apml.h>
+ #include "tsi-core.h"
  
- /* I2C transfer function */
- static int sbtsi_i2c_xfer(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read)
-@@ -23,8 +28,56 @@ static int sbtsi_i2c_xfer(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read
- 	return i2c_smbus_write_byte_data(data->client, reg, *val);
+ static inline struct sbtsi_i3c_priv *to_sbtsi_i3c_priv(struct sbtsi_data *data)
+@@ -14,6 +18,17 @@ static inline struct sbtsi_i3c_priv *to_sbtsi_i3c_priv(struct sbtsi_data *data)
+ 	return container_of(data, struct sbtsi_i3c_priv, data);
  }
  
-+/* I3C read transfer function */
-+static int sbtsi_i3c_read(struct sbtsi_data *data, u8 reg, u8 *val)
++void sbtsi_data_release(struct kref *kref)
 +{
-+	struct sbtsi_i3c_priv *priv = to_sbtsi_i3c_priv(data);
-+	struct i3c_xfer xfers[2] = { };
-+	int ret;
++	struct sbtsi_data *data = container_of(kref, struct sbtsi_data, kref);
 +
-+	priv->tx[0] = reg;
-+
-+	/* Write the register address (DMA_TO_DEVICE). */
-+	xfers[0].rnw = false;
-+	xfers[0].len = 1;
-+	xfers[0].data.out = priv->tx;
-+
-+	/* Read the data byte into a separate buffer (DMA_FROM_DEVICE). */
-+	xfers[1].rnw = true;
-+	xfers[1].len = 1;
-+	xfers[1].data.in = &priv->rx;
-+
-+	ret = i3c_device_do_xfers(data->i3cdev, xfers, 2, I3C_SDR);
-+	if (ret)
-+		return ret;
-+
-+	*val = priv->rx;
-+	return ret;
-+}
-+
-+/* I3C write transfer function */
-+static int sbtsi_i3c_write(struct sbtsi_data *data, u8 reg, u8 val)
-+{
-+	struct sbtsi_i3c_priv *priv = to_sbtsi_i3c_priv(data);
-+	struct i3c_xfer xfers = {
-+		.rnw = false,
-+		.len = 2,
-+		.data.out = priv->tx,
-+	};
-+
-+	priv->tx[0] = reg;
-+	priv->tx[1] = val;
-+
-+	return i3c_device_do_xfers(data->i3cdev, &xfers, 1, I3C_SDR);
-+}
-+
-+/* Unified transfer function for I2C and I3C access */
- int sbtsi_xfer(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read)
- {
++	mutex_destroy(&data->lock);
 +	if (data->is_i3c)
-+		return is_read ? sbtsi_i3c_read(data, reg, val)
-+			       : sbtsi_i3c_write(data, reg, *val);
++		kfree(to_sbtsi_i3c_priv(data));
++	else
++		kfree(data);
++}
 +
+ /* I2C transfer function */
+ static int sbtsi_i2c_xfer(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read)
+ {
+@@ -77,7 +92,116 @@ int sbtsi_xfer(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read)
+ 	if (data->is_i3c)
+ 		return is_read ? sbtsi_i3c_read(data, reg, val)
+ 			       : sbtsi_i3c_write(data, reg, *val);
+-
  	return sbtsi_i2c_xfer(data, reg, val, is_read);
  }
  EXPORT_SYMBOL_GPL(sbtsi_xfer);
-diff --git a/drivers/misc/amd-sbi/tsi-core.h b/drivers/misc/amd-sbi/tsi-core.h
-new file mode 100644
-index 000000000000..7e8c0e7c3bcf
---- /dev/null
-+++ b/drivers/misc/amd-sbi/tsi-core.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
++
 +/*
-+ * AMD SBTSI core driver private definitions.
-+ *
-+ * Copyright (C) 2026 Advanced Micro Devices, Inc.
++ * The mutex protects against concurrent register transfers to the device
++ * over the shared bus.
 + */
++static int sbtsi_xfer_ioctl(struct sbtsi_data *data, u8 reg, u8 *val, bool is_read)
++{
++	guard(sbtsi)(data);
 +
-+#ifndef _LINUX_TSI_CORE_H_
-+#define _LINUX_TSI_CORE_H_
++	if (data->detached)
++		return -ENODEV;
 +
-+#include <linux/cache.h>
-+#include <linux/misc/tsi.h>
++	return sbtsi_xfer(data, reg, val, is_read);
++}
 +
-+/**
-+ * struct sbtsi_i3c_priv - per-device state for I3C SBTSI (includes DMA-safe buffers)
-+ * @data: public device state exposed via dev_set_drvdata()
-+ * @tx:   outgoing I3C bytes (DMA_TO_DEVICE); [0] register address, [1] value
-+ * @rx:   incoming I3C data byte (DMA_FROM_DEVICE)
-+ */
-+struct sbtsi_i3c_priv {
-+	struct sbtsi_data data;
-+	u8 tx[2];
-+	u8 rx __aligned(ARCH_DMA_MINALIGN);
++static int apml_tsi_reg_xfer(struct sbtsi_data *data,
++			     struct apml_tsi_xfer_msg __user *arg)
++{
++	struct apml_tsi_xfer_msg msg = { 0 };
++	int ret;
++
++	if (copy_from_user(&msg, arg, sizeof(struct apml_tsi_xfer_msg)))
++		return -EFAULT;
++
++	/*
++	 * rflag is a boolean direction flag (0 = write, 1 = read). Reject
++	 * any other value so the upper values stay reserved for future
++	 * extensions instead of being silently treated as a read.
++	 */
++	if (msg.pad || msg.rflag > 1)
++		return -EINVAL;
++
++	ret = sbtsi_xfer_ioctl(data, msg.reg_addr, &msg.data_in_out, msg.rflag);
++
++	if (msg.rflag && !ret) {
++		if (copy_to_user(arg, &msg, sizeof(struct apml_tsi_xfer_msg)))
++			return -EFAULT;
++	}
++	return ret;
++}
++
++static int sbtsi_open(struct inode *inode, struct file *fp)
++{
++	struct sbtsi_data *data;
++
++	data = container_of(fp->private_data, struct sbtsi_data, sbtsi_misc_dev);
++	scoped_guard(sbtsi, data) {
++		if (data->detached)
++			return -ENODEV;
++	}
++
++	kref_get(&data->kref);
++
++	return 0;
++}
++
++static int sbtsi_release(struct inode *inode, struct file *fp)
++{
++	struct sbtsi_data *data;
++
++	data = container_of(fp->private_data, struct sbtsi_data, sbtsi_misc_dev);
++	kref_put(&data->kref, sbtsi_data_release);
++	return 0;
++}
++
++static long sbtsi_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
++{
++	void __user *argp = (void __user *)arg;
++	struct sbtsi_data *data;
++
++	data = container_of(fp->private_data, struct sbtsi_data, sbtsi_misc_dev);
++	switch (cmd) {
++	case SBTSI_IOCTL_REG_XFER_CMD:
++		return apml_tsi_reg_xfer(data, argp);
++	default:
++		return -ENOTTY;
++	}
++}
++
++static const struct file_operations sbtsi_fops = {
++	.owner		= THIS_MODULE,
++	.open		= sbtsi_open,
++	.release	= sbtsi_release,
++	.unlocked_ioctl	= sbtsi_ioctl,
++	.compat_ioctl	= compat_ptr_ioctl,
 +};
 +
-+#endif /* _LINUX_TSI_CORE_H_ */
++int create_misc_tsi_device(struct sbtsi_data *data, struct device *dev)
++{
++	int ret;
++
++	data->sbtsi_misc_dev.name = devm_kasprintf(dev, GFP_KERNEL,
++						   "sbtsi-%x", data->dev_addr);
++	if (!data->sbtsi_misc_dev.name)
++		return -ENOMEM;
++	data->sbtsi_misc_dev.minor    = MISC_DYNAMIC_MINOR;
++	data->sbtsi_misc_dev.fops     = &sbtsi_fops;
++	data->sbtsi_misc_dev.parent   = dev;
++	data->sbtsi_misc_dev.nodename = devm_kasprintf(dev, GFP_KERNEL,
++						       "sbtsi-%x", data->dev_addr);
++	if (!data->sbtsi_misc_dev.nodename)
++		return -ENOMEM;
++	data->sbtsi_misc_dev.mode = 0600;
++
++	ret = misc_register(&data->sbtsi_misc_dev);
++	if (ret)
++		return ret;
++
++	return 0;
++}
+diff --git a/drivers/misc/amd-sbi/tsi-core.h b/drivers/misc/amd-sbi/tsi-core.h
+index 7e8c0e7c3bcf..4cf55c46230e 100644
+--- a/drivers/misc/amd-sbi/tsi-core.h
++++ b/drivers/misc/amd-sbi/tsi-core.h
+@@ -23,4 +23,7 @@ struct sbtsi_i3c_priv {
+ 	u8 rx __aligned(ARCH_DMA_MINALIGN);
+ };
+ 
++int create_misc_tsi_device(struct sbtsi_data *data, struct device *dev);
++
++void sbtsi_data_release(struct kref *kref);
+ #endif /* _LINUX_TSI_CORE_H_ */
 diff --git a/drivers/misc/amd-sbi/tsi.c b/drivers/misc/amd-sbi/tsi.c
-index 35b9f40741e7..1530f440a020 100644
+index 1530f440a020..f06f417f451c 100644
 --- a/drivers/misc/amd-sbi/tsi.c
 +++ b/drivers/misc/amd-sbi/tsi.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
+@@ -42,6 +42,23 @@ static void sbtsi_unregister_hwmon_adev(void *_adev)
+ 	auxiliary_device_uninit(adev);
+ }
+ 
++static void sbtsi_misc_unregister(void *arg)
++{
++	struct sbtsi_data *data = arg;
++
++	misc_deregister(&data->sbtsi_misc_dev);
++
++	guard(sbtsi)(data);
++	data->detached = true;
++}
++
++static void sbtsi_driver_unref(void *arg)
++{
++	struct sbtsi_data *data = arg;
++
++	kref_put(&data->kref, sbtsi_data_release);
++}
++
  /*
-- * tsi.c - AMD SBTSI I2C core driver. Probes the SBTSI device over I2C
-+ * tsi.c - AMD SBTSI I2C/I3C core driver. Probes the SBTSI device over I2C/I3C
-  *         and publishes an auxiliary device on the auxiliary bus.
-  *
-  * Copyright (C) 2026 Advanced Micro Devices, Inc.
-@@ -10,8 +10,8 @@
- #include <linux/bitfield.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/misc/tsi.h>
- #include <linux/slab.h>
-+#include "tsi-core.h"
+  * Create and publish an auxiliary device. The hwmon driver in
+  * drivers/hwmon/sbtsi_temp.c binds to this device.
+@@ -84,6 +101,13 @@ static int sbtsi_probe_common(struct device *dev, struct sbtsi_data *data)
+ 	u8 val;
+ 	int err;
  
- #define SBTSI_REG_CONFIG		0x03 /* RO */
++	mutex_init(&data->lock);
++	kref_init(&data->kref);
++
++	err = devm_add_action_or_reset(dev, sbtsi_driver_unref, data);
++	if (err)
++		return err;
++
+ 	err = sbtsi_xfer(data, SBTSI_REG_CONFIG, &val, true);
+ 	if (err)
+ 		return err;
+@@ -92,7 +116,15 @@ static int sbtsi_probe_common(struct device *dev, struct sbtsi_data *data)
+ 	data->read_order = FIELD_GET(BIT(SBTSI_CONFIG_READ_ORDER_SHIFT), val);
  
-@@ -104,6 +104,7 @@ static int sbtsi_i2c_probe(struct i2c_client *client)
+ 	dev_set_drvdata(dev, data);
+-	return sbtsi_create_hwmon_adev(dev, data->dev_addr);
++	err = sbtsi_create_hwmon_adev(dev, data->dev_addr);
++	if (err < 0)
++		return err;
++
++	err = create_misc_tsi_device(data, dev);
++	if (err)
++		return err;
++
++	return devm_add_action_or_reset(dev, sbtsi_misc_unregister, data);
+ }
+ 
+ static int sbtsi_i2c_probe(struct i2c_client *client)
+@@ -100,7 +132,7 @@ static int sbtsi_i2c_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct sbtsi_data *data;
+ 
+-	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
++	data = kzalloc_obj(*data);
  	if (!data)
  		return -ENOMEM;
  
-+	data->is_i3c = false;
- 	data->client = client;
+@@ -158,7 +190,7 @@ static int sbtsi_i3c_probe(struct i3c_device *i3cdev)
+ 	if (I3C_PID_INSTANCE_ID(devinfo.pid) != 0)
+ 		return -ENXIO;
  
- 	/* In a multi-socket system, devices that are otherwise identical do not
-@@ -139,7 +140,63 @@ static struct i2c_driver sbtsi_driver = {
- 	.id_table = sbtsi_id,
- };
+-	i3c_priv = devm_kzalloc(dev, sizeof(*i3c_priv), GFP_KERNEL);
++	i3c_priv = kzalloc_obj(*i3c_priv);
+ 	if (!i3c_priv)
+ 		return -ENOMEM;
  
--module_i2c_driver(sbtsi_driver);
-+static int sbtsi_i3c_probe(struct i3c_device *i3cdev)
-+{
-+	struct device *dev = i3cdev_to_dev(i3cdev);
-+	struct i3c_device_info devinfo;
-+	struct sbtsi_i3c_priv *i3c_priv;
-+	struct sbtsi_data *data;
-+
-+	/*
-+	 * AMD OOB devices differ on basis of Instance ID,
-+	 * for SBTSI, instance ID is 0.
-+	 * As the device Id match is not on basis of Instance ID,
-+	 * add the below check to probe the SBTSI device only and
-+	 * not other OOB devices.
-+	 */
-+	i3c_device_get_info(i3cdev, &devinfo);
-+	if (I3C_PID_INSTANCE_ID(devinfo.pid) != 0)
-+		return -ENXIO;
-+
-+	i3c_priv = devm_kzalloc(dev, sizeof(*i3c_priv), GFP_KERNEL);
-+	if (!i3c_priv)
-+		return -ENOMEM;
-+
-+	data = &i3c_priv->data;
-+	data->i3cdev = i3cdev;
-+	data->is_i3c = true;
-+	/*
-+	 * In a multi-socket system, otherwise identical devices do not share
-+	 * the same address; each instance is enumerated with a distinct dynamic
-+	 * (assigned) address on the I3C bus. Use that address (passed in as
-+	 * dev_addr) as the auxiliary device instance ID so that every socket
-+	 * gets a unique auxiliary device name.
-+	 */
-+	data->dev_addr = devinfo.dyn_addr;
-+
-+	return sbtsi_probe_common(dev, data);
-+}
-+
-+static const struct i3c_device_id sbtsi_i3c_id[] = {
-+	/* PID for AMD SBTSI device */
-+	I3C_DEVICE_EXTRA_INFO(0x112, 0x0, 0x1, NULL),	/* Socket:0, Turin and Genoa */
-+	I3C_DEVICE_EXTRA_INFO(0x0, 0x0, 0x118, NULL),	/* Socket:0, Venice */
-+	I3C_DEVICE_EXTRA_INFO(0x0, 0x100, 0x118, NULL),	/* Socket:1, Venice */
-+	I3C_DEVICE_EXTRA_INFO(0x112, 0x0, 0x119, NULL),	/* Socket:0, Venice */
-+	I3C_DEVICE_EXTRA_INFO(0x112, 0x100, 0x119, NULL),	/* Socket:1, Venice */
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i3c, sbtsi_i3c_id);
-+
-+static struct i3c_driver sbtsi_i3c_driver = {
-+	.driver = {
-+		.name = "sbtsi-i3c",
-+	},
-+	.probe = sbtsi_i3c_probe,
-+	.id_table = sbtsi_i3c_id,
-+};
-+
-+module_i3c_i2c_driver(sbtsi_i3c_driver, &sbtsi_driver);
- 
--MODULE_DESCRIPTION("AMD SB-TSI I2C core driver");
-+MODULE_DESCRIPTION("AMD SB-TSI I2C/I3C core driver");
- MODULE_LICENSE("GPL");
 diff --git a/include/linux/misc/tsi.h b/include/linux/misc/tsi.h
-index 6533879cc358..0bdd9d923f92 100644
+index 0bdd9d923f92..5273c44688f0 100644
 --- a/include/linux/misc/tsi.h
 +++ b/include/linux/misc/tsi.h
-@@ -9,20 +9,27 @@
+@@ -8,30 +8,46 @@
+ #ifndef _LINUX_MISC_TSI_H_
  #define _LINUX_MISC_TSI_H_
  
++#include <linux/cleanup.h>
  #include <linux/i2c.h>
-+#include <linux/i3c/device.h>
+ #include <linux/i3c/device.h>
++#include <linux/kref.h>
++#include <linux/miscdevice.h>
++#include <linux/mutex.h>
  #include <linux/types.h>
  
  /**
   * struct sbtsi_data - driver private data for an AMD SB-TSI device
   * @client:	underlying I2C client
-- * @dev_addr:	I2C device address, used as the auxiliary device instance id
-+ * @i3cdev:	underlying I3C device (when using I3C bus)
-+ * @dev_addr:	I2C/I3C device address, used as the auxiliary device instance id
+  * @i3cdev:	underlying I3C device (when using I3C bus)
++ * @sbtsi_misc_dev: miscdevice exposing ioctl interface at /dev/sbtsi-<addr>
++ * @lock:           mutex protecting concurrent access to the device
++ * @kref:      reference count; keeps @sbtsi_data alive while misc fds are open
+  * @dev_addr:	I2C/I3C device address, used as the auxiliary device instance id
++ *		and name the misc device node
   * @ext_range_mode:	sensor uses extended temperature range
   * @read_order:	if set, decimal part must be read before integer part
-+ * @is_i3c:	true when the device is accessed over I3C
+  * @is_i3c:	true when the device is accessed over I3C
++ * @detached:  set on driver unbind; open/ioctl return -ENODEV afterward
   */
  struct sbtsi_data {
--	struct i2c_client *client;
-+	union {
-+		struct i2c_client *client;
-+		struct i3c_device *i3cdev;
-+	};
+ 	union {
+ 		struct i2c_client *client;
+ 		struct i3c_device *i3cdev;
+ 	};
++	struct miscdevice sbtsi_misc_dev;
++	struct mutex lock;	/* protects concurrent access to the device */
++	struct kref kref;
  	u8 dev_addr;
  	bool ext_range_mode;
  	bool read_order;
-+	bool is_i3c;
+ 	bool is_i3c;
++	bool detached;
  };
  
++DEFINE_GUARD(sbtsi, struct sbtsi_data *, mutex_lock(&_T->lock),
++	     mutex_unlock(&_T->lock))
++
  /*
+  * Name of the auxiliary device published on the auxiliary bus by the core
+  * driver.  The full device name is "amd-sbtsi.temp-sensor.<id>". where
+diff --git a/include/uapi/misc/amd-apml.h b/include/uapi/misc/amd-apml.h
+index 745b3338fc06..8a85f79b0938 100644
+--- a/include/uapi/misc/amd-apml.h
++++ b/include/uapi/misc/amd-apml.h
+@@ -73,6 +73,13 @@ struct apml_reg_xfer_msg {
+ 	__u8 rflag;
+ };
+ 
++struct apml_tsi_xfer_msg {
++	__u8 reg_addr;		/* TSI register address offset */
++	__u8 data_in_out;	/* Register data for read/write */
++	__u8 rflag;		/* Register read or write */
++	__u8 pad;		/* Explicit padding */
++};
++
+ /*
+  * AMD sideband interface base IOCTL
+  */
+@@ -149,4 +156,20 @@ struct apml_reg_xfer_msg {
+  */
+ #define SBRMI_IOCTL_REG_XFER_CMD	_IOWR(SB_BASE_IOCTL_NR, 3, struct apml_reg_xfer_msg)
+ 
++/**
++ * DOC: SBTSI_IOCTL_REG_XFER_CMD
++ *
++ * @Parameters
++ *
++ * @struct apml_tsi_xfer_msg
++ *	Pointer to the &struct apml_tsi_xfer_msg that will contain the protocol
++ *	information
++ *
++ * @Description
++ * IOCTL command for APML TSI messages using generic _IOWR
++ * The IOCTL provides userspace access to AMD sideband TSI register xfer protocol
++ * - TSI protocol to read/write temperature sensor registers
++ */
++#define SBTSI_IOCTL_REG_XFER_CMD	_IOWR(SB_BASE_IOCTL_NR, 4, struct apml_tsi_xfer_msg)
++
+ #endif /*_AMD_APML_H_*/
 -- 
 2.34.1
 
