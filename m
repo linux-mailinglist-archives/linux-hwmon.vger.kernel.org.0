@@ -1,180 +1,145 @@
-Return-Path: <linux-hwmon+bounces-15765-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15766-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kNj2M6LZUGoL6QIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15765-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:38:10 +0200
+	id 0CpROUTnUGra8AIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15766-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 14:36:20 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA8D73A52E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 13:38:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4642B73AD3F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 14:36:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TTuhguCr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15765-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15765-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=debian.org (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15766-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15766-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 093073027789
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 11:37:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAD333047067
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 12:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7C941F7E6;
-	Fri, 10 Jul 2026 11:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F552366826;
+	Fri, 10 Jul 2026 12:32:48 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A1342252C
-	for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 11:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8394E4218B1
+	for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 12:32:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783683435; cv=none; b=A9WpokFiTbQeaVLYdFWnh/8ETnqpsfKV3j7j2zqtYsdzxZiuaxL++D9bzznoSntIF8sX4wuy6ZHhCsq/Uro7OPX8cGe0+tl+g9V1fB0Zw1MhsUA9r0bgz3R90bKDaUjJ6tBedVKT9Dq3KQuUfpefCU4uNsYdeAC7J7BJHftOAj4=
+	t=1783686767; cv=none; b=KjWRWkzuM14cUxt6KTw9j9mYct19RWM9xfteP8IbVV6OEY7nOMeXpsBagS9QHA8vV6wc2CfOp1sNXumSrauSo871dIiZwTg1VBwwhctUU4XpzM41nSvPT2OCaYzEAMpRzP6Hsd2zSZoKr/OSgdLJeK8WQyp7Sd2kYvbL8FvC6rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783683435; c=relaxed/simple;
-	bh=p2z9x0Nf8CnbaNsuR2Z/rEUPnUD2PPhU9UZQzOHDCk8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gOPlWFdf0nFGy88sKkOHWzUnSr2F5BXuEO1rMsliVEgkCw5o9HeeBZ+tucuqj/mnPgKGChKSzWxfZ9zUjcXHTPMVZVkTJxvj5MinGU2KpfdD+C1BOnPoHTBaeeX0M8wvY0FAMxMLJ0fGFCQnU8T+a73yl32sKEE2qkGhUr6uXlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTuhguCr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B131F000E9;
-	Fri, 10 Jul 2026 11:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783683423;
-	bh=kzZ8pLhyPcDyJILJWh4653cuyGgRpsbnfTUWIP0a3uc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TTuhguCrYxFWlUJCVIUc6Lnlo35NBawSKchRd2eco9J41apnyua1ls8ny6nrVcNmd
-	 EcEIXFSxygEu9OdvSLLvTozB3AnVM3KWboJDod3HS2cUd5hgeL6vqnBBXKoIqXrrYY
-	 acI85diFE8R/ctr0mJhBRGbRreeEZ72QG2RZuQCvn5dOy0/qXdQ759d7L/YJ+Q3hTw
-	 gdMskembsEx2DfeV+K0YpODBHsRYDy+mkX6TwkSk0PKiuPAv6f9IZWemOp0g8DhEyC
-	 l7yt/UUWTnY8NBUJ6pWunaYosO/zdcW7b+TbOR7+wmKf0qVbu3Xxh6i750X8Zu4wxD
-	 5x91JZ5Xt0jMg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 7/8] hwmon: Add mutex protecting for sbtsi read/write
- through hwmon
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Akshay Gupta" <Akshay.Gupta@amd.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260710111642.850022-8-Akshay.Gupta@amd.com>
-References: <20260710111642.850022-1-Akshay.Gupta@amd.com>
- <20260710111642.850022-8-Akshay.Gupta@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 10 Jul 2026 11:37:02 +0000
-Message-Id: <20260710113703.61B131F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783686767; c=relaxed/simple;
+	bh=6VYu5Ln2dGULSfG+3BTeihBgx8YyS2T+l9vLZX9vPfs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L2o36OV8UhHC61+WqeGfG2DWswbj+DNZuOWl8BK9OLUa7u4fCH9F6q7ovo6HfIwVsq3+FVj4jDrVQUUJXasvAETZkGFxS0zPjA3juH4z8QMCxCccUYJUVqsZfjrXePRiy/2mr4OVJ3yigN4HucpRc8Vt+t25U3aKVXx79uHTYxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.179
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84847482584so602705b3a.0
+        for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 05:32:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783686762; x=1784291562;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iG62tnW4pdhMeJbfpvvvkEJyUp5+t4TXXdqe5pWpdVg=;
+        b=iIFLda+8KkUSz3b4NYYp3bwnjxX4h1MIh1njiqz1RkwnSXOfHaVBQ3jxZy3U+AzJQ4
+         evPPjLozM6LxYZE0nT5kTY6gihmA5D+NNNcRpkRcEXw60XxxOfvqylQsrULCbNZBg5wj
+         Naylfex2u4LY0axM1GKkGZvGdE8qeymz9iE0toiTOkui9wbeJH5bW0xJSWsZHOG1KlEK
+         XMygVRjICywue13CbbsC0hRRjoZ0hxErqQDgS29A3kPWWx9+6I0rh2CFCbkKkyZj3rhV
+         URyUs9IUOVK/DGmMU3X73v8csxRRpTx24SIOXOj7vwUkfKsPxddXuVCrFi0oXxlVIMx7
+         LrIA==
+X-Gm-Message-State: AOJu0YxB4ZbO3xH1q2x7Pd8zNqbgCZfgDeM6J+Rcq90S3YxDTt4YVKZT
+	JNWyfXlrc6SJS77olfzW6BB7RgjHzFZKkIPBp49x0IgRNI2635f/ylqWJX9Q8Ec=
+X-Gm-Gg: AfdE7cnIIv1DfzR28k7296l1vDXF9/MKD4KQYsDBRYrAeh/Hiq0o73LGfG1Gcmeygot
+	pCI6ZobdTe1MPlMr2RaqHpe2wtWXawqWNx51V/JPUlsKh7WjOkvrgUnjgopDs2Cx+QxLQdlaEe+
+	G9z3ZE+uZG8GkIPIsPjRyw+w80GC7zsazirXusxXZk/7ygOGeusw3FepfdGg4qc+jZfwc+xK/sj
+	Jtpl1MeWljUaWlpapWPHimX+TNAFwDPVNNS8ZazetqI4+8509PioQlL0MYyw4EmdTuBYOEuPz8d
+	qa2k31+eeIyIlab7/+OHn0CV/C0fD8p3g/W0jDgxiZMxD+CsMZ49V+t+ocMj/29na/Q/GW0iPQM
+	HhA/V9GNNHGqHFpVJ/NGTgCDlPdFcX1NbUkv570STI/jA1iStE1nw4YeYksFug5OSv1GnFznYV4
+	NHLEYOSb0QRtOh6/Cr7WGleGXh6a2jpZlwsyKyMkkNjIWK0Fvi8Rlr7fsi45GiF1igTjyCsr1ee
+	KzkMIpdI2HZypeWAsvXlgPa4A==
+X-Received: by 2002:a05:6a00:b8a:b0:842:63f5:d097 with SMTP id d2e1a72fcca58-848703459d7mr3207122b3a.3.1783686762398;
+        Fri, 10 Jul 2026 05:32:42 -0700 (PDT)
+Received: from penguin.tail0a1999.ts.net (61-228-54-80.dynamic-ip.hinet.net. [61.228.54.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-848686d6e86sm1929058b3a.19.2026.07.10.05.32.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 05:32:41 -0700 (PDT)
+From: Shih-Yuan Lee <fourdollars@debian.org>
+To: Henrik Rydberg <rydberg@bitmath.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shih-Yuan Lee <fourdollars@debian.org>
+Subject: [PATCH 0/1] hwmon: (applesmc) Convert to hwmon_device_register_with_info
+Date: Fri, 10 Jul 2026 20:32:35 +0800
+Message-Id: <20260710123236.10508-1-fourdollars@debian.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[debian.org : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15765-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rydberg@bitmath.org,m:linux@roeck-us.net,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:fourdollars@debian.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:Akshay.Gupta@amd.com,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[fourdollars@debian.org,linux-hwmon@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15766-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,vger.kernel.org:from_smtp,amd.com:email,lists.linux.dev:replyto,smtp.kernel.org:mid]
+	FROM_NEQ_ENVFROM(0.00)[fourdollars@debian.org,linux-hwmon@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6BA8D73A52E
+X-Rspamd-Queue-Id: 4642B73AD3F
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hi Henrik and Guenter,
 
-Pre-existing issues:
-- [High] Integer overflow in `sbtsi_write` when `ext_range_mode` is enabled=
-, causing large inputs to be incorrectly clamped to minimum.
---
+This patch converts the applesmc driver from using the deprecated
+hwmon_device_register() function to the modern hwmon_device_register_with_info()
+API. This silences the following deprecation warning from dmesg on load:
 
---- Patch [7]: [PATCH v4 7/8] hwmon: Add mutex protecting for sbtsi read/wr=
-ite through hwmon ---
-commit 8772051459eabab96983f02f6316165d79c69002
-Author: Prathima <Prathima.Lk@amd.com>
+[   24.706091] applesmc: key=620 fan=0 temp=37 index=36 acc=0 lux=2 kbd=0
+[   24.706270] applesmc applesmc.768: hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
 
-hwmon: Add mutex protecting for sbtsi read/write through hwmon
+Because the driver creates all its sysfs attributes dynamically on the platform
+device, we define a minimal struct hwmon_chip_info with a single temperature
+channel and implement a visibility callback that returns 0 (hidden) for it.
 
-This commit adds a mutex and takes it around SBTSI read/write paths so that
-only one transaction runs at a time. The lock is held only for the duration=
-=20
-of the bus transfer and associated driver bookkeeping.
+This satisfies the new API requirements while keeping all existing sysfs paths
+and attributes completely unchanged under the platform device directory
+(/sys/devices/platform/applesmc.768/), ensuring 100% backwards compatibility
+with existing user-space fan control tools (such as mbpfan and macfanctld).
 
-> diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-> index d7ae986d824c4..11c8108d69b2a 100644
-> --- a/drivers/hwmon/sbtsi_temp.c
-> +++ b/drivers/hwmon/sbtsi_temp.c
-[ ... ]
-> @@ -84,6 +85,7 @@ static int sbtsi_temp_write(struct sbtsi_data *data, u8=
- reg_int, u8 reg_dec,
->  {
->  	int ret;
-> =20
-> +	guard(sbtsi)(data);
->  	ret =3D sbtsi_xfer(data, reg_int, &val_int, false);
->  	if (!ret)
->  		ret =3D sbtsi_xfer(data, reg_dec, &val_dec, false);
+Shih-Yuan Lee (1):
+  hwmon: (applesmc) Convert to hwmon_device_register_with_info
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this code overflow val
-in the caller sbtsi_write()?
+ drivers/hwmon/applesmc.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-If data->ext_range_mode is enabled, a large user input val is increased wit=
-hout
-a prior upper-bound check:
+-- 
+2.39.5
 
-drivers/hwmon/sbtsi_temp.c:sbtsi_write() {
-    ...
-	if (data->ext_range_mode)
-		val +=3D SBTSI_TEMP_EXT_RANGE_ADJ;
-	val =3D clamp_val(val, SBTSI_TEMP_MIN, SBTSI_TEMP_MAX);
-    ...
-}
-
-Writing a large maximum value to the hwmon sysfs limit causes a signed=20
-integer overflow when adding the adjustment value.
-
-The resulting negative number is passed to clamp_val, which incorrectly cla=
-mps
-it to zero.
-
-This sets the hardware temperature limit to zero degrees Celsius, which can=
-=20
-instantly trigger thermal throttling or a hardware thermal shutdown.
-
-A user or management script legitimately trying to disable or maximize the =
-limit
-by writing the maximum possible integer will unintentionally trigger a ther=
-mal=20
-alert instead.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260710111642.8500=
-22-1-Akshay.Gupta@amd.com?part=3D7
 
