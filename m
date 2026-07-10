@@ -1,148 +1,202 @@
-Return-Path: <linux-hwmon+bounces-15769-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15770-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RCdPBh3sUGrx8QIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15769-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 14:57:01 +0200
+	id 8FR4BXP8UGpF9gIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15770-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 16:06:43 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0279873AF7F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 14:57:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A2C73B992
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 16:06:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=pqrs.dk header.s=key1 header.b=IxtdpbbR;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15769-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15769-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gsjvXh7v;
+	dmarc=temperror reason="query timed out" header.from=roeck-us.net (policy=temperror);
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15770-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15770-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 291CD300C7F2
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 12:54:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D06430AA9BC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2026 14:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAC24279EE;
-	Fri, 10 Jul 2026 12:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6E52E762C;
+	Fri, 10 Jul 2026 14:01:41 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8240DFC1
-	for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 12:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065C42E1C4E
+	for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 14:01:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783688062; cv=none; b=Zje770Z2UZEBDi6x7arfFRfcj9GWs6V63JIGO/22Y9nlWSxC+4cmaKIuGZgFmVFbp6xNCNnSx0VSPkNdyAgp+aUBJOa+5COW6SbNi2vn6N2reVcZwa+gH2jmbLQdkzIMTc+TZj8r8njReBhdsTTijRlNOP3XqxbaA6UZHoTuTn8=
+	t=1783692101; cv=none; b=CJrluDEjHHitDvlKYrEXtgZY3jJwJXr0al9QAOjhbBCE78eo8rjuFUBb5/jyolNrNJLqGdFbp2Hl03P4HGXrRXJ6bVT7shMzcld8H0krPsKSkA5lcS+Kt2H03Di/bnX4KEAbXYKYSeDh91fWCtUR276H/QpgqzoWcSvW3mOF60c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783688062; c=relaxed/simple;
-	bh=6EcN/TZasrXpOc4QnFmZeOhBJDdssaJcwOfFFfx7hJo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g8J6qW83N9K2ziYfqHXHUZ1+IVJrcx8HZOwAIFCYEdfAsBt85URR3IPq3zehiiOJdZXKOKR+sdIlMgGMWczvIvIEfJioT/sYEsgyxYebKMHeQh0RbtLkjzv8Sa0qEpw1iIE9ittvJEnnHZsVAGdGSnsh7U0BJIppePMkP33fSME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pqrs.dk; spf=pass smtp.mailfrom=pqrs.dk; dkim=pass (2048-bit key) header.d=pqrs.dk header.i=@pqrs.dk header.b=IxtdpbbR; arc=none smtp.client-ip=95.215.58.177
-Date: Fri, 10 Jul 2026 14:53:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pqrs.dk; s=key1;
-	t=1783688046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r1nNPIOy+vk1eS1mBs5XE7gdt5FtCACODKoLi7FSYZw=;
-	b=IxtdpbbR0TvI9QSjsenyMNxYxm8IVpkuwJX2RJCc4+KDOETBEKnKKGv2Ua3O/3EEz1vH1N
-	GD1OVSXLCWQrpzyLxsKpytRN+jXiMdvevNphKXvXZ4V1r+0isppxKGxeLbodYHbdlBbAw4
-	kzqsPu5z52rffmlakP6VAdwB+i7c7Ea59XG6xFZ8qLYG1mSSCUi6BgOSqJ4DHqmgD0B02W
-	VGJVSblf+0pUnzColAtt0wwNPBZ8wcqhRvHSqWUoUBQRnIJu8gCwMhYsBM98i6QuBcaSiK
-	JvxWn8riIAtsDpEMuQwaNUecED1EDYKU3o0nwOuvfh6uoNbrJCZ7Y+nyzUxYnA==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin@pqrs.dk>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Peter Rosin <peda@axentia.se>, kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	David Jander <david@protonic.nl>
-Subject: Re: [PATCH v15 6/6] mux: add NXP MC33978/MC34978 AMUX driver
-Message-ID: <alDqEXnZmejphvio@pqrs.dk>
-References: <20260710101358.2606941-1-o.rempel@pengutronix.de>
- <20260710101358.2606941-7-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1783692101; c=relaxed/simple;
+	bh=J5KhfHbAcCyPwu8i6GaPe5TFLUQwg3eDvMY0dJ8fI98=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oUP3JgqPpfUvenLcioRVtRuJX55jCyzS9D2od+CHzxEE3kw+bnfNuJ3CDSGqYPbOQwrqVWHAQqHFVIBtFs1LzrelA2qMMo602nP82rr7nn+NIazOe4puBCPZbFKtvvr/kUK4lgk4Sh55I+HFI5jgfmyLwgPfxj32u4tC7RO/40M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsjvXh7v; arc=none smtp.client-ip=209.85.215.178
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c999f162c9aso523664a12.3
+        for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 07:01:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783692099; x=1784296899; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1Q+blbOuY4CPEX29G3F1xX+mj+/hhPJrs7ehYrVQ3zs=;
+        b=gsjvXh7vIk1KtSlpaYWXcQsNxGYWMbK/0cT25wjn52bXOmb+5SG4i3cNqDvwX8znl9
+         r6FcEmCK3Gx11mo8l8HF5p99VC3FFfIEiRcNsBbzAHwoHpfQrTNj7zUEcoJGTRt8XyDT
+         PkUJqoYvKRSMAlupnR9b0X1LtnTXRC0anIM5ibIuyQztoQizItFvGPgYBV1gUeb0pG1X
+         wqUgZM1eHEJSsYhy6KCX1vTgNIupFJ0rsfKcJok3sIVG22cXVJjmMOOjMzjqXPxM6oay
+         KKzdEFhCEkaxHLLBXPgEWNyH62sRwgBUSEXHbP2+BIx6D0MJfaOdWxLgfFcn4kzs6hLF
+         zCBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783692099; x=1784296899;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1Q+blbOuY4CPEX29G3F1xX+mj+/hhPJrs7ehYrVQ3zs=;
+        b=FdBdPmxSTnFXTMtM13K/D+F9ThO/vlgj9OfVnpINsvHY0ffWLylz6U8mU9JXJtm8QE
+         Ax5csHDFc69ripE0epH7H64p43IAUnM575E7zyH8dcscPc5ObJNBpsBa3s7yaZrHJmTb
+         dQloP9nR97gNeL+bRC1mp+zCt0EqBTwE/KRZEJ+uglsPmMn3OnaynDbt3OnREPSYthAD
+         Yk7/+cjdiiDZIm80lnuJ89zfHDd2FwdGaQU8gkLGUUkzD36tQP5sToZSEIbCPbwrhUU6
+         GKZao2c9kdkpwUo8BjKEDBrCoATQgb+nP2D5fj57AXVqhn0GmWlED+z3ROklHGIh/3DS
+         JiSA==
+X-Gm-Message-State: AOJu0YwEdPMGDDjuYHKND1o/XCiipsU4vAyldYPSECbyJTmwOp7J9uEd
+	j+ftzjaTf7oSoO6HpsE3l6XE0PGYjG4ZWAyHJtCcaf4dOjwzzVn5Qawz
+X-Gm-Gg: AfdE7ckF5fJCf4Xm6EpaaohwGXdiQOgzbPqMf/UBLA1r4X7RMvHsxAb/R8g/WE65kTR
+	vqY0XKpTk3b94U97J9Lqqr3LWDJi076p95VFVJ3E87BAy7yhL8D1YcecEcCqyd3vQpr1zX2Gl5u
+	HPkezrhJahEA2kCUBvnzIt2kx6gWQhO5IW1du/M1RUVuYb75WnCZ1BHs9GiqJ9gwSJspXuh/NBa
+	1T7MTsOBBhWvHWSmrTUOMrcBuCMaL4+DweUb3IVqNnmNr7j0HWfPBEmRlAfH4RCeq2XVQFzI6mG
+	5ZUEU0KoVd7d0vR7vr6QICqJ9B7p7rF4t40Z3kje5DYzuAEcK//A4iO1WNkp4urkmxu954o6Cw5
+	8rQ1D3CjixRI8edZAxjjxnbars6NGnhrC7bZAzNqNp4DLrTONRqjYzg3KEp4uNi4k48Nh8R23sA
+	XrKhS2kaPlFx7BI8zmrvusL4CCv7sAPpK/kIjq2SN9Wj663wphFg0me1iM4an8/A==
+X-Received: by 2002:a05:6a20:6a21:b0:3c0:9c1a:8939 with SMTP id adf61e73a8af0-3c0bccbae8emr13775826637.65.1783692099125;
+        Fri, 10 Jul 2026 07:01:39 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b31628c1sm5136553a12.19.2026.07.10.07.01.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2026 07:01:38 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <99c83d9e-129a-4db1-b0bc-dba75c07708e@roeck-us.net>
+Date: Fri, 10 Jul 2026 07:01:36 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260710101358.2606941-7-o.rempel@pengutronix.de>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] hwmon: (applesmc) Convert to
+ hwmon_device_register_with_info
+To: Shih-Yuan Lee <fourdollars@debian.org>,
+ Henrik Rydberg <rydberg@bitmath.org>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260710123236.10508-1-fourdollars@debian.org>
+ <20260710123236.10508-2-fourdollars@debian.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260710123236.10508-2-fourdollars@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[pqrs.dk:s=key1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:o.rempel@pengutronix.de,m:linux@roeck-us.net,m:lee@kernel.org,m:linusw@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:peda@axentia.se,m:kernel@pengutronix.de,m:linux-kernel@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:david@protonic.nl,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[alvin@pqrs.dk,linux-hwmon@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-15769-lists,linux-hwmon=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DMARC_NA(0.00)[pqrs.dk];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-15770-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:fourdollars@debian.org,m:rydberg@bitmath.org,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvin@pqrs.dk,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[pqrs.dk:+];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DMARC_DNSFAIL(0.00)[roeck-us.net : query timed out];
+	TAGGED_RCPT(0.00)[linux-hwmon];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,pqrs.dk:from_mime,pqrs.dk:dkim,pqrs.dk:mid,pengutronix.de:email,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0279873AF7F
+X-Rspamd-Queue-Id: C7A2C73B992
 
-On Fri, Jul 10, 2026 at 12:13:55PM +0200, Oleksij Rempel wrote:
-> Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-> embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-> Interface (MSDI) devices.
+On 7/10/26 05:32, Shih-Yuan Lee wrote:
+> The legacy hwmon_device_register() function is deprecated and triggers a
+> warning in dmesg during driver initialization:
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> [   24.706091] applesmc: key=620 fan=0 temp=37 index=36 acc=0 lux=2 kbd=0
+> [   24.706270] applesmc applesmc.768: hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
+> 
+> To silence this warning, convert the driver to use the modern
+> hwmon_device_register_with_info() API.
+> 
+> Because the driver creates all its sysfs attributes dynamically on the platform
+> device, we define a minimal struct hwmon_chip_info with a single temperature
+> channel and implement a visibility callback that returns 0 (hidden) for it.
+> This satisfies the new API requirements while keeping all existing sysfs paths
+> and attributes completely unchanged, ensuring backwards compatibility.
+> 
 
-Reviewed-by: Alvin Šipraga <alvin.sipraga@analog.com>
+Novel, but that would completely defeat the purpose of the new API.
+NACK.
 
-One small comment below.
+Guenter
 
-[...]
-
-> +static int mc33978_mux_set(struct mux_control *mux, int state)
-> +{
-> +	struct mux_chip *mux_chip = mux->chip;
-> +	struct mc33978_mux_priv *priv = mux_chip_priv(mux_chip);
-> +	int ret;
-> +
-> +	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-> +		return -EINVAL;
-> +
-> +	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-> +				 MC33978_AMUX_CTRL_MASK, state);
-> +	if (ret)
-> +		dev_err(priv->dev, "failed to set AMUX channel %d: %d\n",
-> +			state, ret);
-
-Especially for iio, I can imagine a consumer might keep polling even if
-the mux .set returns an error. So maybe ratelimit this print?
-
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct mux_control_ops mc33978_mux_ops = {
-> +	.set = mc33978_mux_set,
-> +};
 
