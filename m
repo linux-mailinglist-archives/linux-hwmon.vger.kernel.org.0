@@ -1,170 +1,174 @@
-Return-Path: <linux-hwmon+bounces-15791-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-15792-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A+CQDQ7aUWpfJgMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-15791-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 07:52:14 +0200
+	id uLEqCSreUWoqJwMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-15792-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 08:09:46 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AD6740705
-	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 07:52:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AEE7408D3
+	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 08:09:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHiRKeHo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15791-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15791-lists+linux-hwmon=lfdr.de@vger.kernel.org";
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=debian.org (policy=none);
+	spf=pass (mail.lfdr.de: domain of "linux-hwmon+bounces-15792-lists+linux-hwmon=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-hwmon+bounces-15792-lists+linux-hwmon=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 45A243008D09
-	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 05:52:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C44C430409E0
+	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Jul 2026 06:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E592F363F;
-	Sat, 11 Jul 2026 05:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BEB31E830;
+	Sat, 11 Jul 2026 06:06:42 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3813D51E
-	for <linux-hwmon@vger.kernel.org>; Sat, 11 Jul 2026 05:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381D231D362
+	for <linux-hwmon@vger.kernel.org>; Sat, 11 Jul 2026 06:06:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749127; cv=none; b=Lb+c7jGiqC+pYbL3TTKIuDa1YnAVfEN+wHirnhKpvLF7HdKQ8NW1CvfCRc9W5hAk4dl7bu1g33N6rl1QrUHkyLYabppjfZV/Oxntsva/dWyoKC/VQuXNKrIQIEg9/2wrsOmxwgde/KVc8JUJtXb6NiK+AeU1ysyAMbXVwYvrYYg=
+	t=1783750002; cv=none; b=UIhdCsEbq8+4jJMHUj1+z4PQyIwHjFLes0S699+Ypp4DeifiAnPmQ9mpWOyUMGQ1O/iE2pOQj+sLqVnCJ82CXlTp1/29l0c2nG8dRrnhMc9eFHfaz62J+C0nt+GWk4Wrf/0DmDOv6oNcQDBStuaXK34mT0TFN5g9MWCv6cWRd6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749127; c=relaxed/simple;
-	bh=9nYvTQqbR1jlZkDimmgv8Qqd/En2wouWa8VuMGRj8u8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kqHnRSv4yYk7F3cWG1BlPndNptaVYpVO1zoNX7t6p9OXVMvOk+DyCYUBHCJKnEuXzaTYmWSJS076jZhmNXVEar4YxfoblnmCFijGUbrpe6gRGvIGVLZ4gM0kLfykcDfVcttFREULO2mnwmJAc3f1QhQNACrYE8z4mPrAWcdP/+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHiRKeHo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339A01F000E9;
-	Sat, 11 Jul 2026 05:52:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783749126;
-	bh=cvOWdyjHBaMNx3Vum1SSVlIWk5U9Y+/bkPM6g8sng9k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eHiRKeHoApNSN0Vih2OBeQDQrxmJLEOvNRYOEwsjLSHLyxwugO8OyME7OEcALiKCH
-	 AF4MEGRkTu8H+ge+rIwvXtnYs58QAXjKqK4K4lJ2NyVB+3Hmk5/hchzgTAvJEUyEXp
-	 NCDlmgfMEeT6KnNrat3nZdAGAi4SZSoQUPe60FJmfwF5y2urY2/Yp7MnHLecdyFM6+
-	 1uCKV3tgfxjTiAsSIqRk/c+wf+qsJeU74NyJM1b5IFGmVjZPj1gjaoSwVOb8RBp/yI
-	 Tumi53KH/1gQvFfZ9ytbvnYF4RgJ+2xob4kXxj625rN1+u3v4Y3rVSRWMKDr2DHrPJ
-	 ofS1ofM/xz4GA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/1] hwmon: (applesmc) Convert to
- hwmon_device_register_with_info
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shih-Yuan Lee" <fourdollars@debian.org>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260711053915.4834-2-fourdollars@debian.org>
+	s=arc-20240116; t=1783750002; c=relaxed/simple;
+	bh=vcBuQYC79OZ2bNOfBHguxsdSVRCJCN5GxTbAtsFkitE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DlX3mnVT7bVfxyvhJ5UfWEkwK4+V+BgcgKF34AKPp5P9Go8VGJkc7oWr7KmLHx7IVJgYpJ+ZxwM285M7xVJKTBWgXjM5SU3dgPsUvE93XeLZ1Tum6APtjpsrTtVGzT+9S1YJ4r5xEJH4tBy+T0nRQ79mXlb5H7qnft68Mfh8OJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.45
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-383adaa461fso1103627a91.3
+        for <linux-hwmon@vger.kernel.org>; Fri, 10 Jul 2026 23:06:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783750000; x=1784354800;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hjSf+Hyul1UNVDbvkbtBR3cbH4pAbaZmRn0hhZdfigs=;
+        b=gMCa4HFAHo7u0vR1KlGazeBlk+WlBEwuf/RKl/v1GieGpnWeo02GrMJ+jmr5wi53Kg
+         3H90r+efVb3fpnVMizreSlAkpwr8CyMtXBBgKuqCLg4swx+a/cKjRQjMZnE16LtwxNPg
+         XLkDmI95SOXaKvcOMj+nbmJvRu0aOvBspunn3CcXwPjr3fUh6kkJoOD22XI3KHjKU3Js
+         Wo6FG/yoSNucp7GCnf/LyqP2YedT8FgAJK3XC6fObMUyic9bqSm4RCPazQf3GJWeZo7r
+         A2acIooNwfrUGMXJgAq+HMEfzpnvplO6TFOKO5v3mF7AioMbq1ZKxEFmzXDWbUTriDq0
+         W80g==
+X-Forwarded-Encrypted: i=1; AHgh+RpDAOIEO7dAJSwgTPsZR/TDzg6ZeDw3q3RzsVmV0XIpROy0RjzH7i1e6sVBGC3B8S4+yUMbb1cNK0xvQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoojQN4J6KQo1Qghlv5aCYHi2LFGIuIek3z3/Ap+/xxO0vu1Gc
+	QDvN7oq7JAVVTTkwcaPiszdJO9VdH2TxgJ/K/1uLJ2fA8+Yso0JVzG4=
+X-Gm-Gg: AfdE7ckXNzLBse8t2E5yNDUJUtZzK3Wlxm9b0sg7efMgjH/O+mXX2dh3lBdlbbfUdZX
+	i+CwDTiH6P7Ywe6gYH2CrI2ayeUcrwjD4vjXpqRjrku3Clidy227N3ppvtZpdrRPnf8zXU5tXBH
+	zX5VJz66pEKLydwW5h0g7n6PQX0gL+3hy6RfxT1qysQMmXmZwU1zphKi8LdwYOj05HgJ4lpJBPf
+	cnMs2XJSMbx/kLz8SZ18+6zmdGjF84FpCFYuKT9/1GDDGdDrqxJP9yUNvtraoaPJeX1dQyxOtXp
+	ckDW4fe4gDT/pcXSQPineJf1KGHZlCJz966ErYgSfPsV0wBZ2FJACxYW9Aq11fcsizgpFwNtUS3
+	DacuiQ9OMEhf9/aKY+oxRhrtgj1DI4gtKzGE2z6xwSJ5GbclSZ8ha4GLUI5dtub7ApH0znJxVY9
+	dLKNsQBh4+XJjuMG6Le81IEqpiftxPslNRRgWBQgfeK+as1v3PyxPe/cg32s1hVw+cmuK7WX5xz
+	qXTGb+0o70S7B3JeOSx+RD7BQ==
+X-Received: by 2002:a17:90b:1808:b0:36b:77b9:5c8c with SMTP id 98e67ed59e1d1-38dc7a49482mr1855768a91.17.1783750000523;
+        Fri, 10 Jul 2026 23:06:40 -0700 (PDT)
+Received: from penguin.tail0a1999.ts.net (61-228-52-13.dynamic-ip.hinet.net. [61.228.52.13])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38d11280409sm1185307a91.0.2026.07.10.23.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 23:06:40 -0700 (PDT)
+From: Shih-Yuan Lee <fourdollars@debian.org>
+To: Henrik Rydberg <rydberg@bitmath.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shih-Yuan Lee <fourdollars@debian.org>
+Subject: [PATCH v4 0/1] hwmon: (applesmc) Convert to hwmon_device_register_with_info
+Date: Sat, 11 Jul 2026 14:06:33 +0800
+Message-Id: <20260711060634.5794-1-fourdollars@debian.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260710123236.10508-1-fourdollars@debian.org>
 References: <20260710123236.10508-1-fourdollars@debian.org>
- <20260711053915.4834-1-fourdollars@debian.org>
- <20260711053915.4834-2-fourdollars@debian.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 11 Jul 2026 05:52:05 +0000
-Message-Id: <20260711055206.339A01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[debian.org : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-15791-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-15792-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_CC(0.00)[gmx.de,vger.kernel.org,debian.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:fourdollars@debian.org,m:linux-hwmon@vger.kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:rydberg@bitmath.org,m:linux@roeck-us.net,m:W_Armin@gmx.de,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:fourdollars@debian.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[fourdollars@debian.org,linux-hwmon@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fourdollars@debian.org,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20AD6740705
+X-Rspamd-Queue-Id: 68AEE7408D3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Mixing devres-managed memory allocations with a non-devres hwmon d=
-evice registration creates a lifetime mismatch leading to a Use-After-Free =
-when the driver is unbound via sysfs.
---
+Hi Guenter, Armin, and Henrik,
 
---- Patch [1]: [PATCH v3 1/1] hwmon: (applesmc) Convert to hwmon_device_reg=
-ister_with_info ---
-commit cc16bf8a12a2f101dd9a6c6d676340d91b9c4973
-Author: Shih-Yuan Lee <fourdollars@debian.org>
+This is v4 of the patch series converting the applesmc driver from using
+the deprecated hwmon_device_register() function to the modern
+hwmon_device_register_with_info() API.
 
-hwmon: (applesmc) Convert to hwmon_device_register_with_info
+Changes in v4:
+- Convert to devres-managed devm_hwmon_device_register_with_info() to fix
+  a lifetime Use-After-Free mismatch when the driver is unbound via sysfs
+  (releasing devres-managed attributes memory while keeping the hwmon
+  sysfs files active).
+- Declare hwmon_dev locally in applesmc_init() and remove it from the
+  global static variables, and clean up the redundant manual
+  hwmon_device_unregister() call in applesmc_exit().
 
-The legacy hwmon_device_register() function is deprecated and triggers a
-warning in dmesg during driver initialization. Convert the driver to use
-the modern hwmon_device_register_with_info() API, moving standard
-attributes to the HWMON core and dynamically allocating extra groups.
+Changes in v3:
+- Fix a recursive mutex deadlock in applesmc_hwmon_write() when writing
+  to pwmX_enable by using applesmc_get_entry_by_key() to resolve the entry
+  locklessly and then calling the underlying raw read_smc/write_smc
+  functions directly under the mutex lock.
+- Fix a fallback fan label truncation bug by pre-padding the generated fallback
+  string with four spaces so that the "+ 4" pointer arithmetic offset yields the
+  correct label "Fan %d".
 
-> diff --git a/drivers/hwmon/applesmc.c b/drivers/hwmon/applesmc.c
-> --- a/drivers/hwmon/applesmc.c
-> +++ b/drivers/hwmon/applesmc.c
-> @@ -1343,17 +1434,97 @@ static int __init applesmc_init(void)
+Changes in v2:
+- Abandon the minimal dummy registration approach in v1.
+- Fully convert the driver to modern HWMON ABI standards by dynamically
+  allocating temp and fan channels at initialization.
+- Rename legacy non-standard attributes to comply with the standard HWMON ABI:
+  - fanX_output -> fanX_target (HWMON_F_TARGET)
+  - fanX_manual -> pwmX_enable (HWMON_PWM_ENABLE)
+- Dynamically register the remaining non-standard fanX_safe attributes
+  under HWMON class directory via extra_groups.
+- Load and cache fan positions in smcreg.fan_positions to support returning
+  labels by reference in .read_string.
+- Clean up unused static attribute groups and show/store callback functions
+  to avoid unused symbol compiler warnings.
+- Verified compilation and successfully tested on real MacBook hardware.
 
-[ ... ]
+We appreciate your review and comments on this refactoring.
 
-> +	/* Create non-standard fanX_safe attributes group */
-> +	fan_safe_attrs =3D devm_kcalloc(&pdev->dev, smcreg.fan_count,
-> +				      sizeof(*fan_safe_attrs), GFP_KERNEL);
-> +	fan_safe_attr_list =3D devm_kcalloc(&pdev->dev, smcreg.fan_count + 1,
-> +					  sizeof(*fan_safe_attr_list), GFP_KERNEL);
+Shih-Yuan Lee (1):
+  hwmon: (applesmc) Convert to hwmon_device_register_with_info
 
-[ ... ]
+ drivers/hwmon/applesmc.c | 467 ++++++++++++++++++++++++++-------------
+ 1 file changed, 316 insertions(+), 151 deletions(-)
 
-> -	hwmon_dev =3D hwmon_device_register(&pdev->dev);
-> +	hwmon_dev =3D hwmon_device_register_with_info(&pdev->dev, "applesmc", N=
-ULL,
-> +						    chip, applesmc_extra_groups);
+-- 
+2.39.5
 
-[Severity: High]
-Does mixing devres-managed memory allocations with a non-devres hwmon device
-registration create a lifetime mismatch?
-
-If a privileged user unbinds the applesmc driver via sysfs, the device core
-detaches the driver and releases all devres-managed allocations tied to
-pdev->dev, including the fan_safe_attrs array.
-
-However, the hwmon device remains registered because it was created with the
-non-managed hwmon_device_register_with_info() in applesmc_init() and is only
-unregistered during module removal.
-
-Since the active hwmon sysfs files still reference the freed fan_safe_attrs,
-could a subsequent read of a file like fan1_safe dereference a function
-pointer in freed memory and lead to a use-after-free? Should this be using
-devm_hwmon_device_register_with_info() instead to tie the hwmon device
-lifetime to the device?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260711053915.4834=
--2-fourdollars@debian.org?part=3D1
 
